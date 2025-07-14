@@ -1,11 +1,11 @@
-# vincent-dca
+# Morphomax Agent
 
-#### This monorepo contains packages that are used to drive the _Vincent DCA_ demo app.
+#### This monorepo contains packages that are used to drive the _Vincent Morphomax_ agent.
 
 ## ❌ Installation
 
 **Packages in this repository are currently not published to NPM; it is expected to be deployed as a
-worker to Heroku.**
+worker to Heroku and client to Vercel.**
 
 ## 🎮 Usage
 
@@ -36,10 +36,10 @@ pnpm start
 
 ## 📦 Packages
 
-| Package                                         | Purpose                                                                          |
-| ----------------------------------------------- | -------------------------------------------------------------------------------- |
-| [dca-frontend](packages/dca-frontend/README.md) | Frontend for end-users to define DCA tasks to be run on a schedule               |
-| [dca-backend](packages/dca-backend/README.md)   | Backend REST API and worker instance using NodeJS; deployed to Heroku currently. |
+| Package                                                     | Purpose                                                                          |
+| ----------------------------------------------------------- | -------------------------------------------------------------------------------- |
+| [morphomax-frontend](packages/morphomax-frontend/README.md) | Frontend for end-users to define MorphoMax tasks to be run on a schedule         |
+| [morphomax-backend](packages/morphomax-backend/README.md)   | Backend REST API and worker instance using NodeJS; deployed to Heroku currently. |
 
 ## 💻 Development
 
@@ -54,5 +54,9 @@ and a node .npmrc configuration file for pnpm is included, along with a .nvmrc f
 
 ## Disclaimers
 
-- The software is provided “as is”, without warranty of any kind, express or implied, including but not limited to the warranties of merchantability, fitness for a particular purpose and noninfringement. We make no guarantees about its stability or suitability for production use. It is provided for demo and educational purposes.
-- It's your responsibility to comply with all applicable laws and regulations for your jurisdiction with respect to the use of this software.
+- The software is provided “as is”, without warranty of any kind, express or implied, including but
+  not limited to the warranties of merchantability, fitness for a particular purpose and
+  noninfringement. We make no guarantees about its stability or suitability for production use. It
+  is provided for demo and educational purposes.
+- It's your responsibility to comply with all applicable laws and regulations for your jurisdiction
+  with respect to the use of this software.

@@ -1,5 +1,7 @@
 {
   "*.{ts,tsx,cjs,js,json,md}": ["prettier --write"],
-  "packages/dca-frontend/**/*.{ts,tsx,cjs,js}": ["pnpm --filter dca-frontend -- lint --fix"],
-  "packages/dca-backend/**/*.{ts,tsx,cjs,js}": ["pnpm --filter dca-backend lint --fix"]
+  "packages/morphomax-frontend/**/*.{ts,tsx,cjs,js}": [
+    "pnpm --filter morphomax-frontend -- lint --fix"
+  ],
+  "packages/morphomax-backend/**/*.{ts,tsx,cjs,js}": ["pnpm --filter morphomax-backend lint --fix"]
 }

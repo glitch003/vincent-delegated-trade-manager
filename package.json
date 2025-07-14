@@ -1,9 +1,9 @@
 {
-  "name": "vincent-dca",
+  "name": "vincent-morphomax",
   "private": true,
   "version": "1.0.0",
-  "description": "Monorepo for vincent DCA backend + frontend",
-  "homepage": "https://github.com/LIT-protocol/vincent-dca",
+  "description": "Monorepo for Vincent MorphoMax Agent backend + frontend",
+  "homepage": "https://github.com/LIT-protocol/morphomax",
   "engines": {
     "node": "^20.11.1",
     "pnpm": "10.7.0"
