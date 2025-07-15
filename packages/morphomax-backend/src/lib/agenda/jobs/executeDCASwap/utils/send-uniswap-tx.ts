@@ -63,7 +63,7 @@ export const getEstimatedUniswapCosts = async ({
   tokenInDecimals: ethers.BigNumber;
   tokenOutAddress: string;
   tokenOutDecimals: ethers.BigNumber;
-  userChainId: string;
+  userChainId: number;
   userRpcProvider: ethers.providers.StaticJsonRpcProvider;
 }) => {
   const { UNISWAP_V3_ROUTER } = getAddressesByChainId(userChainId);

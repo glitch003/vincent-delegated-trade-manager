@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { getVincentWebAppClient } from '@lit-protocol/vincent-sdk';
+import { getVincentWebAppClient } from '@lit-protocol/vincent-app-sdk';
 import { APP_ID } from '@/config';
 
 export const useVincentWebAppClient = () => {

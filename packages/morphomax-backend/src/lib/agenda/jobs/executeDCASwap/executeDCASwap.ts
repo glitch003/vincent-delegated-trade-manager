@@ -27,12 +27,12 @@ export type JobParams = {
 
 const { BASE_RPC_URL } = env;
 
-const BASE_CHAIN_ID = '8453';
+const BASE_CHAIN_ID = 8453;
 
 async function addApproval({
   baseProvider,
   nativeEthBalance,
-  vincentAppVersion,
+  spenderAddress,
   walletAddress,
   WETH_ADDRESS,
   wethAmount,
@@ -41,7 +41,7 @@ async function addApproval({
   WETH_ADDRESS: string;
   baseProvider: ethers.providers.StaticJsonRpcProvider;
   nativeEthBalance: ethers.BigNumber;
-  vincentAppVersion: number;
+  spenderAddress: string;
   wEthDecimals: ethers.BigNumber;
   walletAddress: string;
   wethAmount: number;
@@ -65,20 +65,25 @@ async function addApproval({
     );
   }
 
-  const erc20ApprovalToolClient = getErc20ApprovalToolClient({ vincentAppVersion });
-  const toolExecutionResult = await erc20ApprovalToolClient.execute({
-    amountIn: (wethAmount * 5).toFixed(18).toString(), // Approve 5x the amount to spend so we don't wait for approval tx's every time we run
-    chainId: BASE_CHAIN_ID,
-    pkpEthAddress: walletAddress,
-    rpcUrl: BASE_RPC_URL,
-    tokenIn: WETH_ADDRESS!,
-  });
+  const erc20ApprovalToolClient = getErc20ApprovalToolClient();
+  const erc20ApprovalToolResponse = await erc20ApprovalToolClient.execute(
+    {
+      spenderAddress,
+      chainId: BASE_CHAIN_ID,
+      rpcUrl: BASE_RPC_URL,
+      tokenAddress: WETH_ADDRESS,
+      tokenAmount: wethAmount * 5, // Approve 5x the amount to spend so we don't wait for approval tx's every time we run
+      tokenDecimals: wEthDecimals.toNumber(),
+    },
+    {
+      delegatorPkpEthAddress: walletAddress,
+    }
+  );
 
-  consola.trace('ERC20 Approval Vincent Tool Response:', toolExecutionResult);
-  consola.log('Logs from approval tool exec:', toolExecutionResult.logs);
+  consola.trace('ERC20 Approval Vincent Tool Response:', erc20ApprovalToolResponse);
 
-  const approvalResult = JSON.parse(toolExecutionResult.response as string);
-  if (approvalResult.status === 'success' && approvalResult.approvalTxHash) {
+  const approvalResult = erc20ApprovalToolResponse.result;
+  if ('approvalTxHash' in approvalResult && typeof approvalResult.approvalTxHash === 'string') {
     consola.log('Approval successful. Waiting for transaction confirmation...');
 
     const receipt = await baseProvider.waitForTransaction(approvalResult.approvalTxHash);
@@ -103,7 +108,6 @@ async function handleSwapExecution({
   nativeEthBalance,
   tokenOutInfo,
   topCoin,
-  vincentAppVersion,
   walletAddress,
   WETH_ADDRESS,
   wethAmount,
@@ -116,12 +120,11 @@ async function handleSwapExecution({
   nativeEthBalance: ethers.BigNumber;
   tokenOutInfo: { decimals: ethers.BigNumber };
   topCoin: Coin;
-  vincentAppVersion: number;
   wEthBalance: ethers.BigNumber;
   wEthDecimals: ethers.BigNumber;
   walletAddress: string;
   wethAmount: number;
-}): Promise<void> {
+}): Promise<string> {
   const { gasCost, swapCost } = await getEstimatedUniswapCosts({
     amountIn: wethAmount.toFixed(18).toString(),
     pkpEthAddress: walletAddress,
@@ -146,35 +149,41 @@ async function handleSwapExecution({
     );
   }
 
-  const uniswapToolClient = getUniswapToolClient({ vincentAppVersion });
-  const uniswapSwapToolResponse = await uniswapToolClient.execute({
-    amountIn: wethAmount.toFixed(18).toString(),
-    chainId: BASE_CHAIN_ID,
-    pkpEthAddress: walletAddress,
-    rpcUrl: BASE_RPC_URL,
-    tokenIn: WETH_ADDRESS,
-    tokenOut: topCoin.coinAddress,
-  });
+  const uniswapToolClient = getUniswapToolClient();
+  const uniswapSwapToolResponse = await uniswapToolClient.execute(
+    {
+      chainIdForUniswap: BASE_CHAIN_ID,
+      ethRpcUrl: 'https://eth.llamarpc.com',
+      rpcUrlForUniswap: BASE_RPC_URL,
+      tokenInAddress: WETH_ADDRESS,
+      tokenInAmount: wethAmount,
+      tokenInDecimals: wEthDecimals.toNumber(),
+      tokenOutAddress: topCoin.coinAddress,
+      tokenOutDecimals: tokenOutInfo.decimals.toNumber(),
+    },
+    {
+      delegatorPkpEthAddress: walletAddress,
+    }
+  );
 
   consola.trace('Swap Vincent Tool Response:', uniswapSwapToolResponse);
-  consola.log('Logs from swap tool exec:', uniswapSwapToolResponse.logs);
 
-  const swapResult = JSON.parse(uniswapSwapToolResponse.response as string);
+  const swapResult = uniswapSwapToolResponse.result;
 
-  if (swapResult.status === 'success' && swapResult.swapTxHash) {
-    consola.log('Swap successful. Waiting for transaction confirmation...');
-
-    const receipt = await baseProvider.waitForTransaction(swapResult.swapTxHash);
-
-    if (receipt.status === 1) {
-      consola.log('Swap transaction confirmed:', swapResult.swapTxHash);
-    } else {
-      consola.error('Swap transaction failed:', swapResult.swapTxHash);
-      throw new Error(`Swap transaction failed for hash: ${swapResult.swapTxHash}`);
-    }
-  } else {
+  if (!swapResult?.swapTxHash) {
     consola.log('Swap action failed', swapResult);
     throw new Error(JSON.stringify(swapResult, null, 2));
+  }
+
+  consola.log('Swap successful. Waiting for transaction confirmation...');
+
+  const receipt = await baseProvider.waitForTransaction(swapResult.swapTxHash);
+
+  if (receipt.status === 1) {
+    consola.log('Swap transaction confirmed:', swapResult.swapTxHash);
+  } else {
+    consola.error('Swap transaction failed:', swapResult.swapTxHash);
+    throw new Error(`Swap transaction failed for hash: ${swapResult.swapTxHash}`);
   }
 
   return swapResult.swapTxHash;
@@ -184,7 +193,7 @@ export async function executeDCASwap(job: JobType): Promise<void> {
   try {
     const {
       _id,
-      data: { purchaseAmount, vincentAppVersion, walletAddress },
+      data: { purchaseAmount, walletAddress },
     } = job.attrs;
 
     consola.log('Starting DCA swap job...', {
@@ -199,7 +208,7 @@ export async function executeDCASwap(job: JobType): Promise<void> {
     consola.debug('Got top coin:', topCoin);
 
     // FIXME: This should be type-safe
-    const { WETH_ADDRESS } = getAddressesByChainId(BASE_CHAIN_ID);
+    const { UNISWAP_V3_ROUTER, WETH_ADDRESS } = getAddressesByChainId(BASE_CHAIN_ID);
 
     const baseProvider = new ethers.providers.StaticJsonRpcProvider(BASE_RPC_URL);
 
@@ -263,10 +272,10 @@ export async function executeDCASwap(job: JobType): Promise<void> {
       approvalGasCost = await addApproval({
         baseProvider,
         nativeEthBalance,
-        vincentAppVersion,
         walletAddress,
         wethAmount,
         wEthDecimals,
+        spenderAddress: UNISWAP_V3_ROUTER!,
         WETH_ADDRESS: WETH_ADDRESS!,
       });
     }
@@ -277,7 +286,6 @@ export async function executeDCASwap(job: JobType): Promise<void> {
       nativeEthBalance,
       tokenOutInfo,
       topCoin,
-      vincentAppVersion,
       walletAddress,
       wethAmount,
       wEthBalance,

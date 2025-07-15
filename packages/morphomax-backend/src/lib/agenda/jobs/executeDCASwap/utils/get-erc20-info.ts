@@ -39,7 +39,7 @@ export const getErc20Info = async (
 };
 
 export async function getExistingUniswapAllowance(
-  chainId: string,
+  chainId: number,
   contract: ethers.Contract,
   userAddress: string
 ): Promise<ethers.BigNumber> {

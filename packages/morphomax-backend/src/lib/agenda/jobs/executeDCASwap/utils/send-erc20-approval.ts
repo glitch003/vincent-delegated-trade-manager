@@ -37,7 +37,7 @@ const estimateGasForApproval = async (
 
 export const getEstimatedGasForApproval = async (
   userRpcProvider: ethers.providers.StaticJsonRpcProvider,
-  userChainId: string,
+  userChainId: number,
   tokenInAddress: string,
   amountIn: string,
   tokenInDecimals: string,

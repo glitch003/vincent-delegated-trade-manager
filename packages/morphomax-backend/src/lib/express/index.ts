@@ -1,7 +1,7 @@
 import cors from 'cors';
 import express, { Express } from 'express';
 
-import { expressAuthHelpers } from '@lit-protocol/vincent-sdk';
+import { expressAuthHelpers } from '@lit-protocol/vincent-app-sdk';
 
 import { handleListPurchasesRoute } from './purchases';
 import {

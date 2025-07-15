@@ -3,7 +3,7 @@ import { Response } from 'express';
 import { ScheduleIdentitySchema, ScheduleParamsSchema } from './schema';
 import * as jobManager from '../agenda/jobs/dcaSwapJobManager';
 
-import type { ExpressAuthHelpers } from '@lit-protocol/vincent-sdk';
+import type { ExpressAuthHelpers } from '@lit-protocol/vincent-app-sdk';
 
 const { cancelJob, createJob, disableJob, editJob, enableJob, listJobsByWalletAddress } =
   jobManager;

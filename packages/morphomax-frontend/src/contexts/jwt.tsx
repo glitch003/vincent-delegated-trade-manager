@@ -1,6 +1,6 @@
 import React, { createContext, useCallback, useState, useEffect, ReactNode } from 'react';
 import { IRelayPKP } from '@lit-protocol/types';
-import { jwt } from '@lit-protocol/vincent-sdk';
+import { jwt } from '@lit-protocol/vincent-app-sdk';
 
 const { verify } = jwt;
 

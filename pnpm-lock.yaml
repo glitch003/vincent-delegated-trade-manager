@@ -108,9 +108,15 @@ importers:
       '@lit-protocol/types':
         specifier: ^7.0.9
         version: 7.0.9
-      '@lit-protocol/vincent-sdk':
-        specifier: 0.0.6
-        version: 0.0.6(typescript@5.8.2)
+      '@lit-protocol/vincent-app-sdk':
+        specifier: ^1.0.2
+        version: 1.0.2(typescript@5.8.2)
+      '@lit-protocol/vincent-tool-erc20-approval':
+        specifier: 1.0.2
+        version: 1.0.2(@lit-protocol/vincent-app-sdk@1.0.2(typescript@5.8.2))
+      '@lit-protocol/vincent-tool-uniswap-swap':
+        specifier: 1.0.2
+        version: 1.0.2(@lit-protocol/vincent-app-sdk@1.0.2(typescript@5.8.2))
       '@noble/secp256k1':
         specifier: ^2.2.3
         version: 2.2.3
@@ -190,9 +196,9 @@ importers:
       '@lit-protocol/types':
         specifier: ^7.0.9
         version: 7.0.9
-      '@lit-protocol/vincent-sdk':
-        specifier: 0.0.6
-        version: 0.0.6(typescript@5.8.2)
+      '@lit-protocol/vincent-app-sdk':
+        specifier: ^1.0.2
+        version: 1.0.2(typescript@5.8.2)
       '@radix-ui/react-checkbox':
         specifier: ^1.1.4
         version: 1.1.4(@types/react-dom@19.0.4(@types/react@19.0.12))(@types/react@19.0.12)(react-dom@19.0.0(react@19.0.0))(react@19.0.0)
@@ -1375,13 +1381,32 @@ packages:
   '@lit-protocol/uint8arrays@7.0.9':
     resolution: {integrity: sha512-xSfThoFFeEoA0LjXwYISBarVDXQE8keWyiyIcfoYQ/WziOOhSA1W7WVjufagOSaXwTRyO0wb/arogDKL3za2EQ==}
 
+  '@lit-protocol/vincent-app-sdk@1.0.2':
+    resolution: {integrity: sha512-PMYal/vCCFhhNdjJ3PCmUdSluobJVEQpq+sE0TNtht86sxtBUUc4DUYqgBTUV6AODAVRcF+Hh8n+F7aY97zWeg==}
+    engines: {node: ^20.11.1, pnpm: 10.7.0}
+
+  '@lit-protocol/vincent-policy-spending-limit@1.0.2':
+    resolution: {integrity: sha512-xcVMrmHnpcWpl+coRKiSLwZTwAbqWKlvw8BETZ+xnbO4e303hHqqh/wQAgefyfNVQa5UrDMZj9UryxtR2ndeCQ==}
+    peerDependencies:
+      '@lit-protocol/vincent-app-sdk': ^1.0.2
+
   '@lit-protocol/vincent-sdk@0.0.5':
     resolution: {integrity: sha512-VbemAoEOHE1UdGPi5RaJviNustWegE0N8/4bKgBJb7Z66zocE3TTa6bidBpAVVZNTi/iTUntHHPM76J7Yp78pg==}
     engines: {node: 20.11.1}
+    deprecated: This package has been moved to @lit-protocol/vincent-app-sdk
 
-  '@lit-protocol/vincent-sdk@0.0.6':
-    resolution: {integrity: sha512-oLZEE3REcRuS0N1SO3WTUR9Lstpku0eKuNZ693YaJuRAlu2sMTeodHFUr68D9hPpdhn5G7LCtRkXlbGu4EFpAA==}
-    engines: {node: 20.11.1}
+  '@lit-protocol/vincent-tool-erc20-approval@1.0.2':
+    resolution: {integrity: sha512-JBP6F2JPlc0TFPG+OVo2rJBlqqvythbJH5eqPhTmD+F8tflTs43dO2f180jXPuWWkEP29/CZF9DSRsJgF12owQ==}
+    peerDependencies:
+      '@lit-protocol/vincent-app-sdk': ^1.0.2
+
+  '@lit-protocol/vincent-tool-sdk@1.0.2':
+    resolution: {integrity: sha512-AHU8RYI3KkLRfYTXbxJBW1buQDWJTkJyE/lb34JwQjy3nqFXu/bS29PdxUIGZvq/rcUjCmDsRgCRz1Kid7T5hA==}
+
+  '@lit-protocol/vincent-tool-uniswap-swap@1.0.2':
+    resolution: {integrity: sha512-QvNw2mfppoKhYgl5u7PJ8ZPvCU7CwyjlbVxoo92x8vZLQN/6Fag/4TMnVLxqKG73KgYrpNboRCEg/xTN7iuYTw==}
+    peerDependencies:
+      '@lit-protocol/vincent-app-sdk': ^1.0.2
 
   '@lit-protocol/wasm@7.0.9':
     resolution: {integrity: sha512-MryQPCn7kGa1DTau2qAEi2m+5VW/24k38jdbfyWMrbCtwX5u2dmqs0mMv2NLOpLt3NCk66RTt87JXO/4qAHtEg==}
@@ -2765,6 +2790,10 @@ packages:
   '@ungap/structured-clone@1.3.0':
     resolution: {integrity: sha512-WmoN8qaIAo7WTYWbAZuG8PYEhn5fkz7dZrqTBZ7dtt//lL2Gwms1IcnQ5yHqjDfX8Ft5j4YzDM23f87zBfDe9g==}
 
+  '@uniswap/sdk-core@7.7.2':
+    resolution: {integrity: sha512-0KqXw+y0opBo6eoPAEoLHEkNpOu0NG9gEk7GAYIGok+SHX89WlykWsRYeJKTg9tOwhLpcG9oHg8xZgQ390iOrA==}
+    engines: {node: '>=10'}
+
   '@unrs/resolver-binding-darwin-arm64@1.3.2':
     resolution: {integrity: sha512-ddnlXgRi0Fog5+7U5Q1qY62wl95Q1lB4tXQX1UIA9YHmRCHN2twaQW0/4tDVGCvTVEU3xEayU7VemEr7GcBYUw==}
     cpu: [arm64]
@@ -3209,6 +3238,9 @@ packages:
     resolution: {integrity: sha512-aVNobHnJqLiUelTaHat9DZ1qM2w0C0Eym4LPI/3JxOnSokGVdsl1T1kN7TFvsEAD8G47A6VKQ0TVHqbBnYMJlQ==}
     engines: {node: '>=12.0.0'}
 
+  big.js@5.2.2:
+    resolution: {integrity: sha512-vyL2OymJxmarO8gxMr0mhChsO9QGwhynfuu4+MHTAW6czfq9humCB7rKpUjDd9YUiDPU4mzpyupFSvOClAwbmQ==}
+
   binary-searching@2.0.5:
     resolution: {integrity: sha512-v4N2l3RxL+m4zDxyxz3Ne2aTmiPn8ZUpKFpdPtO+ItW1NcTCXA7JeHG5GMBSvoKSkQZ9ycS+EouDVxYB9ufKWA==}
 
@@ -3281,7 +3313,6 @@ packages:
 
   bun@1.2.6:
     resolution: {integrity: sha512-v0G1dOS5ALc4laomafP2h/PjO9qLF7mwzXySo3VJFiX2Ty70WmPjuGRNGdk65Djk0u3ahpFTtCrzsgIj/NDOiw==}
-    cpu: [arm64, x64, aarch64]
     os: [darwin, linux, win32]
     hasBin: true
 
@@ -3705,6 +3736,9 @@ packages:
   decamelize@1.2.0:
     resolution: {integrity: sha512-z2S+W9X73hAUUki+N+9Za2lBlun89zigOyGrsax+KUQ6wKW4ZoWpEYBkGhQjwAjjDCkWxhY0VKEhk8wzY7F5cA==}
     engines: {node: '>=0.10.0'}
+
+  decimal.js-light@2.5.1:
+    resolution: {integrity: sha512-qIMFpTMZmny+MMIitAB6D7iVPEorVw6YQRWkvarTkT4tBeSLLiHzcwj6q0MmYSFCiVpiqPJTJEYIrpcPzVEIvg==}
 
   decode-named-character-reference@1.1.0:
     resolution: {integrity: sha512-Wy+JTSbFThEOXQIR2L6mxJvEs+veIzpmqD7ynWxMXGpnk3smkHQOp6forLdHsKpAMW9iJpaBBIxz285t1n1C3w==}
@@ -5059,6 +5093,9 @@ packages:
   js-yaml@4.1.0:
     resolution: {integrity: sha512-wpxZs9NoxZaJESJGIZTyDEaYpl0FKSA+FB9aJiyemKhMwkxQg63h4T1KJgUGHpTqPDNRcmmYLugrRjJlBtWvRA==}
     hasBin: true
+
+  jsbi@3.2.5:
+    resolution: {integrity: sha512-aBE4n43IPvjaddScbvWRA2YlTzKEynHzu7MqOyTipdHucf/VxS63ViCjxYRg86M8Rxwbt/GfzHl1kKERkt45fQ==}
 
   jsdoc-type-pratt-parser@4.1.0:
     resolution: {integrity: sha512-Hicd6JK5Njt2QB6XYFS7ok9e37O8AYk3jTcppG4YVQnYjOemymvTcmc7OWsmq/Qqj5TdRFO5/x/tIPmBeRtGHg==}
@@ -6857,6 +6894,9 @@ packages:
     resolution: {integrity: sha512-65P7iz6X5yEr1cwcgvQxbbIw7Uk3gOy5dIdtZ4rDveLqhrdJP+Li/Hx6tyK0NEb+2GCyneCMJiGqrADCSNk8sQ==}
     engines: {node: '>=8.0'}
 
+  toformat@2.0.0:
+    resolution: {integrity: sha512-03SWBVop6nU8bpyZCx7SodpYznbZF5R4ljwNLBcTQzKOD9xuihRo/psX58llS1BMFhhAI08H3luot5GoXJz2pQ==}
+
   toidentifier@1.0.1:
     resolution: {integrity: sha512-o5sSPKEkg/DIQNmH43V0/uerLrpzVedkUh8tGNvaeXpfpuwjKenlSox/2O/BTlZUtEe+JG7s5YhEz608PlAHRA==}
     engines: {node: '>=0.6'}
@@ -7497,6 +7537,9 @@ packages:
 
   zod@3.24.2:
     resolution: {integrity: sha512-lY7CDW43ECgW9u1TcT3IoXHflywfVqDYze4waEz812jR/bZ8FHDsl7pFQoSZTz5N+2NqRXs8GBwnAwo3ZNxqhQ==}
+
+  zod@3.25.64:
+    resolution: {integrity: sha512-hbP9FpSZf7pkS7hRVUrOjhwKJNyampPgtXKc3AN6DsWtoHsg2Sb4SQaS4Tcay380zSwd2VPo9G9180emBACp5g==}
 
 snapshots:
 
@@ -9313,6 +9356,55 @@ snapshots:
       - typescript
       - utf-8-validate
 
+  '@lit-protocol/vincent-app-sdk@1.0.2(typescript@5.8.2)':
+    dependencies:
+      '@lit-protocol/auth-helpers': 7.0.9(typescript@5.8.2)
+      '@lit-protocol/constants': 7.0.9(typescript@5.8.2)
+      '@lit-protocol/lit-node-client': 7.0.9(typescript@5.8.2)
+      '@lit-protocol/vincent-tool-sdk': 1.0.2
+      '@noble/secp256k1': 2.2.3
+      did-jwt: 8.0.9
+      ethers: 5.8.0
+      tslib: 2.8.1
+      zod: 3.25.64
+    transitivePeerDependencies:
+      - '@azure/app-configuration'
+      - '@azure/cosmos'
+      - '@azure/data-tables'
+      - '@azure/identity'
+      - '@azure/keyvault-secrets'
+      - '@azure/storage-blob'
+      - '@capacitor/preferences'
+      - '@deno/kv'
+      - '@netlify/blobs'
+      - '@planetscale/database'
+      - '@react-native-async-storage/async-storage'
+      - '@upstash/redis'
+      - '@vercel/blob'
+      - '@vercel/kv'
+      - '@walletconnect/modal'
+      - aws4fetch
+      - bufferutil
+      - db0
+      - encoding
+      - ioredis
+      - supports-color
+      - typescript
+      - uploadthing
+      - utf-8-validate
+
+  '@lit-protocol/vincent-policy-spending-limit@1.0.2(@lit-protocol/vincent-app-sdk@1.0.2(typescript@5.8.2))':
+    dependencies:
+      '@lit-protocol/vincent-app-sdk': 1.0.2(typescript@5.8.2)
+      '@lit-protocol/vincent-tool-sdk': 1.0.2
+      '@uniswap/sdk-core': 7.7.2
+      ethers: 5.8.0
+      tslib: 2.8.1
+      zod: 3.25.64
+    transitivePeerDependencies:
+      - bufferutil
+      - utf-8-validate
+
   '@lit-protocol/vincent-sdk@0.0.5(typescript@5.8.2)':
     dependencies:
       '@lit-protocol/auth-helpers': 7.0.9(typescript@5.8.2)
@@ -9348,39 +9440,37 @@ snapshots:
       - uploadthing
       - utf-8-validate
 
-  '@lit-protocol/vincent-sdk@0.0.6(typescript@5.8.2)':
+  '@lit-protocol/vincent-tool-erc20-approval@1.0.2(@lit-protocol/vincent-app-sdk@1.0.2(typescript@5.8.2))':
     dependencies:
-      '@lit-protocol/auth-helpers': 7.0.9(typescript@5.8.2)
-      '@lit-protocol/constants': 7.0.9(typescript@5.8.2)
-      '@lit-protocol/lit-node-client': 7.0.9(typescript@5.8.2)
-      '@noble/secp256k1': 2.2.3
-      did-jwt: 8.0.9
-      ethers: 5.7.1
+      '@lit-protocol/vincent-app-sdk': 1.0.2(typescript@5.8.2)
+      '@lit-protocol/vincent-tool-sdk': 1.0.2
+      ethers: 5.8.0
       tslib: 2.8.1
+      zod: 3.25.64
     transitivePeerDependencies:
-      - '@azure/app-configuration'
-      - '@azure/cosmos'
-      - '@azure/data-tables'
-      - '@azure/identity'
-      - '@azure/keyvault-secrets'
-      - '@azure/storage-blob'
-      - '@capacitor/preferences'
-      - '@deno/kv'
-      - '@netlify/blobs'
-      - '@planetscale/database'
-      - '@react-native-async-storage/async-storage'
-      - '@upstash/redis'
-      - '@vercel/blob'
-      - '@vercel/kv'
-      - '@walletconnect/modal'
-      - aws4fetch
       - bufferutil
-      - db0
-      - encoding
-      - ioredis
-      - supports-color
-      - typescript
-      - uploadthing
+      - utf-8-validate
+
+  '@lit-protocol/vincent-tool-sdk@1.0.2':
+    dependencies:
+      ethers: 5.8.0
+      tslib: 2.8.1
+      zod: 3.25.64
+    transitivePeerDependencies:
+      - bufferutil
+      - utf-8-validate
+
+  '@lit-protocol/vincent-tool-uniswap-swap@1.0.2(@lit-protocol/vincent-app-sdk@1.0.2(typescript@5.8.2))':
+    dependencies:
+      '@lit-protocol/vincent-app-sdk': 1.0.2(typescript@5.8.2)
+      '@lit-protocol/vincent-policy-spending-limit': 1.0.2(@lit-protocol/vincent-app-sdk@1.0.2(typescript@5.8.2))
+      '@lit-protocol/vincent-tool-sdk': 1.0.2
+      '@uniswap/sdk-core': 7.7.2
+      ethers: 5.8.0
+      tslib: 2.8.1
+      zod: 3.25.64
+    transitivePeerDependencies:
+      - bufferutil
       - utf-8-validate
 
   '@lit-protocol/wasm@7.0.9':
@@ -10836,6 +10926,18 @@ snapshots:
 
   '@ungap/structured-clone@1.3.0': {}
 
+  '@uniswap/sdk-core@7.7.2':
+    dependencies:
+      '@ethersproject/address': 5.8.0
+      '@ethersproject/bytes': 5.8.0
+      '@ethersproject/keccak256': 5.7.0
+      '@ethersproject/strings': 5.7.0
+      big.js: 5.2.2
+      decimal.js-light: 2.5.1
+      jsbi: 3.2.5
+      tiny-invariant: 1.3.3
+      toformat: 2.0.0
+
   '@unrs/resolver-binding-darwin-arm64@1.3.2':
     optional: true
 
@@ -11576,6 +11678,8 @@ snapshots:
     dependencies:
       open: 8.4.2
 
+  big.js@5.2.2: {}
+
   binary-searching@2.0.5: {}
 
   bl@4.1.0:
@@ -12113,6 +12217,8 @@ snapshots:
       map-obj: 1.0.1
 
   decamelize@1.2.0: {}
+
+  decimal.js-light@2.5.1: {}
 
   decode-named-character-reference@1.1.0:
     dependencies:
@@ -13940,6 +14046,8 @@ snapshots:
   js-yaml@4.1.0:
     dependencies:
       argparse: 2.0.1
+
+  jsbi@3.2.5: {}
 
   jsdoc-type-pratt-parser@4.1.0: {}
 
@@ -15809,6 +15917,8 @@ snapshots:
     dependencies:
       is-number: 7.0.0
 
+  toformat@2.0.0: {}
+
   toidentifier@1.0.1: {}
 
   totalist@3.0.1: {}
@@ -16442,3 +16552,5 @@ snapshots:
   yoctocolors-cjs@2.1.2: {}
 
   zod@3.24.2: {}
+
+  zod@3.25.64: {}

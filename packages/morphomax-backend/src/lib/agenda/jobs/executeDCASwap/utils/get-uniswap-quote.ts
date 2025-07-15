@@ -5,7 +5,7 @@ import { getAddressesByChainId } from './get-addresses-by-chain-id';
 
 export const getUniswapQuote = async (
   userRpcProvider: ethers.providers.StaticJsonRpcProvider,
-  userChainId: string,
+  userChainId: number,
   tokenInAddress: string,
   tokenOutAddress: string,
   amountIn: string,
