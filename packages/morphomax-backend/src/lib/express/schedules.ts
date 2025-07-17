@@ -1,7 +1,7 @@
 import { Response } from 'express';
 
 import { ScheduleIdentitySchema, ScheduleParamsSchema } from './schema';
-import * as jobManager from '../agenda/jobs/dcaSwapJobManager';
+import * as jobManager from '../agenda/jobs/morphoMaxJobManager';
 
 import type { ExpressAuthHelpers } from '@lit-protocol/vincent-app-sdk';
 

@@ -1,7 +1,6 @@
 import React, { FormEvent, useCallback, useState } from 'react';
 import { Pencil } from 'lucide-react';
 
-import { InputAmount } from '@/components/input-amount';
 import { SelectFrequency } from '@/components/select-frequency';
 import { Box } from '@/components/ui/box';
 import { Button } from '@/components/ui/button';
@@ -14,48 +13,41 @@ import {
   DialogTitle,
   DialogTrigger,
 } from '@/components/ui/dialog';
-import { Separator } from '@/components/ui/separator';
-import { DCA, useBackend } from '@/hooks/useBackend';
+import { Schedule, useBackend } from '@/hooks/useBackend';
 
 export interface EditDialogProps {
-  dca: DCA;
-  onUpdate?: (updatedDCA: DCA) => void;
+  schedule: Schedule;
+  onUpdate?: (updatedSchedule: Schedule) => void;
 }
 
-export const DialogueEditDCA: React.FC<EditDialogProps> = ({ dca, onUpdate }) => {
-  const { data } = dca;
+export const DialogueEditSchedule: React.FC<EditDialogProps> = ({ schedule, onUpdate }) => {
+  const { data } = schedule;
   const [open, setOpen] = useState(false);
   const [loading, setLoading] = useState<boolean>(false);
-  const [purchaseAmount, setPurchaseAmount] = useState<string>(String(data.purchaseAmount));
   const [frequency, setFrequency] = useState<string>(data.purchaseIntervalHuman);
 
-  const { editDCA } = useBackend();
+  const { editSchedule } = useBackend();
 
-  const handleEditDCA = useCallback(
+  const handleEditSchedule = useCallback(
     async (event: FormEvent<HTMLFormElement>) => {
       event.preventDefault();
-      if (!purchaseAmount || Number(purchaseAmount) <= 0) {
-        alert('Please enter a positive DCA amount.');
-        return;
-      }
       if (!frequency) {
         alert('Please select a frequency.');
         return;
       }
       try {
         setLoading(true);
-        const updatedDCA = await editDCA(dca._id, {
+        const updatedSchedule = await editSchedule(schedule._id, {
           name: data.name,
-          purchaseAmount,
           purchaseIntervalHuman: frequency,
         });
-        onUpdate?.(updatedDCA);
+        onUpdate?.(updatedSchedule);
         setOpen(false);
       } finally {
         setLoading(false);
       }
     },
-    [dca, editDCA, frequency, onUpdate, purchaseAmount]
+    [data.name, schedule, editSchedule, frequency, onUpdate]
   );
 
   return (
@@ -66,23 +58,14 @@ export const DialogueEditDCA: React.FC<EditDialogProps> = ({ dca, onUpdate }) =>
         </Button>
       </DialogTrigger>
       <DialogContent className="sm:max-w-[425px]">
-        <form onSubmit={handleEditDCA}>
+        <form onSubmit={handleEditSchedule}>
           <DialogHeader>
-            <DialogTitle>Edit DCA Schedule</DialogTitle>
+            <DialogTitle>Edit Morphomax Schedule</DialogTitle>
             <DialogDescription>
-              Make changes to your DCA Schedule here. Click save when you're done.
+              Make changes to your Morpho maxing Schedule here. Click save when you're done.
             </DialogDescription>
           </DialogHeader>
           <Box className="grid gap-4 py-4">
-            <InputAmount
-              required
-              value={purchaseAmount}
-              onChange={setPurchaseAmount}
-              disabled={loading}
-            />
-
-            <Separator />
-
             <SelectFrequency
               required
               value={frequency}

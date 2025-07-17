@@ -2,13 +2,7 @@ import { Types } from 'mongoose';
 import { z } from 'zod';
 
 export const ScheduleParamsSchema = z.object({
-  name: z.string().default('DCASwap'),
-  purchaseAmount: z
-    .string()
-    .refine((val) => /^\d+(\.\d{1,2})?$/.test(val), {
-      message: 'Must be a valid decimal number with up to 2 decimal places (USD currency)',
-    })
-    .transform((val) => parseFloat(val)),
+  name: z.string().default('Morphomaxing schedule'),
   purchaseIntervalHuman: z.string(),
   walletAddress: z
     .string()

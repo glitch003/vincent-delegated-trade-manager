@@ -29,16 +29,12 @@ export const Presentation: React.FC = () => {
 
       <CardContent className="text-center">
         <p className="text-gray-700">
-          TODO Welcome to the Vincent DCA Service. This application allows you to set up automated
-          dollar-cost-averaging for your cryptocurrency investments on Base.
+          Welcome to the Vincent Morphomax Agent. This application allows you to set up automated
+          vault rebalancing to optimize your yield in Base chain using Morpho lending platform.
         </p>
-        <p className="mt-4 text-gray-700">Support for more chains coming soon.</p>
+        <p className="mt-4 text-gray-700">Support for more chains and tokens coming soon.</p>
         <p className="mt-4 text-gray-700">
-          To get started, please Auth with Vincent to manage your DCA schedules.
-        </p>
-        <p className="mt-4 text-gray-700">
-          This app is provided to demonstrate the capabilities of the Vincent platform, and not
-          intended for production use.
+          To get started, please Auth with Vincent to manage your Morphomax schedules.
         </p>
       </CardContent>
 

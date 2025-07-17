@@ -17,41 +17,41 @@ const formatAddress = (address: string | undefined) => {
 };
 
 export const Wallet: React.FC = () => {
-  const { chain, provider, wethContract } = useChain();
-  const [ethBalance, setEthBalance] = useState<string>('0');
-  const [wethBalance, setWethBalance] = useState<string>('0');
+  const { chain, provider, usdcContract } = useChain();
+  const [nativeBalance, setNativeBalance] = useState<string>('0');
+  const [usdcBalance, setUsdcBalance] = useState<string>('0');
   const [isLoadingBalance, setIsLoadingBalance] = useState<boolean>(false);
   const [error, setError] = useState<string | null>(null);
   const { authInfo, logOut } = useContext(JwtContext);
 
-  // Function to fetch PKP wethBalanceWei directly using ethers.js
-  const fetchPkpBalance = useCallback(async () => {
+  // Function to fetch PKP usdcBalance directly using ethers.js
+  const fetchPkpBalances = useCallback(async () => {
     if (!authInfo?.pkp.ethAddress) return;
 
     try {
       setIsLoadingBalance(true);
       setError(null);
 
-      const [ethBalanceWei, wethBalanceWei] = await Promise.all([
+      const [nativeBalance, usdcBalance] = await Promise.all([
         provider.getBalance(authInfo?.pkp.ethAddress),
-        wethContract.balanceOf(authInfo?.pkp.ethAddress),
+        usdcContract.balanceOf(authInfo?.pkp.ethAddress),
       ]);
 
-      // Both have 18 decimal places
-      setEthBalance(ethers.utils.formatEther(ethBalanceWei));
-      setWethBalance(ethers.utils.formatEther(wethBalanceWei));
+      // Set human-readable balances
+      setNativeBalance(ethers.utils.formatEther(nativeBalance));
+      setUsdcBalance(ethers.utils.formatUnits(usdcBalance, 6));
 
       setIsLoadingBalance(false);
     } catch (err: unknown) {
-      console.error('Error fetching PKP wethBalanceWei:', err);
+      console.error('Error fetching PKP usdcBalance:', err);
       setError(`Failed to fetch wallet balance`);
       setIsLoadingBalance(false);
     }
-  }, [authInfo, provider, wethContract]);
+  }, [authInfo, provider, usdcContract]);
 
   useEffect(() => {
-    fetchPkpBalance();
-  }, [fetchPkpBalance]);
+    fetchPkpBalances();
+  }, [fetchPkpBalances]);
 
   return (
     <Card data-test-id="wallet" className="w-full bg-white p-6 shadow-sm">
@@ -86,6 +86,19 @@ export const Wallet: React.FC = () => {
         <Separator />
 
         <Box className="flex flex-row items-stretch justify-between">
+          <BoxDescription>USDC Balance:</BoxDescription>
+          <span
+            style={{
+              fontSize: '20px',
+              fontWeight: 'bold',
+              color: '#333',
+            }}
+          >
+            {isLoadingBalance ? 'Loading...' : `${parseFloat(usdcBalance).toFixed(4)} USDC`}
+          </span>
+        </Box>
+
+        <Box className="flex flex-row items-stretch justify-between">
           <BoxDescription>ETH Balance:</BoxDescription>
           <span
             style={{
@@ -96,20 +109,7 @@ export const Wallet: React.FC = () => {
           >
             {isLoadingBalance
               ? 'Loading...'
-              : `${parseFloat(ethBalance).toFixed(4)} ${chain.symbol}`}
-          </span>
-        </Box>
-
-        <Box className="flex flex-row items-stretch justify-between">
-          <BoxDescription>WETH Balance:</BoxDescription>
-          <span
-            style={{
-              fontSize: '20px',
-              fontWeight: 'bold',
-              color: '#333',
-            }}
-          >
-            {isLoadingBalance ? 'Loading...' : `${parseFloat(wethBalance).toFixed(4)} WETH`}
+              : `${parseFloat(nativeBalance).toFixed(4)} ${chain.symbol}`}
           </span>
         </Box>
 
@@ -133,7 +133,7 @@ export const Wallet: React.FC = () => {
           </div>
         )}
 
-        <Button className="w-full" disabled={isLoadingBalance} onClick={fetchPkpBalance}>
+        <Button className="w-full" disabled={isLoadingBalance} onClick={fetchPkpBalances}>
           {isLoadingBalance ? (
             <>
               <Spinner variant="destructive" size="sm" /> Refreshing...

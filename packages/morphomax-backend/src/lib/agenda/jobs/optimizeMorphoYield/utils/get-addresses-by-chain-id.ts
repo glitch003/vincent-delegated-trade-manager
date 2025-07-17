@@ -3,9 +3,11 @@ export type AddressSet = {
   SPENDING_LIMIT_ADDRESS?: string;
   UNISWAP_V3_QUOTER?: string;
   UNISWAP_V3_ROUTER?: string;
+  USDC_ADDRESS?: string;
   WETH_ADDRESS?: string;
 };
 
+// TODO clean and make type-safe
 const addressMap: Record<number, AddressSet> = {
   1: {
     /**
@@ -20,6 +22,7 @@ const addressMap: Record<number, AddressSet> = {
   8453: {
     UNISWAP_V3_QUOTER: '0x3d4e44Eb1374240CE5F1B871ab261CD16335B76a',
     UNISWAP_V3_ROUTER: '0x2626664c2603336E57B271c5C0b26F421741e481',
+    USDC_ADDRESS: '0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913',
     WETH_ADDRESS: '0x4200000000000000000000000000000000000006',
   },
   42161: {

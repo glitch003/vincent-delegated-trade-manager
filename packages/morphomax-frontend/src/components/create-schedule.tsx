@@ -12,26 +12,20 @@ import {
   CardFooter,
 } from '@/components/ui/card';
 import { Separator } from '@/components/ui/separator';
-import { DEFAULT_VALUE, InputAmount } from '@/components/input-amount';
 import { FREQUENCIES, SelectFrequency } from '@/components/select-frequency';
 
-export interface CreateDCAProps {
+export interface CreateScheduleProps {
   onCreate?: () => void;
 }
 
-export const CreateDCA: React.FC<CreateDCAProps> = ({ onCreate }) => {
+export const CreateSchedule: React.FC<CreateScheduleProps> = ({ onCreate }) => {
   const [loading, setLoading] = useState<boolean>(false);
   const [name] = useState<string>('name');
-  const [purchaseAmount, setPurchaseAmount] = useState<string>(DEFAULT_VALUE);
   const [frequency, setFrequency] = useState<string>(FREQUENCIES[0].value);
-  const { createDCA } = useBackend();
+  const { createSchedule } = useBackend();
 
-  const handleCreateDCA = async (event: FormEvent<HTMLFormElement>) => {
+  const handleCreateSchedule = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    if (!purchaseAmount || Number(purchaseAmount) <= 0) {
-      alert('Please enter a positive DCA amount.');
-      return;
-    }
     if (!frequency) {
       alert('Please select a frequency.');
       return;
@@ -39,15 +33,14 @@ export const CreateDCA: React.FC<CreateDCAProps> = ({ onCreate }) => {
 
     try {
       setLoading(true);
-      await createDCA({
+      await createSchedule({
         name,
-        purchaseAmount,
         purchaseIntervalHuman: frequency,
       });
       onCreate?.();
     } catch (error) {
-      console.error('Error creating DCA:', error);
-      alert('Error creating DCA. Please try again.');
+      console.error('Error creating Schedule:', error);
+      alert('Error creating Schedule. Please try again.');
     } finally {
       setLoading(false);
     }
@@ -55,12 +48,12 @@ export const CreateDCA: React.FC<CreateDCAProps> = ({ onCreate }) => {
 
   return (
     <Card className="flex flex-col justify-between bg-white p-6 shadow-sm">
-      <form onSubmit={handleCreateDCA}>
+      <form onSubmit={handleCreateSchedule}>
         <CardHeader className="text-center">
-          <CardTitle className="text-2xl font-bold">Dynamic & Secure DCA on Base</CardTitle>
+          <CardTitle className="text-2xl font-bold">Morpho Vault Maximizer Agent</CardTitle>
           <CardDescription className="mt-2 text-gray-600">
-            This demo agent automatically identifies and purchases the top-performing Base memecoin
-            on your predefined schedule.
+            This agent periodically maximizes your Morpho USDC vault positions by choosing the
+            highest yielding vault and moving all invested funds into it.
             <br />
             <br />
             <strong>How It Works (Powered by Vincent):</strong>
@@ -71,8 +64,8 @@ export const CreateDCA: React.FC<CreateDCAProps> = ({ onCreate }) => {
             <br />
             <br />
             The agent operates using permissions securely delegated by you, following strict rules
-            you establish during setup—such as daily spending limit. These onchain rules are
-            cryptographically enforced by{' '}
+            you establish during setup—such as only being able to execute withdrawals and deposits
+            at Morpho. These onchain rules are cryptographically enforced by{' '}
             <a
               href="https://litprotocol.com/"
               target="_blank"
@@ -85,8 +78,8 @@ export const CreateDCA: React.FC<CreateDCAProps> = ({ onCreate }) => {
             automation combined with secure, permissioned execution.
             <br />
             <br />
-            <strong>Quick Tip:</strong> Ensure your wallet holds sufficient Base WETH + ETH for the
-            demo to function smoothly.
+            <strong>Requirements:</strong> Ensure your wallet holds at least 50 USDC for the agent
+            to make deposits. Also some ETH is required for gas fees.
           </CardDescription>
         </CardHeader>
 
@@ -94,15 +87,6 @@ export const CreateDCA: React.FC<CreateDCAProps> = ({ onCreate }) => {
 
         <CardContent className="my-8">
           <Box className="space-y-4">
-            <InputAmount
-              required
-              value={purchaseAmount}
-              onChange={setPurchaseAmount}
-              disabled={loading}
-            />
-
-            <Separator />
-
             <SelectFrequency
               required
               value={frequency}
@@ -116,7 +100,7 @@ export const CreateDCA: React.FC<CreateDCAProps> = ({ onCreate }) => {
 
         <CardFooter className="flex justify-center">
           <Button className="w-full" type="submit">
-            Create DCA
+            Create Schedule
           </Button>
         </CardFooter>
       </form>

@@ -1,6 +1,6 @@
 {
   "extends": ["@tsconfig/node20/tsconfig.json", "../../tsconfig.base.json"],
-  "include": ["src/**/*.ts", "src/*.ts", "./express.d.ts"],
+  "include": ["src/**/*.ts", "src/*.ts", "./express.d.ts", "codegen.ts"],
   "strictNullChecks": true,
   "allowJs": true,
   "types": ["jest", "node"],

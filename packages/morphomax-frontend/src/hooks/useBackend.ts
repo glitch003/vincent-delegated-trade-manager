@@ -6,7 +6,7 @@ import { useVincentWebAppClient } from '@/hooks/useVincentWebAppClient';
 
 type HTTPMethod = 'GET' | 'POST' | 'PUT' | 'DELETE';
 
-export type DCA = {
+export type Schedule = {
   lastRunAt: string;
   nextRunAt: string;
   lastFinishedAt: string;
@@ -16,7 +16,6 @@ export type DCA = {
   failReason: string;
   data: {
     name: string;
-    purchaseAmount: number;
     purchaseIntervalHuman: string;
     vincentAppVersion: number;
     walletAddress: string;
@@ -24,9 +23,8 @@ export type DCA = {
   };
 };
 
-export interface CreateDCARequest {
+export interface CreateScheduleRequest {
   name: string;
-  purchaseAmount: string;
   purchaseIntervalHuman: string;
 }
 
@@ -74,52 +72,52 @@ export const useBackend = () => {
     [authInfo]
   );
 
-  const createDCA = useCallback(
-    async (dca: CreateDCARequest) => {
-      return sendRequest<DCA>('/schedule', 'POST', dca);
+  const createSchedule = useCallback(
+    async (schedule: CreateScheduleRequest) => {
+      return sendRequest<Schedule>('/schedule', 'POST', schedule);
     },
     [sendRequest]
   );
 
-  const getDCAs = useCallback(async () => {
-    return sendRequest<DCA[]>('/schedules', 'GET');
+  const getSchedules = useCallback(async () => {
+    return sendRequest<Schedule[]>('/schedules', 'GET');
   }, [sendRequest]);
 
-  const disableDCA = useCallback(
+  const disableSchedule = useCallback(
     async (scheduleId: string) => {
-      return sendRequest<DCA>(`/schedules/${scheduleId}/disable`, 'PUT');
+      return sendRequest<Schedule>(`/schedules/${scheduleId}/disable`, 'PUT');
     },
     [sendRequest]
   );
 
-  const enableDCA = useCallback(
+  const enableSchedule = useCallback(
     async (scheduleId: string) => {
-      return sendRequest<DCA>(`/schedules/${scheduleId}/enable`, 'PUT');
+      return sendRequest<Schedule>(`/schedules/${scheduleId}/enable`, 'PUT');
     },
     [sendRequest]
   );
 
-  const editDCA = useCallback(
-    async (scheduleId: string, dca: CreateDCARequest) => {
-      return sendRequest<DCA>(`/schedules/${scheduleId}`, 'PUT', dca);
+  const editSchedule = useCallback(
+    async (scheduleId: string, schedule: CreateScheduleRequest) => {
+      return sendRequest<Schedule>(`/schedules/${scheduleId}`, 'PUT', schedule);
     },
     [sendRequest]
   );
 
-  const deleteDCA = useCallback(
+  const deleteSchedule = useCallback(
     async (scheduleId: string) => {
-      return sendRequest<DCA>(`/schedules/${scheduleId}`, 'DELETE');
+      return sendRequest<Schedule>(`/schedules/${scheduleId}`, 'DELETE');
     },
     [sendRequest]
   );
 
   return {
-    createDCA,
-    deleteDCA,
-    disableDCA,
-    editDCA,
-    enableDCA,
-    getDCAs,
+    createSchedule,
+    deleteSchedule,
+    disableSchedule,
+    editSchedule,
+    enableSchedule,
+    getSchedules,
     getJwt,
   };
 };
