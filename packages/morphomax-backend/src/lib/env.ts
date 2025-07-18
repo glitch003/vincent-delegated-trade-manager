@@ -23,13 +23,12 @@ export const env = createEnv({
   server: {
     ALLOWED_AUDIENCE: z.string().url(),
     BASE_RPC_URL: z.string().url(),
-    COINRANKING_API_KEY: z.string(),
     CORS_ALLOWED_DOMAIN: z.string(),
     IS_DEVELOPMENT: BooleanOrBooleanStringSchema,
+    MINIMUM_USDC_BALANCE: z.coerce.number(),
+    MINIMUM_YIELD_IMPROVEMENT_PERCENT: z.coerce.number(),
     MONGODB_URI: z.string().url(),
     PORT: z.coerce.number(),
-    VINCENT_APP_ID: z.coerce.number(),
-    VINCENT_APP_VERSION: z.coerce.number(),
     VINCENT_DELEGATEE_PRIVATE_KEY: z.string(),
   },
 });

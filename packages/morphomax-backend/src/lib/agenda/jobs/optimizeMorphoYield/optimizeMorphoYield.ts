@@ -24,11 +24,9 @@ export type JobParams = {
   walletAddress: string;
 };
 
-const { BASE_RPC_URL } = env;
+const { BASE_RPC_URL, MINIMUM_USDC_BALANCE, MINIMUM_YIELD_IMPROVEMENT_PERCENT } = env;
 
 const BASE_CHAIN_ID = 8453;
-const TOKEN_BALANCE_THRESHOLD = 1;
-const YIELD_OPTIMIZATION_BUFFER = 0.01; // Only make the vault swap if there is at least this much difference in yield (1 = 100%)
 
 interface TokenBalance {
   address: string;
@@ -182,7 +180,7 @@ function getVaultsToOptimize(
   const topVoultAvgNetApy = topVault.state?.avgNetApy || 0;
   const suboptimalVaults = userPositions.user.vaultPositions.filter((vp) => {
     const vaultAvgNetApy = vp.vault.state?.avgNetApy || 0;
-    return topVoultAvgNetApy > vaultAvgNetApy + YIELD_OPTIMIZATION_BUFFER;
+    return topVoultAvgNetApy > vaultAvgNetApy + MINIMUM_YIELD_IMPROVEMENT_PERCENT / 100;
   });
 
   return suboptimalVaults;
@@ -246,13 +244,18 @@ export async function optimizeMorphoYield(job: JobType): Promise<void> {
     consola.debug('Got top USDC vault:', topVault);
     consola.debug('Got user positions:', userPositions);
 
+    const withdrawals = [];
     if (userPositions) {
       const vaultsToOptimize = getVaultsToOptimize(userPositions, topVault);
       consola.debug('Vaults to optimize:', vaultsToOptimize);
 
       // Withdraw from vaults to optimize
-      // TODO morpho tool withdraw for every vault to optimize. Save some hashes or something for records
-      await handleMorphoVaultsRedeem(provider, walletAddress, vaultsToOptimize);
+      const withdrawResult = await handleMorphoVaultsRedeem(
+        provider,
+        walletAddress,
+        vaultsToOptimize
+      );
+      withdrawals.push(withdrawResult);
     }
 
     // Get user USDC balance
@@ -260,15 +263,33 @@ export async function optimizeMorphoYield(job: JobType): Promise<void> {
     const { balance, decimals } = tokenBalance;
     consola.debug('User USDC balance:', ethers.utils.formatUnits(balance, decimals));
 
-    if (balance.gt(TOKEN_BALANCE_THRESHOLD * 10 ** decimals)) {
+    const deposits = [];
+    if (balance.gt(MINIMUM_USDC_BALANCE * 10 ** decimals)) {
       // Put all USDC into the top vault
-      await handleOptimalMorphoVaultDeposit(provider, walletAddress, topVault, tokenBalance);
+      const depositResult = await handleOptimalMorphoVaultDeposit(
+        provider,
+        walletAddress,
+        topVault,
+        tokenBalance
+      );
+      deposits.push(depositResult);
     }
 
-    consola.log('Job details', {
-      walletAddress,
-      // TODO log summary of job execution
-    });
+    consola.log(
+      'Job details',
+      JSON.stringify(
+        {
+          deposits,
+          topVault,
+          userPositions,
+          walletAddress,
+          withdrawals,
+          userTokenBalance: tokenBalance,
+        },
+        null,
+        2
+      )
+    );
     // const purchase = new PurchasedCoin({
     //   purchaseAmount,
     //   walletAddress,
