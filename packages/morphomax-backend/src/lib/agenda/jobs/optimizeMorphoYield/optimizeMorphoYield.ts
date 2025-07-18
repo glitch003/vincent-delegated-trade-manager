@@ -119,7 +119,7 @@ async function handleMorphoVaultsRedeem(
   // We have to trigger one redeem per vault and do it in sequence to avoid messing up the nonce
   for (const vaultPosition of userVaultPositions) {
     // Vaults are ERC-4626 compliant so they will always have 18 decimals
-    const shares = ethers.utils.formatUnits(vaultPosition.state!.shares, 18);
+    const shares = ethers.utils.formatUnits(vaultPosition.state.shares, 18);
     const morphoWithdrawToolResponse = await morphoToolClient.execute(
       {
         amount: shares,

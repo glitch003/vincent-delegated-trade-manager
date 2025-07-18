@@ -4099,7 +4099,6 @@ export type GetUserPositionsQuery = {
       id: string;
       user: {
         __typename?: 'User';
-        address: any;
         vaultPositions: Array<{
           __typename?: 'VaultPosition';
           state: {
@@ -4120,7 +4119,6 @@ export type GetUserPositionsQuery = {
             asset: {
               __typename?: 'Asset';
               address: any;
-              chain: { __typename?: 'Chain'; id: number; network: string };
               decimals: number;
               name: string;
               symbol: string;
@@ -4165,11 +4163,9 @@ export type GetVaultsQuery = {
     items: Array<{
       __typename?: 'Vault';
       address: any;
-      asset: { __typename?: 'Asset'; address: any; decimals: number; id: string; name: string };
-      chain: { __typename?: 'Chain'; currency: string; id: number; network: string };
+      asset: { __typename?: 'Asset'; address: any; decimals: number; name: string; symbol: string };
+      chain: { __typename?: 'Chain'; id: number; network: string };
       id: string;
-      liquidity: { __typename?: 'VaultLiquidity'; underlying: any; usd: number } | null;
-      metadata: { __typename?: 'VaultMetadata'; description: string; image: string } | null;
       name: string;
       state: {
         __typename?: 'VaultState';
@@ -4229,8 +4225,8 @@ export const GetUserPositionsDocument = {
                   selectionSet: {
                     kind: 'SelectionSet',
                     selections: [
-                      { kind: 'Field', name: { kind: 'Name', value: 'countTotal' } },
                       { kind: 'Field', name: { kind: 'Name', value: 'count' } },
+                      { kind: 'Field', name: { kind: 'Name', value: 'countTotal' } },
                       { kind: 'Field', name: { kind: 'Name', value: 'limit' } },
                       { kind: 'Field', name: { kind: 'Name', value: 'skip' } },
                     ],
@@ -4249,7 +4245,6 @@ export const GetUserPositionsDocument = {
                         selectionSet: {
                           kind: 'SelectionSet',
                           selections: [
-                            { kind: 'Field', name: { kind: 'Name', value: 'address' } },
                             {
                               kind: 'Field',
                               name: { kind: 'Name', value: 'vaultPositions' },
@@ -4262,6 +4257,7 @@ export const GetUserPositionsDocument = {
                                     selectionSet: {
                                       kind: 'SelectionSet',
                                       selections: [
+                                        { kind: 'Field', name: { kind: 'Name', value: 'address' } },
                                         {
                                           kind: 'Field',
                                           name: { kind: 'Name', value: 'asset' },
@@ -4270,28 +4266,11 @@ export const GetUserPositionsDocument = {
                                             selections: [
                                               {
                                                 kind: 'Field',
-                                                name: { kind: 'Name', value: 'chain' },
-                                                selectionSet: {
-                                                  kind: 'SelectionSet',
-                                                  selections: [
-                                                    {
-                                                      kind: 'Field',
-                                                      name: { kind: 'Name', value: 'id' },
-                                                    },
-                                                    {
-                                                      kind: 'Field',
-                                                      name: { kind: 'Name', value: 'network' },
-                                                    },
-                                                  ],
-                                                },
+                                                name: { kind: 'Name', value: 'address' },
                                               },
                                               {
                                                 kind: 'Field',
                                                 name: { kind: 'Name', value: 'decimals' },
-                                              },
-                                              {
-                                                kind: 'Field',
-                                                name: { kind: 'Name', value: 'address' },
                                               },
                                               {
                                                 kind: 'Field',
@@ -4303,12 +4282,6 @@ export const GetUserPositionsDocument = {
                                               },
                                             ],
                                           },
-                                        },
-                                        { kind: 'Field', name: { kind: 'Name', value: 'symbol' } },
-                                        { kind: 'Field', name: { kind: 'Name', value: 'address' } },
-                                        {
-                                          kind: 'Field',
-                                          name: { kind: 'Name', value: 'whitelisted' },
                                         },
                                         { kind: 'Field', name: { kind: 'Name', value: 'id' } },
                                         { kind: 'Field', name: { kind: 'Name', value: 'name' } },
@@ -4337,6 +4310,11 @@ export const GetUserPositionsDocument = {
                                             ],
                                           },
                                         },
+                                        { kind: 'Field', name: { kind: 'Name', value: 'symbol' } },
+                                        {
+                                          kind: 'Field',
+                                          name: { kind: 'Name', value: 'whitelisted' },
+                                        },
                                       ],
                                     },
                                   },
@@ -4346,21 +4324,21 @@ export const GetUserPositionsDocument = {
                                     selectionSet: {
                                       kind: 'SelectionSet',
                                       selections: [
-                                        { kind: 'Field', name: { kind: 'Name', value: 'id' } },
-                                        {
-                                          kind: 'Field',
-                                          name: { kind: 'Name', value: 'timestamp' },
-                                        },
-                                        { kind: 'Field', name: { kind: 'Name', value: 'pnl' } },
-                                        { kind: 'Field', name: { kind: 'Name', value: 'pnlUsd' } },
-                                        { kind: 'Field', name: { kind: 'Name', value: 'roe' } },
-                                        { kind: 'Field', name: { kind: 'Name', value: 'roeUsd' } },
                                         { kind: 'Field', name: { kind: 'Name', value: 'assets' } },
                                         {
                                           kind: 'Field',
                                           name: { kind: 'Name', value: 'assetsUsd' },
                                         },
+                                        { kind: 'Field', name: { kind: 'Name', value: 'id' } },
+                                        { kind: 'Field', name: { kind: 'Name', value: 'pnl' } },
+                                        { kind: 'Field', name: { kind: 'Name', value: 'pnlUsd' } },
+                                        { kind: 'Field', name: { kind: 'Name', value: 'roe' } },
+                                        { kind: 'Field', name: { kind: 'Name', value: 'roeUsd' } },
                                         { kind: 'Field', name: { kind: 'Name', value: 'shares' } },
+                                        {
+                                          kind: 'Field',
+                                          name: { kind: 'Name', value: 'timestamp' },
+                                        },
                                       ],
                                     },
                                   },
@@ -4449,8 +4427,8 @@ export const GetVaultsDocument = {
                   selectionSet: {
                     kind: 'SelectionSet',
                     selections: [
-                      { kind: 'Field', name: { kind: 'Name', value: 'countTotal' } },
                       { kind: 'Field', name: { kind: 'Name', value: 'count' } },
+                      { kind: 'Field', name: { kind: 'Name', value: 'countTotal' } },
                       { kind: 'Field', name: { kind: 'Name', value: 'limit' } },
                       { kind: 'Field', name: { kind: 'Name', value: 'skip' } },
                     ],
@@ -4469,23 +4447,10 @@ export const GetVaultsDocument = {
                         selectionSet: {
                           kind: 'SelectionSet',
                           selections: [
-                            { kind: 'Field', name: { kind: 'Name', value: 'decimals' } },
                             { kind: 'Field', name: { kind: 'Name', value: 'address' } },
-                            { kind: 'Field', name: { kind: 'Name', value: 'id' } },
+                            { kind: 'Field', name: { kind: 'Name', value: 'decimals' } },
                             { kind: 'Field', name: { kind: 'Name', value: 'name' } },
-                          ],
-                        },
-                      },
-                      {
-                        kind: 'Field',
-                        name: { kind: 'Name', value: 'state' },
-                        selectionSet: {
-                          kind: 'SelectionSet',
-                          selections: [
-                            { kind: 'Field', name: { kind: 'Name', value: 'apy' } },
-                            { kind: 'Field', name: { kind: 'Name', value: 'avgApy' } },
-                            { kind: 'Field', name: { kind: 'Name', value: 'avgNetApy' } },
-                            { kind: 'Field', name: { kind: 'Name', value: 'netApy' } },
+                            { kind: 'Field', name: { kind: 'Name', value: 'symbol' } },
                           ],
                         },
                       },
@@ -4496,7 +4461,6 @@ export const GetVaultsDocument = {
                           kind: 'SelectionSet',
                           selections: [
                             { kind: 'Field', name: { kind: 'Name', value: 'id' } },
-                            { kind: 'Field', name: { kind: 'Name', value: 'currency' } },
                             { kind: 'Field', name: { kind: 'Name', value: 'network' } },
                           ],
                         },
@@ -4505,23 +4469,14 @@ export const GetVaultsDocument = {
                       { kind: 'Field', name: { kind: 'Name', value: 'name' } },
                       {
                         kind: 'Field',
-                        name: { kind: 'Name', value: 'liquidity' },
+                        name: { kind: 'Name', value: 'state' },
                         selectionSet: {
                           kind: 'SelectionSet',
                           selections: [
-                            { kind: 'Field', name: { kind: 'Name', value: 'underlying' } },
-                            { kind: 'Field', name: { kind: 'Name', value: 'usd' } },
-                          ],
-                        },
-                      },
-                      {
-                        kind: 'Field',
-                        name: { kind: 'Name', value: 'metadata' },
-                        selectionSet: {
-                          kind: 'SelectionSet',
-                          selections: [
-                            { kind: 'Field', name: { kind: 'Name', value: 'description' } },
-                            { kind: 'Field', name: { kind: 'Name', value: 'image' } },
+                            { kind: 'Field', name: { kind: 'Name', value: 'apy' } },
+                            { kind: 'Field', name: { kind: 'Name', value: 'avgApy' } },
+                            { kind: 'Field', name: { kind: 'Name', value: 'avgNetApy' } },
+                            { kind: 'Field', name: { kind: 'Name', value: 'netApy' } },
                           ],
                         },
                       },

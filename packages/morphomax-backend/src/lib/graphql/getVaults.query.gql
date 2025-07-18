@@ -13,39 +13,30 @@ query GetVaults(
     skip: $skip
   ) {
     pageInfo {
-      countTotal
       count
+      countTotal
       limit
       skip
     }
     items {
       address
       asset {
-        decimals
         address
-        id
+        decimals
         name
+        symbol
       }
+      chain {
+        id
+        network
+      }
+      id
+      name
       state {
         apy
         avgApy
         avgNetApy
         netApy
-      }
-      chain {
-        id
-        currency
-        network
-      }
-      id
-      name
-      liquidity {
-        underlying
-        usd
-      }
-      metadata {
-        description
-        image
       }
       symbol
       whitelisted
