@@ -38,9 +38,10 @@ interface TokenBalance {
 
 async function waitForTransaction(
   provider: ethers.providers.JsonRpcProvider,
-  transactionHash: string
+  transactionHash: string,
+  confirmations = 4
 ) {
-  const receipt = await provider.waitForTransaction(transactionHash);
+  const receipt = await provider.waitForTransaction(transactionHash, confirmations);
   if (receipt.status === 1) {
     consola.log('Transaction confirmed:', transactionHash);
   } else {
