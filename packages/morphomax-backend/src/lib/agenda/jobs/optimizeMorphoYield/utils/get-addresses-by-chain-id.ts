@@ -1,41 +1,25 @@
+import { LIT_EVM_CHAINS } from '@lit-protocol/constants';
+
 export type AddressSet = {
-  ETH_USD_CHAINLINK_FEED?: string;
-  SPENDING_LIMIT_ADDRESS?: string;
-  UNISWAP_V3_QUOTER?: string;
-  UNISWAP_V3_ROUTER?: string;
-  USDC_ADDRESS?: string;
-  WETH_ADDRESS?: string;
+  USDC_ADDRESS: string;
 };
 
 // TODO clean and make type-safe
 const addressMap: Record<number, AddressSet> = {
-  1: {
-    /**
-     * Source:
-     * https://docs.chain.link/data-feeds/price-feeds/addresses/?network=ethereum&page=1&search=ETH%2FUSD
-     */
-    ETH_USD_CHAINLINK_FEED: '0x5f4eC3Df9cbd43714FE2740f5E3616155c5b8419',
-    UNISWAP_V3_QUOTER: '0x61fFE014bA17989E743c5F6cB21bF9697530B21e',
-    UNISWAP_V3_ROUTER: '0x68b3465833fb72A70ecDF485E0e4C7bD8665Fc45',
-    WETH_ADDRESS: '0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2',
+  [LIT_EVM_CHAINS.ethereum.chainId]: { USDC_ADDRESS: '0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48' },
+  [LIT_EVM_CHAINS.polygon.chainId]: { USDC_ADDRESS: '0x3c499c542cef5e3811e1192ce70d8cc03d5c3359' },
+  [LIT_EVM_CHAINS.avalanche.chainId]: {
+    USDC_ADDRESS: '0xB97EF9Ef8734C71904D8002F8b6Bc66Dd9c48a6E',
   },
-  8453: {
-    UNISWAP_V3_QUOTER: '0x3d4e44Eb1374240CE5F1B871ab261CD16335B76a',
-    UNISWAP_V3_ROUTER: '0x2626664c2603336E57B271c5C0b26F421741e481',
-    USDC_ADDRESS: '0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913',
-    WETH_ADDRESS: '0x4200000000000000000000000000000000000006',
+  [LIT_EVM_CHAINS.arbitrum.chainId]: { USDC_ADDRESS: '0xaf88d065e77c8cC2239327C5EDb3A432268e5831' },
+  [LIT_EVM_CHAINS.base.chainId]: { USDC_ADDRESS: '0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913' },
+  [LIT_EVM_CHAINS.baseSepolia.chainId]: {
+    USDC_ADDRESS: '0x036CbD53842c5426634e7929541eC2318f3dCF7e',
   },
-  42161: {
-    UNISWAP_V3_QUOTER: '0x61fFE014bA17989E743c5F6cB21bF9697530B21e',
-    UNISWAP_V3_ROUTER: '0x68b3465833fb72A70ecDF485E0e4C7bD8665Fc45',
-    WETH_ADDRESS: '0x82aF49447D8a07e3bd95BD0d56f35241523fBab1',
-  },
-  175188: {
-    SPENDING_LIMIT_ADDRESS: '0x2d043f8c6b80ea6396a51dc6333027fbdb8343a3',
-  },
+  [LIT_EVM_CHAINS.optimism.chainId]: { USDC_ADDRESS: '0x0b2C639c533813f4Aa9D7837CAf62653d097Ff85' },
 };
 
-export const getAddressesByChainId = (chainId: number): AddressSet => {
+export const getAddressesByChainId = (chainId: keyof typeof addressMap): AddressSet => {
   const addresses = addressMap[chainId];
   if (!addresses) {
     throw new Error(`Unsupported chain ID: ${chainId}`);

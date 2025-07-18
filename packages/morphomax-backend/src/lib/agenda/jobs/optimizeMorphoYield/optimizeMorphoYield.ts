@@ -153,9 +153,8 @@ async function getWalletUsdcBalance(
   provider: ethers.providers.StaticJsonRpcProvider,
   walletAddress: string
 ): Promise<TokenBalance> {
-  // FIXME: This should be type-safe
   const { USDC_ADDRESS } = getAddressesByChainId(provider.network.chainId);
-  const usdcContract = getERC20Contract(USDC_ADDRESS!, provider);
+  const usdcContract = getERC20Contract(USDC_ADDRESS, provider);
 
   const [balance, decimals] = await Promise.all([
     usdcContract.balanceOf(walletAddress),
@@ -165,7 +164,7 @@ async function getWalletUsdcBalance(
   return {
     balance,
     decimals,
-    address: USDC_ADDRESS!,
+    address: USDC_ADDRESS,
   };
 }
 
