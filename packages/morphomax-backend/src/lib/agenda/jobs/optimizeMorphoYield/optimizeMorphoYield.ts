@@ -206,7 +206,7 @@ async function getUserVaultPositions(walletAddress: string): Promise<UserPositio
   }
 }
 
-const getTopYieldingVault = async (chainId: number, assetSymbol: string) => {
+async function getTopYieldingVault(chainId: number, assetSymbol: string): Promise<VaultItem> {
   const vaults = await getVaults({
     first: 1,
     orderBy: VaultOrderBy.AvgNetApy,
@@ -224,7 +224,7 @@ const getTopYieldingVault = async (chainId: number, assetSymbol: string) => {
   }
 
   return topVault;
-};
+}
 
 export async function optimizeMorphoYield(job: JobType): Promise<void> {
   try {
