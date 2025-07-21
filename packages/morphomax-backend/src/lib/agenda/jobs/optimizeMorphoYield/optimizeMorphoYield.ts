@@ -188,16 +188,22 @@ function getVaultsToOptimize(
 }
 
 async function getUserVaultPositions(walletAddress: string): Promise<UserPositionItem | undefined> {
-  const usersPositions = await getUsersPositions({
-    where: {
-      chainId_in: [BASE_CHAIN_ID],
-      shares_gte: 1, // Only consider vaults with more than 1 share. This field is an integer so it is basically asking for more than 0
-      userAddress_in: [walletAddress],
-    },
-  });
-  const userPositions = usersPositions[0]; // Applying the userAddress_in filter should return only one user
+  try {
+    const usersPositions = await getUsersPositions({
+      where: {
+        chainId_in: [BASE_CHAIN_ID],
+        shares_gte: 1, // Only consider vaults with more than 1 share. This field is an integer so it is basically asking for more than 0
+        userAddress_in: [walletAddress],
+      },
+    });
+    const userPositions = usersPositions[0]; // Applying the userAddress_in filter should return only one user
 
-  return userPositions;
+    return userPositions;
+  } catch (error) {
+    consola.error('Error getting user vault positions:', error);
+    consola.warn('Falling back to empty user vault positions');
+    return undefined;
+  }
 }
 
 const getTopYieldingVault = async (chainId: number, assetSymbol: string) => {
