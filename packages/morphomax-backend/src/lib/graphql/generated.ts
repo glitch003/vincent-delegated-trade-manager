@@ -1041,6 +1041,7 @@ export type MarketPosition = {
    */
   supplyShares: Scalars['BigInt']['output'];
   user: User;
+  whitelisted: Scalars['Boolean']['output'];
 };
 
 /**
@@ -1066,6 +1067,7 @@ export type MarketPositionFilters = {
   marketId_in?: InputMaybe<Array<Scalars['String']['input']>>;
   /** Filter by market unique key */
   marketUniqueKey_in?: InputMaybe<Array<Scalars['String']['input']>>;
+  marketWhitelisted?: InputMaybe<Scalars['Boolean']['input']>;
   search?: InputMaybe<Scalars['String']['input']>;
   /** Filter by greater than or equal to given supply shares */
   supplyShares_gte?: InputMaybe<Scalars['BigInt']['input']>;
@@ -3555,6 +3557,7 @@ export type VaultPosition = {
   state: Maybe<VaultPositionState>;
   user: User;
   vault: Vault;
+  whitelisted: Scalars['Boolean']['output'];
 };
 
 /**
@@ -3577,6 +3580,7 @@ export type VaultPositionFilters = {
   vaultAddress_in?: InputMaybe<Array<Scalars['String']['input']>>;
   /** Filter by MetaMorpho vault id */
   vaultId_in?: InputMaybe<Array<Scalars['String']['input']>>;
+  vaultWhitelisted?: InputMaybe<Scalars['Boolean']['input']>;
 };
 
 /** Vault position state history */
@@ -3879,11 +3883,8 @@ export type VaultV2 = {
   chain: Chain;
   creationBlockNumber: Scalars['BigInt']['output'];
   creationTimestamp: Scalars['BigInt']['output'];
-  /**
-   * Curators operating on this vault
-   *
-   * @deprecated Currently always metaMorphoAdapter.metaMorpho.state.curators
-   */
+  curatorAddress: Scalars['Address']['output'];
+  /** Curators operating on this vault */
   curators: PaginatedCurators;
   factory: Asset;
   id: Scalars['ID']['output'];
@@ -3895,11 +3896,13 @@ export type VaultV2 = {
   managementFee: Scalars['Float']['output'];
   managementFeeRecipient: Scalars['Address']['output'];
   metadata: Maybe<VaultV2Metadata>;
-  name: Maybe<Scalars['String']['output']>;
+  name: Scalars['String']['output'];
+  ownerAddress: Scalars['Address']['output'];
   performanceFee: Scalars['Float']['output'];
   performanceFeeRecipient: Scalars['Address']['output'];
   /** @deprecated Currently always metaMorphoAdapter.metaMorpho.state.rewards */
   rewards: Array<VaultStateReward>;
+  symbol: Scalars['String']['output'];
   /** @deprecated Currently always metaMorphoAdapter.position.assets */
   totalAssets: Maybe<Scalars['BigInt']['output']>;
   /** @deprecated Currently always metaMorphoAdapter.position.assetsUsd */

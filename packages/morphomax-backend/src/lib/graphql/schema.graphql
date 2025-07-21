@@ -923,6 +923,7 @@ enum MarketOrderBy {
 """Market position"""
 type MarketPosition {
   id: ID!
+  whitelisted: Boolean!
 
   """Amount of loan asset supplied, in market shares."""
   supplyShares: BigInt! @deprecated(reason: "Use `state.supplyShares` instead.")
@@ -983,6 +984,7 @@ input MarketPositionFilters {
 
   """Filter by market unique key"""
   marketUniqueKey_in: [String!]
+  marketWhitelisted: Boolean
 
   """Filter by user id"""
   userId_in: [String!]
@@ -3212,6 +3214,7 @@ type VaultPendingCap {
 """MetaMorpho vault position"""
 type VaultPosition {
   id: ID!
+  whitelisted: Boolean!
 
   """Amount of vault shares"""
   shares: BigInt! @deprecated(reason: "Use `state.shares` instead.")
@@ -3243,6 +3246,7 @@ input VaultPositionFilters {
 
   """Filter by MetaMorpho vault address"""
   vaultAddress_in: [String!]
+  vaultWhitelisted: Boolean
 
   """Filter by user address"""
   userAddress_in: [String!]
@@ -3610,12 +3614,15 @@ type VaultV2 {
   id: ID!
   chain: Chain!
   address: Address!
-  name: String
+  name: String!
+  symbol: String!
   whitelisted: Boolean!
   metadata: VaultV2Metadata
 
   """Curators operating on this vault"""
-  curators: PaginatedCurators! @deprecated(reason: "currently always metaMorphoAdapter.metaMorpho.state.curators")
+  curators: PaginatedCurators!
+  curatorAddress: Address!
+  ownerAddress: Address!
   creationBlockNumber: BigInt!
   creationTimestamp: BigInt!
   asset: Asset!
