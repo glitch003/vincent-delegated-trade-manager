@@ -119,28 +119,30 @@ async function handleMorphoVaultsRedeem(
   /* eslint-disable no-await-in-loop */
   // We have to trigger one redeem per vault and do it in sequence to avoid messing up the nonce
   for (const vaultPosition of userVaultPositions) {
-    // Vaults are ERC-4626 compliant so they will always have 18 decimals
-    const shares = ethers.utils.formatUnits(vaultPosition.state.shares, 18);
-    const morphoWithdrawToolResponse = await morphoToolClient.execute(
-      {
-        amount: shares,
-        chain: provider.network.name,
-        operation: 'redeem',
-        vaultAddress: vaultPosition.vault.address,
-      },
-      {
-        delegatorPkpEthAddress: walletAddress,
-      }
-    );
-    const redeemResult = morphoWithdrawToolResponse.result as any; // TODO fix in the LA itself
-    if (!(redeemResult && 'txHash' in redeemResult && typeof redeemResult.txHash === 'string')) {
-      throw new Error(
-        `Morpho redeem tool run failed. Response: ${JSON.stringify(redeemResult, null, 2)}`
+    if (vaultPosition.state?.shares) {
+      // Vaults are ERC-4626 compliant so they will always have 18 decimals
+      const shares = ethers.utils.formatUnits(vaultPosition.state.shares, 18);
+      const morphoWithdrawToolResponse = await morphoToolClient.execute(
+        {
+          amount: shares,
+          chain: provider.network.name,
+          operation: 'redeem',
+          vaultAddress: vaultPosition.vault.address,
+        },
+        {
+          delegatorPkpEthAddress: walletAddress,
+        }
       );
-    }
-    await waitForTransaction(provider, redeemResult.txHash);
+      const redeemResult = morphoWithdrawToolResponse.result as any; // TODO fix in the LA itself
+      if (!(redeemResult && 'txHash' in redeemResult && typeof redeemResult.txHash === 'string')) {
+        throw new Error(
+          `Morpho redeem tool run failed. Response: ${JSON.stringify(redeemResult, null, 2)}`
+        );
+      }
+      await waitForTransaction(provider, redeemResult.txHash);
 
-    redeemResults.push(redeemResult);
+      redeemResults.push(redeemResult);
+    }
   }
   /* eslint-enable no-await-in-loop */
 
