@@ -70,12 +70,14 @@ async function handleOptimalMorphoVaultDeposit(
     }
   );
   const approvalResult = erc20ApprovalToolResponse.result;
-  if (!('approvalTxHash' in approvalResult && typeof approvalResult.approvalTxHash === 'string')) {
+  if (!('approvedAmount' in approvalResult)) {
     throw new Error(
       `ERC20 approval tool run failed. Response: ${JSON.stringify(approvalResult, null, 2)}`
     );
   }
-  await waitForTransaction(provider, approvalResult.approvalTxHash);
+  if ('approvalTxHash' in approvalResult && typeof approvalResult.approvalTxHash === 'string') {
+    await waitForTransaction(provider, approvalResult.approvalTxHash);
+  }
 
   const amountToDeposit = ethers.utils.formatUnits(
     tokenBalance.balance.toString(),
