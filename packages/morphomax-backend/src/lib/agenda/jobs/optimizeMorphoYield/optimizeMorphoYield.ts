@@ -14,6 +14,7 @@ import { getAddressesByChainId } from './utils';
 import { getERC20Contract } from './utils/get-erc20-info';
 import { getErc20ApprovalToolClient, getMorphoToolClient } from './vincentTools';
 import { env } from '../../../env';
+import { MorphoSwap } from '../../../mongo/models/MorphoSwap';
 
 export type JobType = Job<JobParams>;
 export type JobParams = {
@@ -299,18 +300,17 @@ export async function optimizeMorphoYield(job: JobType): Promise<void> {
         2
       )
     );
-    // const purchase = new PurchasedCoin({
-    //   purchaseAmount,
-    //   walletAddress,
-    //   coinAddress: topCoin.coinAddress,
-    //   name: topCoin.name,
-    //   purchasePrice: topCoin.price,
-    //   scheduleId: _id,
-    //   success: true,
-    //   symbol: topCoin.symbol,
-    //   txHash: swapHash,
-    // });
-    // await purchase.save();
+    const morphoSwap = new MorphoSwap({
+      deposits,
+      topVault,
+      userPositions,
+      walletAddress,
+      withdrawals,
+      scheduleId: _id,
+      success: true,
+      userTokenBalance: tokenBalance,
+    });
+    await morphoSwap.save();
 
     consola.debug(`Successfully optimized Morpho positions for ${walletAddress}`);
   } catch (e) {

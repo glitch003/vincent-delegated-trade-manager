@@ -1,6 +1,6 @@
 import { Response } from 'express';
 
-import { PurchasedCoin } from '../mongo/models/PurchasedCoin';
+import { MorphoSwap } from '../mongo/models/MorphoSwap';
 
 import type { ExpressAuthHelpers } from '@lit-protocol/vincent-app-sdk';
 
@@ -10,16 +10,16 @@ export const handleListPurchasesRoute = async (
 ) => {
   const walletAddress = req.user.decodedJWT.payload.pkp.ethAddress;
 
-  const purchases = await PurchasedCoin.find({ walletAddress })
+  const swaps = await MorphoSwap.find({ walletAddress })
     .sort({
       purchasedAt: -1,
     })
     .lean();
 
-  if (purchases.length === 0) {
-    res.status(404).json({ error: `No purchases found  for wallet address ${walletAddress}` });
+  if (swaps.length === 0) {
+    res.status(404).json({ error: `No morpho swaps found for wallet address ${walletAddress}` });
     return;
   }
 
-  res.json({ data: purchases, success: true });
+  res.json({ data: swaps, success: true });
 };
