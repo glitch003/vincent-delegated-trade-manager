@@ -17,7 +17,6 @@ export type Schedule = {
   data: {
     name: string;
     purchaseIntervalHuman: string;
-    vincentAppVersion: number;
     walletAddress: string;
     updatedAt: string;
   };

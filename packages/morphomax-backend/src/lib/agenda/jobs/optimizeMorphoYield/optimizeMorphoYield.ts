@@ -20,7 +20,6 @@ export type JobParams = {
   name: string;
   purchaseIntervalHuman: string;
   updatedAt: Date;
-  vincentAppVersion: number;
   walletAddress: string;
 };
 

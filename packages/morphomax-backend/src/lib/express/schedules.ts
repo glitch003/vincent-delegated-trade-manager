@@ -30,7 +30,6 @@ export const handleCreateScheduleRoute = async (
 ) => {
   try {
     const {
-      app: { version: appVersion },
       pkp: { ethAddress },
     } = req.user.decodedJWT.payload;
 
@@ -40,7 +39,7 @@ export const handleCreateScheduleRoute = async (
     });
 
     const schedule = await createJob(
-      { ...scheduleParams, vincentAppVersion: appVersion },
+      { ...scheduleParams },
       { interval: scheduleParams.purchaseIntervalHuman }
     );
     res.status(201).json({ data: schedule.toJson(), success: true });
@@ -55,7 +54,6 @@ export const handleEditScheduleRoute = async (
 ) => {
   try {
     const {
-      app: { version: appVersion },
       pkp: { ethAddress },
     } = req.user.decodedJWT.payload;
     const { scheduleId } = ScheduleIdentitySchema.parse(req.params);
@@ -67,7 +65,7 @@ export const handleEditScheduleRoute = async (
 
     const job = await editJob({
       scheduleId,
-      data: { ...scheduleParams, vincentAppVersion: appVersion },
+      data: { ...scheduleParams },
     });
     res.status(201).json({ data: job.toJson(), success: true });
   } catch (err) {

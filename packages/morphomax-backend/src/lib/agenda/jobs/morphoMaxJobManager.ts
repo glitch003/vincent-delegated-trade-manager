@@ -54,7 +54,7 @@ export async function editJob({
   data: Omit<optimizeMorphoYieldJobDef.JobParams, 'updatedAt'>;
   scheduleId: string;
 }) {
-  const { vincentAppVersion, walletAddress } = data;
+  const { walletAddress } = data;
   const job = await findJob({ scheduleId, walletAddress, mustExist: true });
   const { purchaseIntervalHuman } = data;
 
@@ -66,7 +66,7 @@ export async function editJob({
     job.repeatEvery(purchaseIntervalHuman);
   }
 
-  job.attrs.data = { ...data, vincentAppVersion, updatedAt: new Date() };
+  job.attrs.data = { ...data, updatedAt: new Date() };
 
   return (await job.save()) as unknown as optimizeMorphoYieldJobDef.JobType;
 }
