@@ -33,7 +33,6 @@ export function getUniswapToolClient() {
 }
 
 export function getMorphoToolClient() {
-  // @ts-expect-error morphoTool has some type issues. We should migrate it to the Vincent repo to unify
   return getVincentToolClient({
     ethersSigner,
     bundledVincentTool: morphoTool,

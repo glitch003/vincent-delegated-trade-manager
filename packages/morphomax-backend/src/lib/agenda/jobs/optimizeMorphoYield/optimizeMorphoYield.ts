@@ -95,8 +95,8 @@ async function handleOptimalMorphoVaultDeposit(
       delegatorPkpEthAddress: walletAddress,
     }
   );
-  const depositResult = morphoDepositToolResponse.result as any; // TODO fix in the LA itself
-  if (!(depositResult && 'txHash' in depositResult && typeof depositResult.txHash === 'string')) {
+  const depositResult = morphoDepositToolResponse.result;
+  if (!('txHash' in depositResult)) {
     throw new Error(
       `Morpho deposit tool run failed. Response: ${JSON.stringify(depositResult, null, 2)}`
     );
