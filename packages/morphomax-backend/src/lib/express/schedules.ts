@@ -1,17 +1,13 @@
 import { Response } from 'express';
 
 import { ScheduleIdentitySchema, ScheduleParamsSchema } from './schema';
+import { VincentAuthenticatedRequest } from './types';
 import * as jobManager from '../agenda/jobs/morphoMaxJobManager';
-
-import type { ExpressAuthHelpers } from '@lit-protocol/vincent-app-sdk';
 
 const { cancelJob, createJob, disableJob, editJob, enableJob, listJobsByWalletAddress } =
   jobManager;
 
-export const handleListSchedulesRoute = async (
-  req: ExpressAuthHelpers['AuthenticatedRequest'],
-  res: Response
-) => {
+export const handleListSchedulesRoute = async (req: VincentAuthenticatedRequest, res: Response) => {
   try {
     const {
       pkp: { ethAddress },
@@ -25,7 +21,7 @@ export const handleListSchedulesRoute = async (
 };
 
 export const handleCreateScheduleRoute = async (
-  req: ExpressAuthHelpers['AuthenticatedRequest'],
+  req: VincentAuthenticatedRequest,
   res: Response
 ) => {
   try {
@@ -48,10 +44,7 @@ export const handleCreateScheduleRoute = async (
   }
 };
 
-export const handleEditScheduleRoute = async (
-  req: ExpressAuthHelpers['AuthenticatedRequest'],
-  res: Response
-) => {
+export const handleEditScheduleRoute = async (req: VincentAuthenticatedRequest, res: Response) => {
   try {
     const {
       pkp: { ethAddress },
@@ -74,7 +67,7 @@ export const handleEditScheduleRoute = async (
 };
 
 export const handleDisableScheduleRoute = async (
-  req: ExpressAuthHelpers['AuthenticatedRequest'],
+  req: VincentAuthenticatedRequest,
   res: Response
 ) => {
   try {
@@ -96,7 +89,7 @@ export const handleDisableScheduleRoute = async (
 };
 
 export const handleEnableScheduleRoute = async (
-  req: ExpressAuthHelpers['AuthenticatedRequest'],
+  req: VincentAuthenticatedRequest,
   res: Response
 ) => {
   try {
@@ -114,7 +107,7 @@ export const handleEnableScheduleRoute = async (
 };
 
 export const handleDeleteScheduleRoute = async (
-  req: ExpressAuthHelpers['AuthenticatedRequest'],
+  req: VincentAuthenticatedRequest,
   res: Response
 ) => {
   try {

@@ -9,7 +9,7 @@ export default defineConfig({
     global: 'globalThis',
   },
   optimizeDeps: {
-    include: ['@lit-protocol/vincent-app-sdk'], // Dev: delete node_modules/.vite when rebuilding this
+    include: ['@lit-protocol/vincent-app-sdk/jwt', '@lit-protocol/vincent-app-sdk/webAuthClient'], // Dev: delete node_modules/.vite when rebuilding this
   },
   resolve: {
     alias: {

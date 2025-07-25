@@ -1,7 +1,7 @@
 import cors from 'cors';
 import express, { Express } from 'express';
 
-import { expressAuthHelpers } from '@lit-protocol/vincent-app-sdk';
+import { createVincentUserMiddleware } from '@lit-protocol/vincent-app-sdk/expressMiddleware';
 
 import { handleListPurchasesRoute } from './purchases';
 import {
@@ -15,11 +15,13 @@ import {
 import { env } from '../env';
 import { serviceLogger } from '../logger';
 
-const { ALLOWED_AUDIENCE, CORS_ALLOWED_DOMAIN, IS_DEVELOPMENT } = env;
+const { ALLOWED_AUDIENCE, CORS_ALLOWED_DOMAIN, IS_DEVELOPMENT, VINCENT_APP_ID } = env;
 
-const { authenticatedRequestHandler, getAuthenticateUserExpressHandler } = expressAuthHelpers;
-
-const authenticateUserMiddleware = getAuthenticateUserExpressHandler(ALLOWED_AUDIENCE);
+const { handler, middleware } = createVincentUserMiddleware({
+  allowedAudience: ALLOWED_AUDIENCE,
+  requiredAppId: VINCENT_APP_ID,
+  userKey: 'user',
+});
 
 const corsConfig = {
   optionsSuccessStatus: 204,
@@ -36,41 +38,13 @@ export const registerRoutes = (app: Express) => {
   }
   app.use(cors(corsConfig));
 
-  app.get(
-    '/purchases',
-    authenticateUserMiddleware,
-    authenticatedRequestHandler(handleListPurchasesRoute)
-  );
-  app.get(
-    '/schedules',
-    authenticateUserMiddleware,
-    authenticatedRequestHandler(handleListSchedulesRoute)
-  );
-  app.post(
-    '/schedule',
-    authenticateUserMiddleware,
-    authenticatedRequestHandler(handleCreateScheduleRoute)
-  );
-  app.put(
-    '/schedules/:scheduleId',
-    authenticateUserMiddleware,
-    authenticatedRequestHandler(handleEditScheduleRoute)
-  );
-  app.put(
-    '/schedules/:scheduleId/enable',
-    authenticateUserMiddleware,
-    authenticatedRequestHandler(handleEnableScheduleRoute)
-  );
-  app.put(
-    '/schedules/:scheduleId/disable',
-    authenticateUserMiddleware,
-    authenticatedRequestHandler(handleDisableScheduleRoute)
-  );
-  app.delete(
-    '/schedules/:scheduleId',
-    authenticateUserMiddleware,
-    authenticatedRequestHandler(handleDeleteScheduleRoute)
-  );
+  app.get('/purchases', middleware, handler(handleListPurchasesRoute));
+  app.get('/schedules', middleware, handler(handleListSchedulesRoute));
+  app.post('/schedule', middleware, handler(handleCreateScheduleRoute));
+  app.put('/schedules/:scheduleId', middleware, handler(handleEditScheduleRoute));
+  app.put('/schedules/:scheduleId/enable', middleware, handler(handleEnableScheduleRoute));
+  app.put('/schedules/:scheduleId/disable', middleware, handler(handleDisableScheduleRoute));
+  app.delete('/schedules/:scheduleId', middleware, handler(handleDeleteScheduleRoute));
 
   serviceLogger.info(`Routes registered`);
 };

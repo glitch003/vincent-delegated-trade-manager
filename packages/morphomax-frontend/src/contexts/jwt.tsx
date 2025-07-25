@@ -1,11 +1,11 @@
 import React, { createContext, useCallback, useState, useEffect, ReactNode } from 'react';
 import { IRelayPKP } from '@lit-protocol/types';
-import { jwt } from '@lit-protocol/vincent-app-sdk';
+import * as jwt from '@lit-protocol/vincent-app-sdk/jwt';
 
 const { verify } = jwt;
 
 import { APP_ID } from '@/config';
-import { useVincentWebAppClient } from '@/hooks/useVincentWebAppClient';
+import { useVincentWebAuthClient } from '@/hooks/useVincentWebAuthClient';
 
 const APP_JWT_KEY = `${APP_ID}-jwt`;
 
@@ -31,7 +31,7 @@ interface JwtProviderProps {
 }
 
 export const JwtProvider: React.FC<JwtProviderProps> = ({ children }) => {
-  const vincentWebAppClient = useVincentWebAppClient();
+  const vincentWebAuthClient = useVincentWebAuthClient();
   const [authInfo, setAuthInfo] = useState<AuthInfo | null | undefined>(undefined);
 
   const logOut = useCallback(() => {
@@ -41,17 +41,17 @@ export const JwtProvider: React.FC<JwtProviderProps> = ({ children }) => {
 
   const logWithJwt = useCallback(() => {
     const existingJwtStr = localStorage.getItem(APP_JWT_KEY);
-    const didJustLogin = vincentWebAppClient.isLogin();
+    const didJustLogin = vincentWebAuthClient.isLogin();
 
     if (didJustLogin) {
       try {
-        const jwtResult = vincentWebAppClient.decodeVincentLoginJWT(window.location.origin);
+        const jwtResult = vincentWebAuthClient.decodeVincentLoginJWT(window.location.origin);
 
         if (jwtResult) {
           const { decodedJWT, jwtStr } = jwtResult;
 
           localStorage.setItem(APP_JWT_KEY, jwtStr);
-          vincentWebAppClient.removeLoginJWTFromURI();
+          vincentWebAuthClient.removeLoginJWTFromURI();
           setAuthInfo({
             jwt: jwtStr,
             pkp: decodedJWT.payload.pkp,
@@ -70,7 +70,11 @@ export const JwtProvider: React.FC<JwtProviderProps> = ({ children }) => {
 
     if (existingJwtStr) {
       try {
-        const decodedJWT = verify(existingJwtStr, window.location.origin);
+        const decodedJWT = verify({
+          expectedAudience: window.location.origin,
+          jwt: existingJwtStr,
+          requiredAppId: APP_ID,
+        });
 
         setAuthInfo({
           jwt: existingJwtStr,
@@ -81,7 +85,7 @@ export const JwtProvider: React.FC<JwtProviderProps> = ({ children }) => {
         logOut();
       }
     }
-  }, [logOut, vincentWebAppClient]);
+  }, [logOut, vincentWebAuthClient]);
 
   useEffect(() => {
     try {

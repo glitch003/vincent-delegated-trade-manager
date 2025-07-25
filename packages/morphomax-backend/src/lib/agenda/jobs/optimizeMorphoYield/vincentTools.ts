@@ -1,7 +1,10 @@
 import { ethers } from 'ethers';
 
 import { LIT_RPC } from '@lit-protocol/constants';
-import { getVincentToolClient, disconnectVincentToolClients } from '@lit-protocol/vincent-app-sdk';
+import {
+  getVincentToolClient,
+  disconnectVincentToolClients,
+} from '@lit-protocol/vincent-app-sdk/toolClient';
 import { bundledVincentTool as erc20ApprovalTool } from '@lit-protocol/vincent-tool-erc20-approval';
 import { bundledVincentTool as morphoTool } from '@lit-protocol/vincent-tool-morpho';
 import { bundledVincentTool as uniswapSwapTool } from '@lit-protocol/vincent-tool-uniswap-swap';
@@ -20,6 +23,7 @@ export const ethersSigner = new ethers.Wallet(
 export function getErc20ApprovalToolClient() {
   return getVincentToolClient({
     ethersSigner,
+    // @ts-expect-error This ability is an old version. Must update the pkg
     bundledVincentTool: erc20ApprovalTool,
   });
 }

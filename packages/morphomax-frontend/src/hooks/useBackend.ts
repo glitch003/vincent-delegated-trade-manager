@@ -2,7 +2,7 @@ import { useCallback, useContext } from 'react';
 
 import { BACKEND_URL, REDIRECT_URI } from '@/config';
 import { JwtContext } from '@/contexts/jwt';
-import { useVincentWebAppClient } from '@/hooks/useVincentWebAppClient';
+import { useVincentWebAuthClient } from '@/hooks/useVincentWebAuthClient';
 
 type HTTPMethod = 'GET' | 'POST' | 'PUT' | 'DELETE';
 
@@ -29,12 +29,12 @@ export interface CreateScheduleRequest {
 
 export const useBackend = () => {
   const { authInfo } = useContext(JwtContext);
-  const vincentWebAppClient = useVincentWebAppClient();
+  const vincentWebAppClient = useVincentWebAuthClient();
 
   const getJwt = useCallback(() => {
     // Redirect to Vincent Auth consent page with appId and version
-    vincentWebAppClient.redirectToConsentPage({
-      // consentPageUrl: `http://localhost:3000/`,
+    vincentWebAppClient.redirectToDelegationAuthPage({
+      // delegationAuthPageUrl: `http://localhost:3000/`,
       redirectUri: REDIRECT_URI,
     });
   }, [vincentWebAppClient]);

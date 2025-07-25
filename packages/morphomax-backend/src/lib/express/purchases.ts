@@ -1,13 +1,9 @@
 import { Response } from 'express';
 
+import { VincentAuthenticatedRequest } from './types';
 import { MorphoSwap } from '../mongo/models/MorphoSwap';
 
-import type { ExpressAuthHelpers } from '@lit-protocol/vincent-app-sdk';
-
-export const handleListPurchasesRoute = async (
-  req: ExpressAuthHelpers['AuthenticatedRequest'],
-  res: Response
-) => {
+export const handleListPurchasesRoute = async (req: VincentAuthenticatedRequest, res: Response) => {
   const walletAddress = req.user.decodedJWT.payload.pkp.ethAddress;
 
   const swaps = await MorphoSwap.find({ walletAddress })
