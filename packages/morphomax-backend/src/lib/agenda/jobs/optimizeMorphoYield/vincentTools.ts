@@ -23,7 +23,6 @@ export const ethersSigner = new ethers.Wallet(
 export function getErc20ApprovalToolClient() {
   return getVincentToolClient({
     ethersSigner,
-    // @ts-expect-error This ability is an old version. Must update the pkg
     bundledVincentTool: erc20ApprovalTool,
   });
 }
