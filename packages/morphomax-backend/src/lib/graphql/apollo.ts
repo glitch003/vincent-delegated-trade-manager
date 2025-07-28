@@ -1,5 +1,7 @@
-import { ApolloClient, InMemoryCache } from '@apollo/client';
+import * as apolloClient from '@apollo/client';
 import { typePolicies } from '@morpho-org/blue-api-sdk';
+
+const { ApolloClient, InMemoryCache } = apolloClient;
 
 const MORPHO_GRAPHQL_URL = 'https://api.morpho.org/graphql';
 
