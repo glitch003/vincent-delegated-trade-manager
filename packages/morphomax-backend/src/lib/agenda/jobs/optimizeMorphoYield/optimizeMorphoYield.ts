@@ -181,10 +181,10 @@ function getVaultsToOptimize(
   // - performance and management fees
   // - yield in other tokens
   // - gas cost
-  const topVoultAvgNetApy = topVault.state?.avgNetApy || 0;
+  const topVaultAvgNetApy = topVault.state?.avgNetApy || 0;
   const suboptimalVaults = userPositions.user.vaultPositions.filter((vp) => {
     const vaultAvgNetApy = vp.vault.state?.avgNetApy || 0;
-    return topVoultAvgNetApy > vaultAvgNetApy + MINIMUM_YIELD_IMPROVEMENT_PERCENT / 100;
+    return topVaultAvgNetApy < vaultAvgNetApy + MINIMUM_YIELD_IMPROVEMENT_PERCENT / 100;
   });
 
   return suboptimalVaults;
