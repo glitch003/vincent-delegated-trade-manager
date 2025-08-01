@@ -22,7 +22,7 @@ const decimalBigInt = (extra: Partial<Record<string, any>> = {}) => ({
 const depositSchema = new Schema(
   {
     approval: {
-      approvalTxHash: { required: false, type: String },
+      approvalTxHash: { required: false, type: String }, // tx won't be sent if current allowance is enough
       approvedAmount: { required: true, type: String },
       spenderAddress: { required: true, type: String },
       tokenAddress: { required: true, type: String },
@@ -34,6 +34,75 @@ const depositSchema = new Schema(
       timestamp: { required: true, type: Number },
       txHash: { required: true, type: String },
       vaultAddress: { required: true, type: String },
+    },
+  },
+  {
+    _id: false,
+  }
+);
+
+const redeemSchema = new Schema(
+  {
+    amount: { required: true, type: String },
+    operation: { required: true, type: String },
+    timestamp: { required: true, type: Number },
+    txHash: { required: true, type: String },
+    vaultAddress: { required: true, type: String },
+  },
+  {
+    _id: false,
+  }
+);
+
+const vaultPositionsSchema = new Schema(
+  {
+    __typename: { required: true, type: String },
+    state: {
+      __typename: { required: true, type: String },
+      assets: { required: true, type: Number },
+      assetsUsd: { required: true, type: Number },
+      id: { required: true, type: String },
+      pnl: { required: true, type: Number },
+      pnlUsd: { required: true, type: Number },
+      roe: { required: true, type: Number },
+      roeUsd: { required: true, type: Number },
+      shares: { required: true, type: Number },
+      timestamp: { required: true, type: Number },
+    },
+    vault: {
+      __typename: { required: true, type: String },
+      address: { required: true, type: String },
+      asset: {
+        __typename: { required: true, type: String },
+        address: { required: true, type: String },
+        decimals: { required: true, type: Number },
+        name: { required: true, type: String },
+        symbol: { required: true, type: String },
+      },
+      id: { required: true, type: String },
+      name: { required: true, type: String },
+      state: {
+        __typename: { required: true, type: String },
+        apy: { required: true, type: Number },
+        avgApy: { required: true, type: Number },
+        avgNetApy: { required: true, type: Number },
+        netApy: { required: true, type: Number },
+      },
+      symbol: { required: true, type: String },
+      whitelisted: { required: true, type: Boolean },
+    },
+  },
+  {
+    _id: false,
+  }
+);
+const userPositionsSchema = new Schema(
+  {
+    __typename: { required: true, type: String },
+    id: { required: true, type: String },
+    user: {
+      __typename: { required: true, type: String },
+      vaultPositions: { default: [], required: true, type: [vaultPositionsSchema] },
     },
   },
   {
@@ -95,17 +164,19 @@ const tokenBalanceSchema = new Schema(
   }
 );
 
+// Swap operations are all arrays to be prepared to support multiple tokens and chains
 const morphoSwapSchemaDefinition = {
   deposits: { default: [], required: true, type: [depositSchema] },
+  redeems: { default: [], required: true, type: [redeemSchema] },
   scheduleId: {
     index: true,
     required: true,
     type: Schema.Types.ObjectId,
   },
   success: { required: true, type: Boolean },
-  topVault: { required: true, type: vaultSchema },
-  userPositions: { required: false, type: Schema.Types.Mixed },
-  userTokenBalance: { required: true, type: tokenBalanceSchema },
+  topVault: { required: false, type: vaultSchema },
+  userPositions: { default: [], required: false, type: [userPositionsSchema] },
+  userTokenBalances: { default: [], required: true, type: [tokenBalanceSchema] },
   walletAddress: {
     index: true,
     lowercase: true,
@@ -113,7 +184,6 @@ const morphoSwapSchemaDefinition = {
     required: true,
     type: String,
   },
-  withdrawals: { default: [], required: true, type: [Schema.Types.Mixed] },
 } as const;
 
 const MorphoSwapSchema = new Schema(morphoSwapSchemaDefinition, { timestamps: true });

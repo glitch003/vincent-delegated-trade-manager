@@ -1,6 +1,10 @@
-/* eslint-disable no-console */
-
 import { ethers } from 'ethers';
+
+export interface TokenBalance {
+  address: string;
+  balance: ethers.BigNumber;
+  decimals: number;
+}
 
 const ERC20_ABI = [
   'function balanceOf(address owner) external view returns (uint256)',
@@ -16,4 +20,27 @@ const ERC20_ABI = [
 
 export function getERC20Contract(address: string, provider: ethers.providers.JsonRpcProvider) {
   return new ethers.Contract(address, ERC20_ABI, provider);
+}
+
+export async function getERC20Balance({
+  provider,
+  tokenAddress,
+  walletAddress,
+}: {
+  provider: ethers.providers.StaticJsonRpcProvider;
+  tokenAddress: string;
+  walletAddress: string;
+}): Promise<TokenBalance> {
+  const usdcContract = getERC20Contract(tokenAddress, provider);
+
+  const [balance, decimals] = await Promise.all([
+    usdcContract.balanceOf(walletAddress),
+    usdcContract.decimals(),
+  ]);
+
+  return {
+    balance,
+    decimals,
+    address: tokenAddress,
+  };
 }

@@ -3,15 +3,15 @@ import express, { Express } from 'express';
 
 import { createVincentUserMiddleware } from '@lit-protocol/vincent-app-sdk/expressMiddleware';
 
-import { handleListPurchasesRoute } from './purchases';
 import {
-  handleListSchedulesRoute,
-  handleEnableScheduleRoute,
-  handleDisableScheduleRoute,
   handleCreateScheduleRoute,
   handleDeleteScheduleRoute,
-  handleEditScheduleRoute,
+  handleDisableScheduleRoute,
+  handleEnableScheduleRoute,
+  handleListSchedulesRoute,
+  handleListScheduleSwapsRoute,
 } from './schedules';
+import { handleListSwapsRoute } from './swaps';
 import { env } from '../env';
 import { serviceLogger } from '../logger';
 
@@ -38,13 +38,13 @@ export const registerRoutes = (app: Express) => {
   }
   app.use(cors(corsConfig));
 
-  app.get('/purchases', middleware, handler(handleListPurchasesRoute));
-  app.get('/schedules', middleware, handler(handleListSchedulesRoute));
+  app.get('/swap', middleware, handler(handleListSwapsRoute));
+  app.get('/schedule', middleware, handler(handleListSchedulesRoute));
   app.post('/schedule', middleware, handler(handleCreateScheduleRoute));
-  app.put('/schedules/:scheduleId', middleware, handler(handleEditScheduleRoute));
-  app.put('/schedules/:scheduleId/enable', middleware, handler(handleEnableScheduleRoute));
-  app.put('/schedules/:scheduleId/disable', middleware, handler(handleDisableScheduleRoute));
-  app.delete('/schedules/:scheduleId', middleware, handler(handleDeleteScheduleRoute));
+  app.get('/schedule/:scheduleId/swaps', middleware, handler(handleListScheduleSwapsRoute));
+  app.put('/schedule/:scheduleId/enable', middleware, handler(handleEnableScheduleRoute));
+  app.put('/schedule/:scheduleId/disable', middleware, handler(handleDisableScheduleRoute));
+  app.delete('/schedule/:scheduleId', middleware, handler(handleDeleteScheduleRoute));
 
   serviceLogger.info(`Routes registered`);
 };

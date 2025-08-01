@@ -41,17 +41,17 @@ export const JwtProvider: React.FC<JwtProviderProps> = ({ children }) => {
 
   const logWithJwt = useCallback(() => {
     const existingJwtStr = localStorage.getItem(APP_JWT_KEY);
-    const didJustLogin = vincentWebAuthClient.isLogin();
+    const didJustLogin = vincentWebAuthClient.uriContainsVincentJWT();
 
     if (didJustLogin) {
       try {
-        const jwtResult = vincentWebAuthClient.decodeVincentLoginJWT(window.location.origin);
+        const jwtResult = vincentWebAuthClient.decodeVincentJWT(window.location.origin);
 
         if (jwtResult) {
           const { decodedJWT, jwtStr } = jwtResult;
 
           localStorage.setItem(APP_JWT_KEY, jwtStr);
-          vincentWebAuthClient.removeLoginJWTFromURI();
+          vincentWebAuthClient.removeVincentJWTFromURI();
           setAuthInfo({
             jwt: jwtStr,
             pkp: decodedJWT.payload.pkp,
@@ -90,7 +90,8 @@ export const JwtProvider: React.FC<JwtProviderProps> = ({ children }) => {
   useEffect(() => {
     try {
       logWithJwt();
-    } catch {
+    } catch (e) {
+      console.error('Error logging in:', e);
       logOut();
     }
   }, [logWithJwt, logOut]);

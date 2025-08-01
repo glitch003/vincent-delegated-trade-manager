@@ -2268,7 +2268,6 @@ export type QueryMarketArgs = {
 
 export type QueryMarketAverageApysArgs = {
   chainId?: InputMaybe<Scalars['Int']['input']>;
-  startTimestamp: Scalars['Float']['input'];
   uniqueKey: Scalars['String']['input'];
 };
 

@@ -3,6 +3,7 @@ import { useCallback, useContext } from 'react';
 import { BACKEND_URL, REDIRECT_URI } from '@/config';
 import { JwtContext } from '@/contexts/jwt';
 import { useVincentWebAuthClient } from '@/hooks/useVincentWebAuthClient';
+import { Hex } from '@/lib/hex';
 
 type HTTPMethod = 'GET' | 'POST' | 'PUT' | 'DELETE';
 
@@ -16,15 +17,104 @@ export type Schedule = {
   failReason: string;
   data: {
     name: string;
-    purchaseIntervalHuman: string;
     walletAddress: string;
     updatedAt: string;
   };
 };
 
-export interface CreateScheduleRequest {
-  name: string;
-  purchaseIntervalHuman: string;
+export type Swap = {
+  _id: string;
+  createdAt: string;
+  deposits: {
+    approval: {
+      approvalTxHash?: string;
+      approvedAmount: string;
+      spenderAddress: string;
+      tokenAddress: string;
+      tokenDecimals: number;
+    };
+    deposit: {
+      amount: string;
+      operation: string;
+      timestamp: number;
+      txHash: string;
+      vaultAddress: string;
+    };
+  }[];
+  redeems: {
+    amount: string;
+    operation: string;
+    timestamp: number;
+    txHash: string;
+    vaultAddress: string;
+  }[];
+  scheduleId: string;
+  success: boolean;
+  topVault: {
+    address: string;
+    asset: {
+      address: string;
+      decimals: number;
+      name: string;
+      symbol: string;
+    };
+    chain: {
+      id: number;
+      network: string;
+    };
+    id: string;
+    name: string;
+    symbol: string;
+    whitelisted: boolean;
+  };
+  updatedAt: string;
+  userPositions: {
+    id: string;
+    user: {
+      vaultPositions: {
+        state: {
+          assets: string;
+          assetsUsd: number;
+          id: number;
+          pnl: string;
+          pnlUsd: number;
+          roe: number;
+          roeUsd: number;
+          shares: number;
+          timestamp: number;
+        };
+        vault: {
+          address: string;
+          asset: {
+            address: string;
+            decimals: number;
+            name: string;
+            symbol: string;
+          };
+          id: string;
+          name: string;
+          state: {
+            apy: number;
+            avgApy: number;
+            avgNetApy: number;
+            netApy: number;
+          };
+          symbol: string;
+          whitelisted: boolean;
+        };
+      }[];
+    };
+  }[];
+  userTokenBalance: {
+    address: string;
+    balance: string;
+    decimals: number;
+  }[];
+  walletAddress: string;
+};
+
+export interface DeleteScheduleRequest {
+  receiverAddress?: Hex;
 }
 
 export const useBackend = () => {
@@ -33,7 +123,7 @@ export const useBackend = () => {
 
   const getJwt = useCallback(() => {
     // Redirect to Vincent Auth consent page with appId and version
-    vincentWebAppClient.redirectToDelegationAuthPage({
+    vincentWebAppClient.redirectToConnectPage({
       // delegationAuthPageUrl: `http://localhost:3000/`,
       redirectUri: REDIRECT_URI,
     });
@@ -71,41 +161,44 @@ export const useBackend = () => {
     [authInfo]
   );
 
-  const createSchedule = useCallback(
-    async (schedule: CreateScheduleRequest) => {
-      return sendRequest<Schedule>('/schedule', 'POST', schedule);
+  const createSchedule = useCallback(async () => {
+    return sendRequest<Schedule>('/schedule', 'POST');
+  }, [sendRequest]);
+
+  const getSchedules = useCallback(async () => {
+    return sendRequest<Schedule[]>('/schedule', 'GET');
+  }, [sendRequest]);
+
+  const getScheduleSwaps = useCallback(
+    async (
+      scheduleId: string,
+      { limit = 10, skip = 0 }: { limit?: number; skip?: number } = {}
+    ) => {
+      return sendRequest<Swap[]>(
+        `/schedule/${scheduleId}/swaps?limit=${limit}&skip=${skip}`,
+        'GET'
+      );
     },
     [sendRequest]
   );
 
-  const getSchedules = useCallback(async () => {
-    return sendRequest<Schedule[]>('/schedules', 'GET');
-  }, [sendRequest]);
-
   const disableSchedule = useCallback(
     async (scheduleId: string) => {
-      return sendRequest<Schedule>(`/schedules/${scheduleId}/disable`, 'PUT');
+      return sendRequest<Schedule>(`/schedule/${scheduleId}/disable`, 'PUT');
     },
     [sendRequest]
   );
 
   const enableSchedule = useCallback(
     async (scheduleId: string) => {
-      return sendRequest<Schedule>(`/schedules/${scheduleId}/enable`, 'PUT');
-    },
-    [sendRequest]
-  );
-
-  const editSchedule = useCallback(
-    async (scheduleId: string, schedule: CreateScheduleRequest) => {
-      return sendRequest<Schedule>(`/schedules/${scheduleId}`, 'PUT', schedule);
+      return sendRequest<Schedule>(`/schedule/${scheduleId}/enable`, 'PUT');
     },
     [sendRequest]
   );
 
   const deleteSchedule = useCallback(
-    async (scheduleId: string) => {
-      return sendRequest<Schedule>(`/schedules/${scheduleId}`, 'DELETE');
+    async (scheduleId: string, deleteScheduleRequest: DeleteScheduleRequest) => {
+      return sendRequest<Schedule>(`/schedule/${scheduleId}`, 'DELETE', deleteScheduleRequest);
     },
     [sendRequest]
   );
@@ -114,9 +207,9 @@ export const useBackend = () => {
     createSchedule,
     deleteSchedule,
     disableSchedule,
-    editSchedule,
     enableSchedule,
     getSchedules,
+    getScheduleSwaps,
     getJwt,
   };
 };

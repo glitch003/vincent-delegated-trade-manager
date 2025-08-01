@@ -3,7 +3,7 @@ import { Response } from 'express';
 import { VincentAuthenticatedRequest } from './types';
 import { MorphoSwap } from '../mongo/models/MorphoSwap';
 
-export const handleListPurchasesRoute = async (req: VincentAuthenticatedRequest, res: Response) => {
+export const handleListSwapsRoute = async (req: VincentAuthenticatedRequest, res: Response) => {
   const walletAddress = req.user.decodedJWT.payload.pkp.ethAddress;
 
   const swaps = await MorphoSwap.find({ walletAddress })

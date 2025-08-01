@@ -3,9 +3,24 @@ import { Types } from 'mongoose';
 
 import { getAgenda } from '../agendaClient';
 import * as optimizeMorphoYieldJobDef from './optimizeMorphoYield';
+import {
+  baseProvider,
+  getAddressesByChainId,
+  getERC20Balance,
+  getMorphoPositions,
+  redeemMorphoVaults,
+  BASE_CHAIN_ID,
+} from './optimizeMorphoYield/utils';
+import { MorphoSwap } from '../../mongo/models/MorphoSwap';
 
 interface FindSpecificScheduledJobParams {
   mustExist?: boolean;
+  scheduleId: string;
+  walletAddress: string;
+}
+
+interface CancelJobParams {
+  receiverAddress?: string;
   scheduleId: string;
   walletAddress: string;
 }
@@ -47,30 +62,6 @@ export async function findJob({
   return jobs[0];
 }
 
-export async function editJob({
-  data,
-  scheduleId,
-}: {
-  data: Omit<optimizeMorphoYieldJobDef.JobParams, 'updatedAt'>;
-  scheduleId: string;
-}) {
-  const { walletAddress } = data;
-  const job = await findJob({ scheduleId, walletAddress, mustExist: true });
-  const { purchaseIntervalHuman } = data;
-
-  if (purchaseIntervalHuman !== job.attrs.data.purchaseIntervalHuman) {
-    logger.log(
-      `Changing MorphoMax interval from ${job.attrs.data.purchaseIntervalHuman} to ${purchaseIntervalHuman}`
-    );
-
-    job.repeatEvery(purchaseIntervalHuman);
-  }
-
-  job.attrs.data = { ...data, updatedAt: new Date() };
-
-  return (await job.save()) as unknown as optimizeMorphoYieldJobDef.JobType;
-}
-
 export async function disableJob({
   scheduleId,
   walletAddress,
@@ -98,16 +89,42 @@ export async function enableJob({
   return job.save();
 }
 
-export async function cancelJob({
-  scheduleId,
-  walletAddress,
-}: Omit<FindSpecificScheduledJobParams, 'mustExist'>) {
+export async function cancelJob({ receiverAddress, scheduleId, walletAddress }: CancelJobParams) {
   const agendaClient = getAgenda();
   logger.log(`Cancelling (deleting) MorphoMax job ${scheduleId}`);
-  return agendaClient.cancel({
-    _id: new Types.ObjectId(scheduleId),
+  const scheduleObjectId = new Types.ObjectId(scheduleId);
+  const calledJob = await agendaClient.cancel({
+    _id: scheduleObjectId,
     'data.walletAddress': walletAddress,
   });
+
+  if (calledJob) {
+    const userPositions = await getMorphoPositions({ walletAddress, chainId: BASE_CHAIN_ID });
+    const userVaults = userPositions?.user.vaultPositions;
+    const redeems = userVaults?.length
+      ? await redeemMorphoVaults(baseProvider, walletAddress, userVaults)
+      : [];
+    const { USDC_ADDRESS } = getAddressesByChainId(baseProvider.network.chainId);
+    const tokenBalance = await getERC20Balance({
+      walletAddress,
+      provider: baseProvider,
+      tokenAddress: USDC_ADDRESS,
+    });
+    consola.log(`TODO transfer USDC to ${receiverAddress} if provided`);
+
+    const morphoSwap = new MorphoSwap({
+      redeems,
+      scheduleId,
+      userPositions,
+      walletAddress,
+      deposits: [],
+      success: true,
+      userTokenBalance: tokenBalance,
+    });
+    await morphoSwap.save();
+  }
+
+  return calledJob;
 }
 
 export async function createJob(

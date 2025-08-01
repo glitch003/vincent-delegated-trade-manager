@@ -2075,7 +2075,7 @@ type Query {
   marketCollateralAtRisk(uniqueKey: String!, chainId: Int = 1, numberOfPoints: Float = 100): MarketCollateralAtRisk!
   market(id: String!): Market!
   marketByUniqueKey(uniqueKey: String!, chainId: Int = 1): Market!
-  marketAverageApys(uniqueKey: String!, chainId: Int = 1, startTimestamp: Float!): MarketApyAggregates @deprecated(reason: "Use `market.state` average APYs instead.")
+  marketAverageApys(uniqueKey: String!, chainId: Int = 1): MarketApyAggregates @deprecated(reason: "Use `market.state` average APYs instead.")
   markets(
     """Number of items requested"""
     first: Int = 100
