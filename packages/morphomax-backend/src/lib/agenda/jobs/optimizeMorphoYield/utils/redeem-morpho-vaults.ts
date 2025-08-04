@@ -1,5 +1,6 @@
 import { ethers } from 'ethers';
 
+import { alchemyGasSponsor, alchemyGasSponsorApiKey, alchemyGasSponsorPolicyId } from './alchemy';
 import { type UserVaultPositionItem } from '../morphoLoader';
 import { waitForTransaction } from './wait-for-transaction';
 import { getMorphoAbilityClient, MorphoOperation } from '../vincentAbilities';
@@ -20,7 +21,9 @@ export async function redeemMorphoVaults(
       const shares = ethers.utils.formatUnits(vaultPosition.state.shares, 18);
       const morphoWithdrawAbilityResponse = await morphoAbilityClient.execute(
         {
-          alchemyGasSponsor: false,
+          alchemyGasSponsor,
+          alchemyGasSponsorApiKey,
+          alchemyGasSponsorPolicyId,
           amount: shares,
           chain: provider.network.name,
           operation: MorphoOperation.REDEEM,

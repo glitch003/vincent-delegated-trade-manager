@@ -1,5 +1,6 @@
 import { ethers } from 'ethers';
 
+import { alchemyGasSponsor, alchemyGasSponsorApiKey, alchemyGasSponsorPolicyId } from './alchemy';
 import { type VaultItem } from '../morphoLoader';
 import { BASE_CHAIN_ID, BASE_RPC_URL } from './chain';
 import { type TokenBalance } from './get-erc20-info';
@@ -48,7 +49,9 @@ export async function depositMorphoVault(
   );
   const morphoDepositAbilityResponse = await morphoAbilityClient.execute(
     {
-      alchemyGasSponsor: false,
+      alchemyGasSponsor,
+      alchemyGasSponsorApiKey,
+      alchemyGasSponsorPolicyId,
       amount: amountToDeposit,
       chain: 'base',
       operation: MorphoOperation.DEPOSIT,
