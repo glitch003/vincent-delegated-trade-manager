@@ -54,8 +54,8 @@ export async function depositMorphoVault(
       alchemyGasSponsorPolicyId,
       amount: amountToDeposit,
       chain: 'base',
-      operation: MorphoOperation.DEPOSIT,
-      vaultAddress: vault.address as string,
+      contractAddress: vault.address as string,
+      operation: MorphoOperation.VAULT_DEPOSIT,
     },
     {
       delegatorPkpEthAddress: walletAddress,
