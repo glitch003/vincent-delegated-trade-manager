@@ -56,7 +56,7 @@ export const JwtProvider: React.FC<JwtProviderProps> = ({ children }) => {
           vincentWebAuthClient.removeVincentJWTFromURI();
           setAuthInfo({
             jwt: jwtStr,
-            pkp: decodedJWT.payload.pkp,
+            pkp: decodedJWT.payload.pkpInfo,
           });
           return;
         } else {
@@ -80,7 +80,7 @@ export const JwtProvider: React.FC<JwtProviderProps> = ({ children }) => {
 
         setAuthInfo({
           jwt: existingJwtStr,
-          pkp: decodedJWT.payload.pkp,
+          pkp: decodedJWT.payload.pkpInfo,
         });
       } catch (error: unknown) {
         console.error(`Error verifying existing JWT. Need to relogin: ${(error as Error).message}`);
