@@ -10,7 +10,7 @@ const { cancelJob, createJob, disableJob, enableJob, listJobsByWalletAddress } =
 export const handleListSchedulesRoute = async (req: VincentAuthenticatedRequest, res: Response) => {
   try {
     const {
-      pkp: { ethAddress },
+      pkpInfo: { ethAddress },
     } = req.user.decodedJWT.payload;
     const schedules = await listJobsByWalletAddress({ walletAddress: ethAddress });
 
@@ -26,7 +26,7 @@ export const handleCreateScheduleRoute = async (
 ) => {
   try {
     const {
-      pkp: { ethAddress },
+      pkpInfo: { ethAddress },
     } = req.user.decodedJWT.payload;
 
     const scheduleParams = ScheduleParamsSchema.parse({
@@ -45,7 +45,7 @@ export const handleListScheduleSwapsRoute = async (
   res: Response
 ) => {
   const {
-    pkp: { ethAddress },
+    pkpInfo: { ethAddress },
   } = req.user.decodedJWT.payload;
   const { scheduleId } = ScheduleIdentitySchema.parse(req.params);
   const { limit = 10, skip = 0 } = req.query;
@@ -72,7 +72,7 @@ export const handleDisableScheduleRoute = async (
 ) => {
   try {
     const {
-      pkp: { ethAddress },
+      pkpInfo: { ethAddress },
     } = req.user.decodedJWT.payload;
     const { scheduleId } = ScheduleIdentitySchema.parse(req.params);
 
@@ -94,7 +94,7 @@ export const handleEnableScheduleRoute = async (
 ) => {
   try {
     const {
-      pkp: { ethAddress },
+      pkpInfo: { ethAddress },
     } = req.user.decodedJWT.payload;
     const { scheduleId } = ScheduleIdentitySchema.parse(req.params);
 
@@ -112,7 +112,7 @@ export const handleDeleteScheduleRoute = async (
 ) => {
   try {
     const {
-      pkp: { ethAddress },
+      pkpInfo: { ethAddress },
     } = req.user.decodedJWT.payload;
     const { scheduleId } = ScheduleIdentitySchema.parse(req.params);
     const { receiverAddress } = ScheduleDeleteSchema.parse(req.body);
