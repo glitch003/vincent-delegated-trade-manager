@@ -2,7 +2,7 @@ import React, { createContext, useCallback, useState, useEffect, ReactNode } fro
 import { IRelayPKP } from '@lit-protocol/types';
 import * as jwt from '@lit-protocol/vincent-app-sdk/jwt';
 
-const { verify } = jwt;
+const { verifyVincentAppUserJWT } = jwt;
 
 import { APP_ID } from '@/config';
 import { useVincentWebAuthClient } from '@/hooks/useVincentWebAuthClient';
@@ -39,13 +39,15 @@ export const JwtProvider: React.FC<JwtProviderProps> = ({ children }) => {
     localStorage.removeItem(APP_JWT_KEY);
   }, []);
 
-  const logWithJwt = useCallback(() => {
+  const logWithJwt = useCallback(async () => {
     const existingJwtStr = localStorage.getItem(APP_JWT_KEY);
     const didJustLogin = vincentWebAuthClient.uriContainsVincentJWT();
 
     if (didJustLogin) {
       try {
-        const jwtResult = vincentWebAuthClient.decodeVincentJWT(window.location.origin);
+        const jwtResult = await vincentWebAuthClient.decodeVincentJWTFromUri(
+          window.location.origin
+        );
 
         if (jwtResult) {
           const { decodedJWT, jwtStr } = jwtResult;
@@ -70,7 +72,7 @@ export const JwtProvider: React.FC<JwtProviderProps> = ({ children }) => {
 
     if (existingJwtStr) {
       try {
-        const decodedJWT = verify({
+        const decodedJWT = await verifyVincentAppUserJWT({
           expectedAudience: window.location.origin,
           jwt: existingJwtStr,
           requiredAppId: APP_ID,
@@ -88,12 +90,11 @@ export const JwtProvider: React.FC<JwtProviderProps> = ({ children }) => {
   }, [logOut, vincentWebAuthClient]);
 
   useEffect(() => {
-    try {
-      logWithJwt();
-    } catch (e) {
+    const handleConnectFailure = (e: unknown) => {
       console.error('Error logging in:', e);
       logOut();
-    }
+    };
+    logWithJwt().catch(handleConnectFailure);
   }, [logWithJwt, logOut]);
 
   return (
