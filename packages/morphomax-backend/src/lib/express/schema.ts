@@ -15,6 +15,9 @@ export const ScheduleIdentitySchema = z.object({
 export const ScheduleDeleteSchema = z.object({
   receiverAddress: z
     .string()
-    .refine((val) => /^0x[a-fA-F0-9]{40}$/.test(val), { message: 'Invalid receiver address' })
-    .optional(),
+    .nullable()
+    .optional()
+    .refine((val) => val == null || /^0x[a-fA-F0-9]{40}$/.test(val), {
+      message: 'Invalid receiver address',
+    }),
 });
