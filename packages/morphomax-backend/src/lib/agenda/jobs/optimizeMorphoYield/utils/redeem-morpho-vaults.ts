@@ -26,8 +26,8 @@ export async function redeemMorphoVaults(
           alchemyGasSponsorPolicyId,
           amount: shares,
           chain: provider.network.name,
-          contractAddress: vaultPosition.vault.address,
-          operation: MorphoOperation.VAULT_REDEEM,
+          operation: MorphoOperation.REDEEM,
+          vaultAddress: vaultPosition.vault.address,
         },
         {
           delegatorPkpEthAddress: walletAddress,
