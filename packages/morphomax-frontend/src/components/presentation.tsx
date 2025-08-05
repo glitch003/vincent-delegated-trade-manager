@@ -20,7 +20,7 @@ export const Presentation: React.FC = () => {
   return (
     <Card className="w-full max-w-3xl bg-white p-8 shadow-sm rounded-lg">
       <CardHeader className="space-y-3 text-center">
-        <CardTitle className="text-3xl font-bold text-gray-900">Morpho Yield Maximizer</CardTitle>
+        <CardTitle className="text-3xl font-bold text-gray-900">Vincent Yield Maximizer</CardTitle>
         <CardDescription className="space-y-2">
           <p className="text-gray-800 font-medium">
             This agent helps you earn more yield on your USDC.

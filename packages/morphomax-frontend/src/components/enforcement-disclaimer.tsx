@@ -27,7 +27,7 @@ export const EnforcementDisclaimer: React.FC = () => {
 
       <div className="bg-blue-50 p-3 mt-4 rounded-md border border-blue-100">
         <p className="text-gray-700">
-          By using Morpho Yield Maximizer, you're eligible to earn up up to $5000 in $LITKEY tokens
+          By using Vincent Yield Maximizer, you're eligible to earn up up to $5000 in $LITKEY tokens
           at TGE. Details here.
         </p>
       </div>

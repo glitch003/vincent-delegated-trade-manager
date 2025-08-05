@@ -153,9 +153,9 @@ export const DialogueScheduleExecutionDetails: React.FC<ScheduleDetailsDialogPro
       </DialogTrigger>
       <DialogContent className={cn(failedAfterLastRun ? 'min-w-2/3' : '', 'overflow-hidden')}>
         <DialogHeader>
-          <DialogTitle>Morphomax Schedule Details</DialogTitle>
+          <DialogTitle>Vincent Yield Schedule Details</DialogTitle>
           <DialogDescription>
-            Detailed information about your Morpho maxing scheduled run.
+            Detailed information about your Vincent Yield maxing scheduled run.
           </DialogDescription>
         </DialogHeader>
 

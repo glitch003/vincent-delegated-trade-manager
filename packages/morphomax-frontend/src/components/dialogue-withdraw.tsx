@@ -77,7 +77,7 @@ export const DialogueWithdraw: React.FC<ScheduleDetailsDialogProps> = ({ schedul
       <DialogContent className={cn(failedAfterLastRun ? 'min-w-2/3' : '', 'overflow-hidden')}>
         <form onSubmit={deleteUserSchedule}>
           <DialogHeader>
-            <DialogTitle>Delete Morphomax Schedule</DialogTitle>
+            <DialogTitle>Delete Vincent Yield Schedule</DialogTitle>
             <DialogDescription>
               Are you sure you want to delete this schedule?
               <br />
