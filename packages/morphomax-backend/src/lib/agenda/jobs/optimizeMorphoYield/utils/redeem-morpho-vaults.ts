@@ -46,7 +46,5 @@ export async function redeemMorphoVaults(
   }
   /* eslint-enable no-await-in-loop */
 
-  return {
-    redeem: redeemResults,
-  };
+  return redeemResults;
 }

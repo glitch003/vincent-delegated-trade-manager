@@ -89,14 +89,13 @@ export async function optimizeMorphoYield(job: JobType): Promise<void> {
     consola.debug('Got top USDC vault:', topVault);
     consola.debug('Got user positions:', userPositions);
 
-    const redeems = [];
+    let redeems = [];
     if (userPositions) {
       const vaultsToOptimize = getVaultsToOptimize(userPositions, topVault);
       consola.debug('Vaults to optimize:', vaultsToOptimize);
 
       // Withdraw from vaults to optimize
-      const redeemResult = await redeemMorphoVaults(baseProvider, walletAddress, vaultsToOptimize);
-      redeems.push(redeemResult);
+      redeems = await redeemMorphoVaults(baseProvider, walletAddress, vaultsToOptimize);
     }
 
     // Get user USDC balance

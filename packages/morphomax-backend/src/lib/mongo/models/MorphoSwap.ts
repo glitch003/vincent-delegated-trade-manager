@@ -59,15 +59,15 @@ const vaultPositionsSchema = new Schema(
     __typename: { required: true, type: String },
     state: {
       __typename: { required: true, type: String },
-      assets: { required: true, type: Number },
+      assets: decimalBigInt(),
       assetsUsd: { required: true, type: Number },
       id: { required: true, type: String },
-      pnl: { required: true, type: Number },
+      pnl: decimalBigInt(),
       pnlUsd: { required: true, type: Number },
       roe: { required: true, type: Number },
       roeUsd: { required: true, type: Number },
-      shares: { required: true, type: Number },
-      timestamp: { required: true, type: Number },
+      shares: decimalBigInt(),
+      timestamp: decimalBigInt(),
     },
     vault: {
       __typename: { required: true, type: String },
@@ -167,7 +167,7 @@ const tokenBalanceSchema = new Schema(
 // Swap operations are all arrays to be prepared to support multiple tokens and chains
 const morphoSwapSchemaDefinition = {
   deposits: { default: [], required: true, type: [depositSchema] },
-  redeems: { default: [], required: true, type: [redeemSchema] },
+  redeems: { default: [], required: false, type: [redeemSchema] },
   scheduleId: {
     index: true,
     required: true,
