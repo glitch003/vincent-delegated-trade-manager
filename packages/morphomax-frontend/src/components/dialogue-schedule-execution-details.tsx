@@ -131,9 +131,7 @@ export const DialogueScheduleExecutionDetails: React.FC<ScheduleDetailsDialogPro
     const fetchSwaps = async () => {
       try {
         setLoading(true);
-        // const swaps = await getScheduleSwaps(schedule._id);
-        const swaps = await getScheduleSwaps('123412341234123412341234');
-        console.log('swaps', swaps);
+        const swaps = await getScheduleSwaps(schedule._id);
         setSwaps(swaps);
       } catch (error) {
         console.error('Error fetching swaps:', error);
