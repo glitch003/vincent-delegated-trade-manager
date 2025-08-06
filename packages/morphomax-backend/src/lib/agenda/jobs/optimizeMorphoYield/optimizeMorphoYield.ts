@@ -43,7 +43,10 @@ function getVaultsToOptimize(
   const topVaultAvgNetApy = topVault.state?.avgNetApy || 0;
   const suboptimalVaults = userPositions.user.vaultPositions.filter((vp) => {
     const vaultAvgNetApy = vp.vault.state?.avgNetApy || 0;
-    return topVaultAvgNetApy < vaultAvgNetApy + MINIMUM_YIELD_IMPROVEMENT_PERCENT / 100;
+    return (
+      vp.state?.shares > 0 &&
+      topVaultAvgNetApy > vaultAvgNetApy + MINIMUM_YIELD_IMPROVEMENT_PERCENT / 100
+    );
   });
 
   return suboptimalVaults;
