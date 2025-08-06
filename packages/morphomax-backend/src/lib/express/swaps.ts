@@ -12,10 +12,5 @@ export const handleListSwapsRoute = async (req: VincentAuthenticatedRequest, res
     })
     .lean();
 
-  if (swaps.length === 0) {
-    res.status(404).json({ error: `No morpho swaps found for wallet address ${walletAddress}` });
-    return;
-  }
-
   res.json({ data: swaps, success: true });
 };
