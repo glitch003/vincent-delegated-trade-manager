@@ -1,7 +1,7 @@
 import consola from 'consola';
 
 import { createAgenda, getAgenda } from './agenda/agendaClient';
-import { optimizeMorphoYieldJobDef } from './agenda/jobs';
+import { optimizeMorphoYieldJobDef } from './jobs';
 
 // Function to create and configure a new agenda instance
 export async function startWorker() {

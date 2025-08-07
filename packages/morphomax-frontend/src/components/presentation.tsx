@@ -11,7 +11,8 @@ import {
 } from '@/components/ui/card';
 import { Separator } from '@/components/ui/separator';
 import { EnforcementDisclaimer } from '@/components/enforcement-disclaimer';
-import { Info } from '@/components/info';
+import { Footer } from '@/components/footer';
+import { OptimalStrategyInfo } from '@/components/optimal-strategy-info';
 import { useBackend } from '@/hooks/useBackend';
 
 export const Presentation: React.FC = () => {
@@ -43,6 +44,8 @@ export const Presentation: React.FC = () => {
           </div>
         </div>
 
+        <OptimalStrategyInfo />
+
         <div className="space-y-4">
           <Button
             onClick={getJwt}
@@ -58,7 +61,7 @@ export const Presentation: React.FC = () => {
       <Separator />
 
       <CardFooter className="flex flex-col items-center">
-        <Info />
+        <Footer />
       </CardFooter>
     </Card>
   );

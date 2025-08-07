@@ -1,4 +1,4 @@
-import { env } from '../../../../env';
+import { env } from '../../../env';
 
 const { ALCHEMY_API_KEY, ALCHEMY_POLICY_ID } = env;
 

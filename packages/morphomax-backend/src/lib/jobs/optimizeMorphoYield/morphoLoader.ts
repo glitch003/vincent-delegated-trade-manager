@@ -1,4 +1,4 @@
-import { apollo } from '../../../graphql/apollo';
+import { apollo } from '../../graphql/apollo';
 import {
   GetUserPositionsDocument,
   GetVaultsDocument,
@@ -6,7 +6,7 @@ import {
   type GetUserPositionsQueryVariables,
   type GetVaultsQuery,
   type GetVaultsQueryVariables,
-} from '../../../graphql/generated';
+} from '../../graphql/generated';
 
 export type VaultItem = NonNullable<GetVaultsQuery['vaults']['items']>[number];
 export const getVaults = async (vars: GetVaultsQueryVariables): Promise<VaultItem[]> => {

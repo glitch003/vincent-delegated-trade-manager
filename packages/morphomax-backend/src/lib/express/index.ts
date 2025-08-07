@@ -11,6 +11,7 @@ import {
   handleListSchedulesRoute,
   handleListScheduleSwapsRoute,
 } from './schedules';
+import { handleGetTopStrategyRoute } from './strategies';
 import { handleListSwapsRoute } from './swaps';
 import { env } from '../env';
 import { serviceLogger } from '../logger';
@@ -38,6 +39,7 @@ export const registerRoutes = (app: Express) => {
   }
   app.use(cors(corsConfig));
 
+  app.get('/strategy/top', handleGetTopStrategyRoute);
   app.get('/swap', middleware, handler(handleListSwapsRoute));
   app.get('/schedule', middleware, handler(handleListSchedulesRoute));
   app.post('/schedule', middleware, handler(handleCreateScheduleRoute));

@@ -3,23 +3,19 @@ import { Job } from '@whisthub/agenda';
 import consola from 'consola';
 import { ethers } from 'ethers';
 
-import {
-  getVaults,
-  type UserVaultPositionItem,
-  type UserPositionItem,
-  type VaultItem,
-} from './morphoLoader';
+import { type UserVaultPositionItem, type UserPositionItem, type VaultItem } from './morphoLoader';
 import {
   baseProvider,
   depositMorphoVault,
   getAddressesByChainId,
   getERC20Balance,
   getMorphoPositions,
+  getMorphoVaults,
   redeemMorphoVaults,
   BASE_CHAIN_ID,
 } from './utils';
-import { env } from '../../../env';
-import { MorphoSwap } from '../../../mongo/models/MorphoSwap';
+import { env } from '../../env';
+import { MorphoSwap } from '../../mongo/models/MorphoSwap';
 
 export type JobType = Job<JobParams>;
 export type JobParams = {
@@ -52,26 +48,6 @@ function getVaultsToOptimize(
   return suboptimalVaults;
 }
 
-async function getTopYieldingVault(chainId: number, assetSymbol: string): Promise<VaultItem> {
-  const vaults = await getVaults({
-    first: 1,
-    orderBy: VaultOrderBy.AvgNetApy,
-    orderDirection: OrderDirection.Desc,
-    where: {
-      assetSymbol_in: [assetSymbol],
-      chainId_in: [chainId],
-      whitelisted: true,
-    },
-  });
-
-  const topVault = vaults?.[0];
-  if (!topVault) {
-    throw new Error('No vault found when looking for top yielding vault');
-  }
-
-  return topVault;
-}
-
 export async function optimizeMorphoYield(job: JobType): Promise<void> {
   try {
     const {
@@ -85,10 +61,24 @@ export async function optimizeMorphoYield(job: JobType): Promise<void> {
     });
 
     consola.debug('Fetching current top USDC vault and user vault positions...');
-    const [topVault, userPositions] = await Promise.all([
-      getTopYieldingVault(BASE_CHAIN_ID, 'USDC'),
+    const [vaults, userPositions] = await Promise.all([
+      getMorphoVaults({
+        first: 1,
+        orderBy: VaultOrderBy.AvgNetApy,
+        orderDirection: OrderDirection.Desc,
+        where: {
+          assetSymbol_in: ['USDC'],
+          chainId_in: [BASE_CHAIN_ID],
+          whitelisted: true,
+        },
+      }),
       getMorphoPositions({ walletAddress, chainId: BASE_CHAIN_ID }),
     ]);
+    const topVault = vaults[0];
+    if (!topVault) {
+      throw new Error('No vault found when looking for top yielding vault');
+    }
+
     consola.debug('Got top USDC vault:', topVault);
     consola.debug('Got user positions:', userPositions);
 

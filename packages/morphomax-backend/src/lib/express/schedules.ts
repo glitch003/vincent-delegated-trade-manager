@@ -2,7 +2,7 @@ import { Response } from 'express';
 
 import { ScheduleDeleteSchema, ScheduleIdentitySchema, ScheduleParamsSchema } from './schema';
 import { VincentAuthenticatedRequest } from './types';
-import * as jobManager from '../agenda/jobs/morphoMaxJobManager';
+import * as jobManager from '../jobs/morphoMaxJobManager';
 import { MorphoSwap } from '../mongo/models/MorphoSwap';
 
 const { cancelJob, createJob, disableJob, enableJob, listJobsByWalletAddress } = jobManager;

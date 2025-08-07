@@ -4,7 +4,7 @@ import React, { useCallback, useContext, useEffect, useState } from 'react';
 import { DialogueScheduleExecutionDetails } from '@/components/dialogue-schedule-execution-details';
 import { DialogueWithdraw } from '@/components/dialogue-withdraw';
 import { EnforcementDisclaimer } from '@/components/enforcement-disclaimer';
-import { Info } from '@/components/info';
+import { Footer } from '@/components/footer';
 import { Button } from '@/components/ui/button';
 import {
   Card,
@@ -192,7 +192,7 @@ export const Dashboard: React.FC = () => {
       <Separator />
 
       <CardFooter className="flex flex-col items-center">
-        <Info />
+        <Footer />
       </CardFooter>
     </Card>
   );

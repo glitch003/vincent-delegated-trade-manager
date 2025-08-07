@@ -113,6 +113,30 @@ export type Swap = {
   walletAddress: string;
 };
 
+export type Strategy = {
+  address: string;
+  asset: {
+    address: string;
+    decimals: number;
+    name: string;
+    symbol: string;
+  };
+  chain: {
+    id: number;
+    network: string;
+  };
+  id: string;
+  name: string;
+  state: {
+    apy: number;
+    avgApy: number;
+    avgNetApy: number;
+    netApy: number;
+  };
+  symbol: string;
+  whitelisted: boolean;
+};
+
 export interface DeleteScheduleRequest {
   receiverAddress?: Hex;
 }
@@ -128,6 +152,33 @@ export const useBackend = () => {
       redirectUri: REDIRECT_URI,
     });
   }, [vincentWebAppClient]);
+
+  const sendUnAuthenticatedRequest = useCallback(
+    async <T>(endpoint: string, method: HTTPMethod, body?: unknown): Promise<T> => {
+      const headers: HeadersInit = {
+        'Content-Type': 'application/json',
+      };
+
+      const response = await fetch(`${BACKEND_URL}${endpoint}`, {
+        method,
+        headers,
+        ...(body ? { body: JSON.stringify(body) } : {}),
+      });
+
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+
+      const json = (await response.json()) as { data: T; success: boolean };
+
+      if (!json.success) {
+        throw new Error(`Backend error: ${json.data}`);
+      }
+
+      return json.data;
+    },
+    []
+  );
 
   const sendRequest = useCallback(
     async <T>(endpoint: string, method: HTTPMethod, body?: unknown): Promise<T> => {
@@ -203,11 +254,16 @@ export const useBackend = () => {
     [sendRequest]
   );
 
+  const getOptimalStrategyInfo = useCallback(async () => {
+    return sendUnAuthenticatedRequest<Strategy>('/strategy/top', 'GET');
+  }, [sendUnAuthenticatedRequest]);
+
   return {
     createSchedule,
     deleteSchedule,
     disableSchedule,
     enableSchedule,
+    getOptimalStrategyInfo,
     getSchedules,
     getScheduleSwaps,
     getJwt,

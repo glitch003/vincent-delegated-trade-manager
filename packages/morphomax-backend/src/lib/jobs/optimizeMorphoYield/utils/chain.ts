@@ -2,7 +2,7 @@ import { ethers } from 'ethers';
 
 import { LIT_EVM_CHAINS } from '@lit-protocol/constants';
 
-import { env } from '../../../../env';
+import { env } from '../../../env';
 
 export const { BASE_RPC_URL } = env;
 

@@ -12,7 +12,7 @@ import {
   disconnectVincentAbilityClients,
 } from '@lit-protocol/vincent-app-sdk/abilityClient';
 
-import { env } from '../../../env';
+import { env } from '../../env';
 
 const { VINCENT_DELEGATEE_PRIVATE_KEY } = env;
 

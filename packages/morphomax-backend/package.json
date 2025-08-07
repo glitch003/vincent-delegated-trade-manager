@@ -46,7 +46,7 @@
     "@lit-protocol/types": "^7.2.3",
     "@lit-protocol/vincent-app-sdk": "2.0.0",
     "@lit-protocol/vincent-ability-erc20-approval": "2.0.0",
-    "@lit-protocol/vincent-ability-morpho": "0.1.0o",
+    "@lit-protocol/vincent-ability-morpho": "0.1.0",
     "@lit-protocol/vincent-ability-uniswap-swap": "2.0.0",
     "@morpho-org/blue-api-sdk": "^2.8.1",
     "@morpho-org/blue-sdk": "^4.2.0",

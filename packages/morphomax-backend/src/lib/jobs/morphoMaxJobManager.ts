@@ -1,8 +1,8 @@
 import consola from 'consola';
 import { Types } from 'mongoose';
 
-import { getAgenda } from '../agendaClient';
 import * as optimizeMorphoYieldJobDef from './optimizeMorphoYield';
+import { getAgenda } from '../agenda/agendaClient';
 import {
   baseProvider,
   getAddressesByChainId,
@@ -11,7 +11,7 @@ import {
   redeemMorphoVaults,
   BASE_CHAIN_ID,
 } from './optimizeMorphoYield/utils';
-import { MorphoSwap } from '../../mongo/models/MorphoSwap';
+import { MorphoSwap } from '../mongo/models/MorphoSwap';
 
 interface FindSpecificScheduledJobParams {
   mustExist?: boolean;
