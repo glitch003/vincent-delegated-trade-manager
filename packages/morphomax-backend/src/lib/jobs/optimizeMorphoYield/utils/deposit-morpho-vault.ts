@@ -30,10 +30,9 @@ export async function depositMorphoVault(
   const erc20ApprovalPrecheckResponse = await erc20ApprovalAbilityClient.precheck(erc20Params, {
     delegatorPkpEthAddress: walletAddress,
   });
-  const erc20ApprovalPrecheckResult = erc20ApprovalPrecheckResponse.result;
-  if (!('amountValid' in erc20ApprovalPrecheckResult)) {
+  if ('error' in erc20ApprovalPrecheckResponse) {
     throw new Error(
-      `ERC20 approval ability precheck failed. Response: ${JSON.stringify(erc20ApprovalPrecheckResult, null, 2)}`
+      `ERC20 approval ability precheck failed. Response: ${JSON.stringify(erc20ApprovalPrecheckResponse, null, 2)}`
     );
   }
 
