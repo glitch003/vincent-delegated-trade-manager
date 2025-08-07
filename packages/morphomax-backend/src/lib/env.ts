@@ -24,7 +24,6 @@ export const env = createEnv({
     ALCHEMY_API_KEY: z.string().optional(),
     ALCHEMY_POLICY_ID: z.string().optional(),
     ALLOWED_AUDIENCE: z.string().url(),
-    BASE_RPC_URL: z.string().url(),
     CORS_ALLOWED_DOMAIN: z.string(),
     IS_DEVELOPMENT: BooleanOrBooleanStringSchema,
     MINIMUM_USDC_BALANCE: z.coerce.number(),

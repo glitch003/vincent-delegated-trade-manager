@@ -19,7 +19,30 @@ export async function redeemMorphoVaults(
     if (vaultPosition.state?.shares) {
       // Vaults are ERC-4626 compliant so they will always have 18 decimals
       const shares = ethers.utils.formatUnits(vaultPosition.state.shares, 18);
-      const morphoWithdrawAbilityResponse = await morphoAbilityClient.execute(
+
+      const morphoWithdrawPrecheckResponse = await morphoAbilityClient.precheck(
+        {
+          alchemyGasSponsor,
+          alchemyGasSponsorApiKey,
+          alchemyGasSponsorPolicyId,
+          amount: shares,
+          chain: provider.network.name,
+          operation: MorphoOperation.REDEEM,
+          rpcUrl: provider.connection.url,
+          vaultAddress: vaultPosition.vault.address,
+        },
+        {
+          delegatorPkpEthAddress: walletAddress,
+        }
+      );
+      const morphoRedeemPrecheckResult = morphoWithdrawPrecheckResponse.result;
+      if (!('amountValid' in morphoRedeemPrecheckResult)) {
+        throw new Error(
+          `Morpho redeem precheck failed. Response: ${JSON.stringify(morphoWithdrawPrecheckResponse, null, 2)}`
+        );
+      }
+
+      const morphoWithdrawExecutionResponse = await morphoAbilityClient.execute(
         {
           alchemyGasSponsor,
           alchemyGasSponsorApiKey,
@@ -33,15 +56,21 @@ export async function redeemMorphoVaults(
           delegatorPkpEthAddress: walletAddress,
         }
       );
-      const redeemResult = morphoWithdrawAbilityResponse.result;
-      if (!(redeemResult && 'txHash' in redeemResult && typeof redeemResult.txHash === 'string')) {
+      const morphoRedeemExecutionResult = morphoWithdrawExecutionResponse.result;
+      if (
+        !(
+          morphoRedeemExecutionResult &&
+          'txHash' in morphoRedeemExecutionResult &&
+          typeof morphoRedeemExecutionResult.txHash === 'string'
+        )
+      ) {
         throw new Error(
-          `Morpho redeem ability run failed. Response: ${JSON.stringify(redeemResult, null, 2)}`
+          `Morpho redeem execution failed. Response: ${JSON.stringify(morphoRedeemExecutionResult, null, 2)}`
         );
       }
-      await waitForTransaction(provider, redeemResult.txHash);
+      await waitForTransaction(provider, morphoRedeemExecutionResult.txHash);
 
-      redeemResults.push(redeemResult);
+      redeemResults.push(morphoRedeemExecutionResult);
     }
   }
   /* eslint-enable no-await-in-loop */
