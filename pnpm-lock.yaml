@@ -99,6 +99,9 @@ importers:
       '@lit-protocol/constants':
         specifier: ^7.2.3
         version: 7.2.3(ethers@5.8.0(bufferutil@4.0.9)(utf-8-validate@5.0.10))
+      '@lit-protocol/contracts':
+        specifier: ^0.3.1
+        version: 0.3.1(typescript@5.8.2)
       '@lit-protocol/contracts-sdk':
         specifier: ^7.2.3
         version: 7.2.3(ethers@5.8.0(bufferutil@4.0.9)(utf-8-validate@5.0.10))
@@ -1832,6 +1835,11 @@ packages:
 
   '@lit-protocol/contracts-sdk@7.2.3':
     resolution: {integrity: sha512-8AX0P7wPGUBdhATWQF6NLF1L+avpr1FRMVzURpanQZPXbIX5kUQ4SOcVXEY4c8jHEEzoCeHxTLnclfiz2kPH5A==}
+
+  '@lit-protocol/contracts@0.3.1':
+    resolution: {integrity: sha512-mvYhOMm+WPfesxHhRdjJFEOFfN6utxOCWdDplF7KKlJHeGpvQSAKZr3ylKyTnJciNJ1IzBsuANchp0Uy88Tg3g==}
+    peerDependencies:
+      typescript: ^5.0.0
 
   '@lit-protocol/core@7.2.3':
     resolution: {integrity: sha512-ZCw6qldhEmlk+SYv6V+Pgn5W6SQ0Ney2MowDo89i/utQaOuXJMX6EUeMaORGFL6J+Bo8DH7LVbeFDf6HzXZ1KA==}
@@ -4074,6 +4082,7 @@ packages:
 
   bun@1.2.6:
     resolution: {integrity: sha512-v0G1dOS5ALc4laomafP2h/PjO9qLF7mwzXySo3VJFiX2Ty70WmPjuGRNGdk65Djk0u3ahpFTtCrzsgIj/NDOiw==}
+    cpu: [arm64, x64, aarch64]
     os: [darwin, linux, win32]
     hasBin: true
 
@@ -11131,6 +11140,10 @@ snapshots:
       util: 0.12.5
     transitivePeerDependencies:
       - ethers
+
+  '@lit-protocol/contracts@0.3.1(typescript@5.8.2)':
+    dependencies:
+      typescript: 5.8.2
 
   '@lit-protocol/core@7.2.3(ethers@5.8.0(bufferutil@4.0.9)(utf-8-validate@5.0.10))':
     dependencies:
