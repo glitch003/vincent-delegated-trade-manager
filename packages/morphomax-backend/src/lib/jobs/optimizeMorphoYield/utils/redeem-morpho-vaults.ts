@@ -24,43 +24,31 @@ export async function redeemMorphoVaults({
       // Vaults are ERC-4626 compliant so they will always have 18 decimals
       const shares = ethers.utils.formatUnits(vaultPosition.state.shares, 18);
 
-      const morphoWithdrawPrecheckResponse = await morphoAbilityClient.precheck(
-        {
-          alchemyGasSponsor,
-          alchemyGasSponsorApiKey,
-          alchemyGasSponsorPolicyId,
-          amount: shares,
-          chain: provider.network.name,
-          operation: MorphoOperation.REDEEM,
-          rpcUrl: provider.connection.url,
-          vaultAddress: vaultPosition.vault.address,
-        },
-        {
-          delegatorPkpEthAddress: walletAddress,
-        }
-      );
-      const morphoRedeemPrecheckResult = morphoWithdrawPrecheckResponse.result;
+      const redeemParams = {
+        alchemyGasSponsor,
+        alchemyGasSponsorApiKey,
+        alchemyGasSponsorPolicyId,
+        amount: shares,
+        chain: provider.network.name,
+        operation: MorphoOperation.REDEEM,
+        rpcUrl: provider.connection.url,
+        vaultAddress: vaultPosition.vault.address,
+      };
+
+      const morphoReedemPrecheckResponse = await morphoAbilityClient.precheck(redeemParams, {
+        delegatorPkpEthAddress: walletAddress,
+      });
+      const morphoRedeemPrecheckResult = morphoReedemPrecheckResponse.result;
       if (!('amountValid' in morphoRedeemPrecheckResult)) {
         throw new Error(
-          `Morpho redeem precheck failed. Response: ${JSON.stringify(morphoWithdrawPrecheckResponse, null, 2)}`
+          `Morpho redeem precheck failed. Response: ${JSON.stringify(morphoReedemPrecheckResponse, null, 2)}`
         );
       }
 
-      const morphoWithdrawExecutionResponse = await morphoAbilityClient.execute(
-        {
-          alchemyGasSponsor,
-          alchemyGasSponsorApiKey,
-          alchemyGasSponsorPolicyId,
-          amount: shares,
-          chain: provider.network.name,
-          operation: MorphoOperation.REDEEM,
-          vaultAddress: vaultPosition.vault.address,
-        },
-        {
-          delegatorPkpEthAddress: walletAddress,
-        }
-      );
-      const morphoRedeemExecutionResult = morphoWithdrawExecutionResponse.result;
+      const morphoReedemExecutionResponse = await morphoAbilityClient.execute(redeemParams, {
+        delegatorPkpEthAddress: walletAddress,
+      });
+      const morphoRedeemExecutionResult = morphoReedemExecutionResponse.result;
       if (
         !(
           morphoRedeemExecutionResult &&
@@ -69,7 +57,7 @@ export async function redeemMorphoVaults({
         )
       ) {
         throw new Error(
-          `Morpho redeem execution failed. Response: ${JSON.stringify(morphoRedeemExecutionResult, null, 2)}`
+          `Morpho redeem execution failed. Response: ${JSON.stringify(morphoReedemExecutionResponse, null, 2)}`
         );
       }
       await waitForTransaction(provider, morphoRedeemExecutionResult.txHash);
