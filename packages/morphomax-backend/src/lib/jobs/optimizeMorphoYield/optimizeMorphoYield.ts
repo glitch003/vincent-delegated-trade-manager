@@ -108,12 +108,12 @@ export async function optimizeMorphoYield(job: JobType): Promise<void> {
     const deposits = [];
     if (balance.gt(MINIMUM_USDC_BALANCE * 10 ** decimals)) {
       // Put all USDC into the top vault
-      const depositResult = await depositMorphoVault(
-        baseProvider,
+      const depositResult = await depositMorphoVault({
+        tokenBalance,
         walletAddress,
-        topVault,
-        tokenBalance
-      );
+        provider: baseProvider,
+        vault: topVault,
+      });
       deposits.push(depositResult);
     }
 
