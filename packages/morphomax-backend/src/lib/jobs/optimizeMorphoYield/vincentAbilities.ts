@@ -2,6 +2,7 @@ import { ethers } from 'ethers';
 
 import { LIT_RPC } from '@lit-protocol/constants';
 import { bundledVincentAbility as erc20ApprovalAbility } from '@lit-protocol/vincent-ability-erc20-approval';
+import { bundledVincentAbility as erc20TransferAbility } from '@lit-protocol/vincent-ability-erc20-transfer';
 import {
   bundledVincentAbility as morphoAbility,
   MorphoOperation,
@@ -27,6 +28,13 @@ export function getErc20ApprovalAbilityClient() {
   return getVincentAbilityClient({
     ethersSigner,
     bundledVincentAbility: erc20ApprovalAbility,
+  });
+}
+
+export function getErc20TransferAbilityClient() {
+  return getVincentAbilityClient({
+    ethersSigner,
+    bundledVincentAbility: erc20TransferAbility,
   });
 }
 

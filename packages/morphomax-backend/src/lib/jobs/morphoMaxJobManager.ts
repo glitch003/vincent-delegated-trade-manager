@@ -1,4 +1,5 @@
 import consola from 'consola';
+import { ethers } from 'ethers';
 import { Types } from 'mongoose';
 
 import * as optimizeMorphoYieldJobDef from './optimizeMorphoYield';
@@ -11,6 +12,7 @@ import {
   redeemMorphoVaults,
   BASE_CHAIN_ID,
 } from './optimizeMorphoYield/utils';
+import { transferERC20Tokens } from './optimizeMorphoYield/utils/transfer-erc20-tokens';
 import { MorphoSwap } from '../mongo/models/MorphoSwap';
 
 interface FindSpecificScheduledJobParams {
@@ -100,9 +102,13 @@ export async function cancelJob({ receiverAddress, scheduleId, walletAddress }: 
 
   if (calledJob) {
     const userPositions = await getMorphoPositions({ walletAddress, chainId: BASE_CHAIN_ID });
-    const userVaults = userPositions?.user.vaultPositions;
-    const redeems = userVaults?.length
-      ? await redeemMorphoVaults(baseProvider, walletAddress, userVaults)
+    const userVaultPositions = userPositions?.user.vaultPositions;
+    const redeems = userVaultPositions?.length
+      ? await redeemMorphoVaults({
+          userVaultPositions,
+          walletAddress,
+          provider: baseProvider,
+        })
       : [];
     const { USDC_ADDRESS } = getAddressesByChainId(baseProvider.network.chainId);
     const tokenBalance = await getERC20Balance({
@@ -110,11 +116,18 @@ export async function cancelJob({ receiverAddress, scheduleId, walletAddress }: 
       provider: baseProvider,
       tokenAddress: USDC_ADDRESS,
     });
-    consola.log(`TODO transfer USDC to ${receiverAddress} if provided`);
+    const transfers = await transferERC20Tokens({
+      receiverAddress,
+      walletAddress,
+      amount: ethers.utils.formatUnits(tokenBalance.balance, tokenBalance.decimals),
+      provider: baseProvider,
+      tokenAddress: tokenBalance.address,
+    });
 
     const morphoSwap = new MorphoSwap({
       redeems,
       scheduleId,
+      transfers,
       userPositions,
       walletAddress,
       deposits: [],

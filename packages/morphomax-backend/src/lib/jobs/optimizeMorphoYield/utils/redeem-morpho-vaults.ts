@@ -5,11 +5,15 @@ import { type UserVaultPositionItem } from '../morphoLoader';
 import { waitForTransaction } from './wait-for-transaction';
 import { getMorphoAbilityClient, MorphoOperation } from '../vincentAbilities';
 
-export async function redeemMorphoVaults(
-  provider: ethers.providers.StaticJsonRpcProvider,
-  walletAddress: string,
-  userVaultPositions: UserVaultPositionItem[]
-) {
+export async function redeemMorphoVaults({
+  provider,
+  userVaultPositions,
+  walletAddress,
+}: {
+  provider: ethers.providers.StaticJsonRpcProvider;
+  userVaultPositions: UserVaultPositionItem[];
+  walletAddress: string;
+}) {
   const morphoAbilityClient = getMorphoAbilityClient();
 
   const redeemResults = [];

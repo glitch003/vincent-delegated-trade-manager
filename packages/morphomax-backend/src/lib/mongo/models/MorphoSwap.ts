@@ -54,6 +54,19 @@ const redeemSchema = new Schema(
   }
 );
 
+const transferSchema = new Schema(
+  {
+    amount: { required: true, type: String },
+    timestamp: { required: true, type: Number },
+    to: { required: true, type: String },
+    tokenAddress: { required: true, type: String },
+    txHash: { required: true, type: String },
+  },
+  {
+    _id: false,
+  }
+);
+
 const vaultPositionsSchema = new Schema(
   {
     __typename: { required: true, type: String },
@@ -175,6 +188,11 @@ const morphoSwapSchemaDefinition = {
   },
   success: { required: true, type: Boolean },
   topVault: { required: false, type: vaultSchema },
+  transfers: {
+    default: [],
+    required: false,
+    type: [transferSchema],
+  },
   userPositions: { default: [], required: false, type: [userPositionsSchema] },
   userTokenBalances: { default: [], required: true, type: [tokenBalanceSchema] },
   walletAddress: {

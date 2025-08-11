@@ -88,7 +88,11 @@ export async function optimizeMorphoYield(job: JobType): Promise<void> {
       consola.debug('Vaults to optimize:', vaultsToOptimize);
 
       // Withdraw from vaults to optimize
-      redeems = await redeemMorphoVaults(baseProvider, walletAddress, vaultsToOptimize);
+      redeems = await redeemMorphoVaults({
+        walletAddress,
+        provider: baseProvider,
+        userVaultPositions: vaultsToOptimize,
+      });
     }
 
     // Get user USDC balance

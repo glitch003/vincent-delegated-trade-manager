@@ -10,16 +10,24 @@ import {
   MorphoOperation,
 } from '../vincentAbilities';
 
-export async function depositMorphoVault(
-  provider: ethers.providers.JsonRpcProvider,
-  walletAddress: string,
-  vault: VaultItem,
-  tokenBalance: TokenBalance
-) {
+export async function depositMorphoVault({
+  provider,
+  tokenBalance,
+  vault,
+  walletAddress,
+}: {
+  provider: ethers.providers.JsonRpcProvider;
+  tokenBalance: TokenBalance;
+  vault: VaultItem;
+  walletAddress: string;
+}) {
   const erc20ApprovalAbilityClient = getErc20ApprovalAbilityClient();
   const morphoAbilityClient = getMorphoAbilityClient();
 
   const erc20Params = {
+    alchemyGasSponsor,
+    alchemyGasSponsorApiKey,
+    alchemyGasSponsorPolicyId,
     chainId: provider.network.chainId,
     rpcUrl: provider.connection.url,
     spenderAddress: vault.address,
@@ -42,7 +50,7 @@ export async function depositMorphoVault(
   const erc20ApprovalExecutionResult = erc20ApprovalExecutionResponse.result;
   if (!('approvedAmount' in erc20ApprovalExecutionResult)) {
     throw new Error(
-      `ERC20 approval ability run failed. Response: ${JSON.stringify(erc20ApprovalExecutionResult, null, 2)}`
+      `ERC20 approval ability run failed. Response: ${JSON.stringify(erc20ApprovalExecutionResponse, null, 2)}`
     );
   }
   if (
@@ -62,13 +70,18 @@ export async function depositMorphoVault(
     alchemyGasSponsorApiKey,
     alchemyGasSponsorPolicyId,
     amount: amountToDeposit,
-    chain: 'base',
     operation: MorphoOperation.DEPOSIT,
     vaultAddress: vault.address as string,
   };
-  const morphoDepositPrecheckResponse = await morphoAbilityClient.precheck(morphoDepositParams, {
-    delegatorPkpEthAddress: walletAddress,
-  });
+  const morphoDepositPrecheckResponse = await morphoAbilityClient.precheck(
+    {
+      ...morphoDepositParams,
+      rpcUrl: provider.connection.url,
+    },
+    {
+      delegatorPkpEthAddress: walletAddress,
+    }
+  );
   const morphoDepositPrecheckResult = morphoDepositPrecheckResponse.result;
   if (!('amountValid' in morphoDepositPrecheckResult)) {
     throw new Error(
@@ -76,13 +89,16 @@ export async function depositMorphoVault(
     );
   }
 
-  const morphoDepositExecutionResponse = await morphoAbilityClient.execute(morphoDepositParams, {
-    delegatorPkpEthAddress: walletAddress,
-  });
+  const morphoDepositExecutionResponse = await morphoAbilityClient.execute(
+    { ...morphoDepositParams, chain: provider.network.name },
+    {
+      delegatorPkpEthAddress: walletAddress,
+    }
+  );
   const morphoDepositExecutionResult = morphoDepositExecutionResponse.result;
   if (!('txHash' in morphoDepositExecutionResult)) {
     throw new Error(
-      `Morpho deposit ability run failed. Response: ${JSON.stringify(morphoDepositExecutionResult, null, 2)}`
+      `Morpho deposit ability run failed. Response: ${JSON.stringify(morphoDepositExecutionResponse, null, 2)}`
     );
   }
   await waitForTransaction(provider, morphoDepositExecutionResult.txHash);
