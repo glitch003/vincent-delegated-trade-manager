@@ -93,6 +93,9 @@ importers:
       '@dotenvx/dotenvx':
         specifier: ^1.39.0
         version: 1.39.0
+      '@lit-protocol/accs-schemas':
+        specifier: ^0.0.31
+        version: 0.0.31
       '@lit-protocol/auth-helpers':
         specifier: ^7.2.3
         version: 7.2.3(ethers@5.8.0(bufferutil@4.0.9)(utf-8-validate@5.0.10))
@@ -1823,6 +1826,9 @@ packages:
 
   '@lit-protocol/access-control-conditions@7.2.3':
     resolution: {integrity: sha512-zgCpiC/er0ysQwI18H4k3pzEX2ziISZKkX63uyfKnqvPQsT1vjB/ZcuD9jpzgwBAq5RZy9XQl8pjSucWcuAU6A==}
+
+  '@lit-protocol/accs-schemas@0.0.31':
+    resolution: {integrity: sha512-L3MxpXY1hP6Ep4GwD3ZBQjaFVPuF7VlLU0zJhODqcs+RkHXlcXp9py7rY2APJEW3Amx1LTMwaRKn63egn16RYw==}
 
   '@lit-protocol/auth-browser@7.2.3':
     resolution: {integrity: sha512-7src1WsGVzXUq1rFqrwlIAlw+D68aMEsLXjnE+SKR02LFJ6roLxkaC9zU7EyKBUm98A8YPWNgIvHbZ6bqJncdQ==}
@@ -11043,6 +11049,10 @@ snapshots:
       util: 0.12.5
     transitivePeerDependencies:
       - ethers
+
+  '@lit-protocol/accs-schemas@0.0.31':
+    dependencies:
+      ajv: 8.17.1
 
   '@lit-protocol/auth-browser@7.2.3(ethers@5.8.0(bufferutil@4.0.9)(utf-8-validate@5.0.10))':
     dependencies:

@@ -39,6 +39,7 @@
   "dependencies": {
     "@apollo/client": "^3.13.8",
     "@dotenvx/dotenvx": "^1.39.0",
+    "@lit-protocol/accs-schemas": "^0.0.31",
     "@lit-protocol/auth-helpers": "^7.2.3",
     "@lit-protocol/constants": "^7.2.3",
     "@lit-protocol/contracts": "^0.3.1",
