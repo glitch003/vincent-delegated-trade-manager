@@ -19,8 +19,7 @@
     "start": "node ./dist/bin/serverWorker.mjs",
     "startWorker": "node ./dist/bin/jobWorker.mjs",
     "startApiServer": "node ./dist/bin/apiServer.mjs",
-    "clean": "pnpm exec rm -Rf node_modules dist",
-    "mintRli": "pnpm dotenvx run -- pnpm bun ./src/bin/mintRLINft.ts"
+    "clean": "pnpm exec rm -Rf node_modules dist"
   },
   "repository": {
     "type": "git",
