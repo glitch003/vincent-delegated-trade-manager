@@ -3,6 +3,8 @@ import { Job } from '@whisthub/agenda';
 import consola from 'consola';
 import { ethers } from 'ethers';
 
+import { IRelayPKP } from '@lit-protocol/types';
+
 import { type UserVaultPositionItem, type UserPositionItem, type VaultItem } from './morphoLoader';
 import {
   baseProvider,
@@ -12,7 +14,6 @@ import {
   getMorphoPositions,
   getMorphoVaults,
   redeemMorphoVaults,
-  BASE_CHAIN_ID,
 } from './utils';
 import { env } from '../../env';
 import { MorphoSwap } from '../../mongo/models/MorphoSwap';
@@ -20,8 +21,8 @@ import { MorphoSwap } from '../../mongo/models/MorphoSwap';
 export type JobType = Job<JobParams>;
 export type JobParams = {
   name: string;
+  pkpInfo: IRelayPKP;
   updatedAt: Date;
-  walletAddress: string;
 };
 
 const { MINIMUM_USDC_BALANCE, MINIMUM_YIELD_IMPROVEMENT_PERCENT } = env;
@@ -52,12 +53,12 @@ export async function optimizeMorphoYield(job: JobType): Promise<void> {
   try {
     const {
       _id,
-      data: { walletAddress },
+      data: { pkpInfo },
     } = job.attrs;
 
     consola.log('Starting Morpho optimization job...', {
       _id,
-      walletAddress,
+      pkpInfo,
     });
 
     consola.debug('Fetching current top USDC vault and user vault positions...');
@@ -68,11 +69,11 @@ export async function optimizeMorphoYield(job: JobType): Promise<void> {
         orderDirection: OrderDirection.Desc,
         where: {
           assetSymbol_in: ['USDC'],
-          chainId_in: [BASE_CHAIN_ID],
+          chainId_in: [baseProvider.network.chainId],
           whitelisted: true,
         },
       }),
-      getMorphoPositions({ walletAddress, chainId: BASE_CHAIN_ID }),
+      getMorphoPositions({ pkpInfo, chainId: baseProvider.network.chainId }),
     ]);
     const topVault = vaults[0];
     if (!topVault) {
@@ -89,7 +90,7 @@ export async function optimizeMorphoYield(job: JobType): Promise<void> {
 
       // Withdraw from vaults to optimize
       redeems = await redeemMorphoVaults({
-        walletAddress,
+        pkpInfo,
         provider: baseProvider,
         userVaultPositions: vaultsToOptimize,
       });
@@ -98,7 +99,7 @@ export async function optimizeMorphoYield(job: JobType): Promise<void> {
     // Get user USDC balance
     const { USDC_ADDRESS } = getAddressesByChainId(baseProvider.network.chainId);
     const tokenBalance = await getERC20Balance({
-      walletAddress,
+      pkpInfo,
       provider: baseProvider,
       tokenAddress: USDC_ADDRESS,
     });
@@ -109,8 +110,8 @@ export async function optimizeMorphoYield(job: JobType): Promise<void> {
     if (balance.gt(MINIMUM_USDC_BALANCE * 10 ** decimals)) {
       // Put all USDC into the top vault
       const depositResult = await depositMorphoVault({
+        pkpInfo,
         tokenBalance,
-        walletAddress,
         provider: baseProvider,
         vault: topVault,
       });
@@ -122,10 +123,10 @@ export async function optimizeMorphoYield(job: JobType): Promise<void> {
       JSON.stringify(
         {
           deposits,
+          pkpInfo,
           redeems,
           topVault,
           userPositions,
-          walletAddress,
           userTokenBalances: [tokenBalance],
         },
         null,
@@ -134,17 +135,17 @@ export async function optimizeMorphoYield(job: JobType): Promise<void> {
     );
     const morphoSwap = new MorphoSwap({
       deposits,
+      pkpInfo,
       redeems,
       topVault,
       userPositions,
-      walletAddress,
       scheduleId: _id,
       success: true,
       userTokenBalances: [tokenBalance],
     });
     await morphoSwap.save();
 
-    consola.debug(`Successfully optimized Morpho positions for ${walletAddress}`);
+    consola.debug(`Successfully optimized Morpho positions for ${pkpInfo.ethAddress}`);
   } catch (e) {
     // Catch-and-rethrow is usually an anti-pattern, but Agenda doesn't log failed job reasons to console
     // so this is our chance to log the job failure details using Consola before we throw the error

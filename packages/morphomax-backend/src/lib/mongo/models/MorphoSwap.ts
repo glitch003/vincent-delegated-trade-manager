@@ -180,6 +180,14 @@ const tokenBalanceSchema = new Schema(
 // Swap operations are all arrays to be prepared to support multiple tokens and chains
 const morphoSwapSchemaDefinition = {
   deposits: { default: [], required: true, type: [depositSchema] },
+  pkpInfo: {
+    required: true,
+    type: {
+      ethAddress: { required: true, type: String },
+      publicKey: { required: true, type: String },
+      tokenId: { required: true, type: String },
+    },
+  },
   redeems: { default: [], required: false, type: [redeemSchema] },
   scheduleId: {
     index: true,
@@ -195,13 +203,6 @@ const morphoSwapSchemaDefinition = {
   },
   userPositions: { default: [], required: false, type: [userPositionsSchema] },
   userTokenBalances: { default: [], required: true, type: [tokenBalanceSchema] },
-  walletAddress: {
-    index: true,
-    lowercase: true,
-    match: /^0x[a-fA-F0-9]{40}$/,
-    required: true,
-    type: String,
-  },
 } as const;
 
 const MorphoSwapSchema = new Schema(morphoSwapSchemaDefinition, { timestamps: true });

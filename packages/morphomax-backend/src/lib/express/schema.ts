@@ -3,9 +3,11 @@ import { z } from 'zod';
 
 export const ScheduleParamsSchema = z.object({
   name: z.string().default('Morphomaxing schedule'),
-  walletAddress: z
-    .string()
-    .refine((val) => /^0x[a-fA-F0-9]{40}$/.test(val), { message: 'Invalid wallet address' }),
+  pkpInfo: z.object({
+    ethAddress: z.string(),
+    publicKey: z.string(),
+    tokenId: z.string(),
+  }),
 });
 export const ScheduleIdentitySchema = z.object({
   scheduleId: z

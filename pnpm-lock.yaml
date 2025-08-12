@@ -123,6 +123,9 @@ importers:
       '@lit-protocol/vincent-app-sdk':
         specifier: 0.0.10-mma
         version: 0.0.10-mma(bufferutil@4.0.9)(utf-8-validate@5.0.10)
+      '@lit-protocol/vincent-scaffold-sdk':
+        specifier: 1.1.9-mma
+        version: 1.1.9-mma(@lit-protocol/vincent-app-sdk@0.0.10-mma(bufferutil@4.0.9)(utf-8-validate@5.0.10))(@lit-protocol/vincent-tool-sdk@1.0.2(bufferutil@4.0.9)(utf-8-validate@5.0.10))(@types/react@19.0.12)(bufferutil@4.0.9)(react@19.0.0)(typescript@5.8.2)(utf-8-validate@5.0.10)(zod@3.24.2)
       '@morpho-org/blue-api-sdk':
         specifier: ^2.8.1
         version: 2.8.1(@morpho-org/blue-sdk@4.2.0(@morpho-org/morpho-ts@2.4.1))(@morpho-org/morpho-ts@2.4.1)
@@ -1956,16 +1959,16 @@ packages:
     peerDependencies:
       '@lit-protocol/vincent-app-sdk': ^0.0.10-mma
 
-  '@lit-protocol/vincent-scaffold-sdk@1.1.7':
-    resolution: {integrity: sha512-5IMYCz+D3i0v9aJhvFamJqhNMh9ESSabpnTKiRK64bY1DJEapJtrvnrxqScYYdDibtraJ6rK9vj+M1/Jndqgyw==}
+  '@lit-protocol/vincent-scaffold-sdk@1.1.8':
+    resolution: {integrity: sha512-SCLsBEogqvdpT+ug2aBY+QQ0X9T882ZEIManRqUiM60IDtYl0UQtc9rXo+R2dq5UO9aSznPc6wPCvFGGWfxnxw==}
     engines: {node: '>=16.0.0'}
     hasBin: true
     peerDependencies:
       '@lit-protocol/vincent-app-sdk': '*'
       '@lit-protocol/vincent-tool-sdk': '*'
 
-  '@lit-protocol/vincent-scaffold-sdk@1.1.8':
-    resolution: {integrity: sha512-SCLsBEogqvdpT+ug2aBY+QQ0X9T882ZEIManRqUiM60IDtYl0UQtc9rXo+R2dq5UO9aSznPc6wPCvFGGWfxnxw==}
+  '@lit-protocol/vincent-scaffold-sdk@1.1.9-mma':
+    resolution: {integrity: sha512-RAUHDaRwPW8eNti4VCFJ2OG6Eqd6bbNqcC1iZtD7vw2cUPInRBNKVWrDFrIoNLYpY7nKvwrivZVn/RtjnSVdUQ==}
     engines: {node: '>=16.0.0'}
     hasBin: true
     peerDependencies:
@@ -11803,7 +11806,7 @@ snapshots:
       '@lit-protocol/vincent-ability-sdk': 0.0.10-mma(bufferutil@4.0.9)(utf-8-validate@5.0.10)
       '@lit-protocol/vincent-app-sdk': 0.0.10-mma(bufferutil@4.0.9)(utf-8-validate@5.0.10)
       '@lit-protocol/vincent-policy-send-counter': 0.0.10-mma(@lit-protocol/vincent-app-sdk@0.0.10-mma(bufferutil@4.0.9)(utf-8-validate@5.0.10))(@lit-protocol/vincent-tool-sdk@1.0.2(bufferutil@4.0.9)(utf-8-validate@5.0.10))(@types/react@19.0.12)(bufferutil@4.0.9)(react@19.0.0)(typescript@5.8.2)(utf-8-validate@5.0.10)
-      '@lit-protocol/vincent-scaffold-sdk': 1.1.7(@lit-protocol/vincent-app-sdk@0.0.10-mma(bufferutil@4.0.9)(utf-8-validate@5.0.10))(@lit-protocol/vincent-tool-sdk@1.0.2(bufferutil@4.0.9)(utf-8-validate@5.0.10))(@types/react@19.0.12)(bufferutil@4.0.9)(react@19.0.0)(typescript@5.8.2)(utf-8-validate@5.0.10)(zod@3.25.76)
+      '@lit-protocol/vincent-scaffold-sdk': 1.1.8(@lit-protocol/vincent-app-sdk@0.0.10-mma(bufferutil@4.0.9)(utf-8-validate@5.0.10))(@lit-protocol/vincent-tool-sdk@1.0.2(bufferutil@4.0.9)(utf-8-validate@5.0.10))(@types/react@19.0.12)(bufferutil@4.0.9)(react@19.0.0)(typescript@5.8.2)(utf-8-validate@5.0.10)(zod@3.25.76)
       ethers: 5.8.0(bufferutil@4.0.9)(utf-8-validate@5.0.10)
       tslib: 2.8.1
       zod: 3.25.76
@@ -11825,7 +11828,7 @@ snapshots:
     dependencies:
       '@lit-protocol/vincent-ability-sdk': 0.0.10-mma(bufferutil@4.0.9)(utf-8-validate@5.0.10)
       '@lit-protocol/vincent-app-sdk': 0.0.10-mma(bufferutil@4.0.9)(utf-8-validate@5.0.10)
-      '@lit-protocol/vincent-scaffold-sdk': 1.1.7(@lit-protocol/vincent-app-sdk@0.0.10-mma(bufferutil@4.0.9)(utf-8-validate@5.0.10))(@lit-protocol/vincent-tool-sdk@1.0.2(bufferutil@4.0.9)(utf-8-validate@5.0.10))(@types/react@19.0.12)(bufferutil@4.0.9)(react@19.0.0)(typescript@5.8.2)(utf-8-validate@5.0.10)(zod@3.25.76)
+      '@lit-protocol/vincent-scaffold-sdk': 1.1.8(@lit-protocol/vincent-app-sdk@0.0.10-mma(bufferutil@4.0.9)(utf-8-validate@5.0.10))(@lit-protocol/vincent-tool-sdk@1.0.2(bufferutil@4.0.9)(utf-8-validate@5.0.10))(@types/react@19.0.12)(bufferutil@4.0.9)(react@19.0.0)(typescript@5.8.2)(utf-8-validate@5.0.10)(zod@3.25.76)
       ethers: 5.8.0(bufferutil@4.0.9)(utf-8-validate@5.0.10)
       tslib: 2.8.1
       zod: 3.25.76
@@ -11916,7 +11919,7 @@ snapshots:
     dependencies:
       '@lit-protocol/vincent-ability-sdk': 0.0.10-mma(bufferutil@4.0.9)(utf-8-validate@5.0.10)
       '@lit-protocol/vincent-app-sdk': 0.0.10-mma(bufferutil@4.0.9)(utf-8-validate@5.0.10)
-      '@lit-protocol/vincent-scaffold-sdk': 1.1.7(@lit-protocol/vincent-app-sdk@0.0.10-mma(bufferutil@4.0.9)(utf-8-validate@5.0.10))(@lit-protocol/vincent-tool-sdk@1.0.2(bufferutil@4.0.9)(utf-8-validate@5.0.10))(@types/react@19.0.12)(bufferutil@4.0.9)(react@19.0.0)(typescript@5.8.2)(utf-8-validate@5.0.10)(zod@3.25.76)
+      '@lit-protocol/vincent-scaffold-sdk': 1.1.8(@lit-protocol/vincent-app-sdk@0.0.10-mma(bufferutil@4.0.9)(utf-8-validate@5.0.10))(@lit-protocol/vincent-tool-sdk@1.0.2(bufferutil@4.0.9)(utf-8-validate@5.0.10))(@types/react@19.0.12)(bufferutil@4.0.9)(react@19.0.0)(typescript@5.8.2)(utf-8-validate@5.0.10)(zod@3.25.76)
       ethers: 5.8.0(bufferutil@4.0.9)(utf-8-validate@5.0.10)
       tslib: 2.8.1
       zod: 3.25.76
@@ -11946,7 +11949,7 @@ snapshots:
       - bufferutil
       - utf-8-validate
 
-  '@lit-protocol/vincent-scaffold-sdk@1.1.7(@lit-protocol/vincent-app-sdk@0.0.10-mma(bufferutil@4.0.9)(utf-8-validate@5.0.10))(@lit-protocol/vincent-tool-sdk@1.0.2(bufferutil@4.0.9)(utf-8-validate@5.0.10))(@types/react@19.0.12)(bufferutil@4.0.9)(react@19.0.0)(typescript@5.8.2)(utf-8-validate@5.0.10)(zod@3.25.76)':
+  '@lit-protocol/vincent-scaffold-sdk@1.1.8(@lit-protocol/vincent-app-sdk@0.0.10-mma(bufferutil@4.0.9)(utf-8-validate@5.0.10))(@lit-protocol/vincent-tool-sdk@1.0.2(bufferutil@4.0.9)(utf-8-validate@5.0.10))(@types/react@19.0.12)(bufferutil@4.0.9)(react@19.0.0)(typescript@5.8.2)(utf-8-validate@5.0.10)(zod@3.25.76)':
     dependencies:
       '@account-kit/infra': 4.53.1(bufferutil@4.0.9)(typescript@5.8.2)(utf-8-validate@5.0.10)(viem@2.33.0(bufferutil@4.0.9)(typescript@5.8.2)(utf-8-validate@5.0.10)(zod@3.24.2))
       '@account-kit/smart-contracts': 4.53.1(bufferutil@4.0.9)(typescript@5.8.2)(utf-8-validate@5.0.10)(viem@2.33.0(bufferutil@4.0.9)(typescript@5.8.2)(utf-8-validate@5.0.10)(zod@3.24.2))
@@ -11976,7 +11979,7 @@ snapshots:
       - utf-8-validate
       - zod
 
-  '@lit-protocol/vincent-scaffold-sdk@1.1.8(@lit-protocol/vincent-app-sdk@0.0.10-mma(bufferutil@4.0.9)(utf-8-validate@5.0.10))(@lit-protocol/vincent-tool-sdk@1.0.2(bufferutil@4.0.9)(utf-8-validate@5.0.10))(@types/react@19.0.12)(bufferutil@4.0.9)(react@19.0.0)(typescript@5.8.2)(utf-8-validate@5.0.10)(zod@3.25.76)':
+  '@lit-protocol/vincent-scaffold-sdk@1.1.9-mma(@lit-protocol/vincent-app-sdk@0.0.10-mma(bufferutil@4.0.9)(utf-8-validate@5.0.10))(@lit-protocol/vincent-tool-sdk@1.0.2(bufferutil@4.0.9)(utf-8-validate@5.0.10))(@types/react@19.0.12)(bufferutil@4.0.9)(react@19.0.0)(typescript@5.8.2)(utf-8-validate@5.0.10)(zod@3.24.2)':
     dependencies:
       '@account-kit/infra': 4.53.1(bufferutil@4.0.9)(typescript@5.8.2)(utf-8-validate@5.0.10)(viem@2.33.0(bufferutil@4.0.9)(typescript@5.8.2)(utf-8-validate@5.0.10)(zod@3.24.2))
       '@account-kit/smart-contracts': 4.53.1(bufferutil@4.0.9)(typescript@5.8.2)(utf-8-validate@5.0.10)(viem@2.33.0(bufferutil@4.0.9)(typescript@5.8.2)(utf-8-validate@5.0.10)(zod@3.24.2))
@@ -11991,7 +11994,7 @@ snapshots:
       ethers: 5.7.2(bufferutil@4.0.9)(utf-8-validate@5.0.10)
       inquirer: 8.2.6
       ipfs-only-hash: 4.0.0
-      viem: 2.33.0(bufferutil@4.0.9)(typescript@5.8.2)(utf-8-validate@5.0.10)(zod@3.25.76)
+      viem: 2.33.0(bufferutil@4.0.9)(typescript@5.8.2)(utf-8-validate@5.0.10)(zod@3.24.2)
     transitivePeerDependencies:
       - '@tanstack/query-core'
       - '@types/react'

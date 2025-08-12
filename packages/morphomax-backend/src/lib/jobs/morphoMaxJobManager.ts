@@ -10,7 +10,6 @@ import {
   getERC20Balance,
   getMorphoPositions,
   redeemMorphoVaults,
-  BASE_CHAIN_ID,
 } from './optimizeMorphoYield/utils';
 import { transferERC20Tokens } from './optimizeMorphoYield/utils/transfer-erc20-tokens';
 import { MorphoSwap } from '../mongo/models/MorphoSwap';
@@ -22,7 +21,7 @@ interface FindSpecificScheduledJobParams {
 }
 
 interface CancelJobParams {
-  receiverAddress?: string;
+  receiverAddress?: string | null;
   scheduleId: string;
   walletAddress: string;
 }
@@ -101,7 +100,10 @@ export async function cancelJob({ receiverAddress, scheduleId, walletAddress }: 
   });
 
   if (calledJob) {
-    const userPositions = await getMorphoPositions({ walletAddress, chainId: BASE_CHAIN_ID });
+    const userPositions = await getMorphoPositions({
+      walletAddress,
+      chainId: baseProvider.network.chainId,
+    });
     const userVaultPositions = userPositions?.user.vaultPositions;
     const redeems = userVaultPositions?.length
       ? await redeemMorphoVaults({

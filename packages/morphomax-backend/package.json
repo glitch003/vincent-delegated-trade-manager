@@ -48,6 +48,7 @@
     "@lit-protocol/vincent-ability-morpho": "0.0.10-mma",
     "@lit-protocol/vincent-ability-uniswap-swap": "0.0.10-mma",
     "@lit-protocol/vincent-app-sdk": "0.0.10-mma",
+    "@lit-protocol/vincent-scaffold-sdk": "1.1.9-mma",
     "@morpho-org/blue-api-sdk": "^2.8.1",
     "@morpho-org/blue-sdk": "^4.2.0",
     "@morpho-org/morpho-ts": "^2.4.1",

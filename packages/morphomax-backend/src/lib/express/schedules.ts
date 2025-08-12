@@ -25,12 +25,10 @@ export const handleCreateScheduleRoute = async (
   res: Response
 ) => {
   try {
-    const {
-      pkpInfo: { ethAddress },
-    } = req.user.decodedJWT.payload;
+    const { pkpInfo } = req.user.decodedJWT.payload;
 
     const scheduleParams = ScheduleParamsSchema.parse({
-      walletAddress: ethAddress,
+      pkpInfo,
     });
 
     const schedule = await createJob({ ...scheduleParams }, { interval: 'weekly' });

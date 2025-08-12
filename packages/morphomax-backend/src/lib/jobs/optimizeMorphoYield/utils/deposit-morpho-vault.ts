@@ -1,9 +1,12 @@
 import { ethers } from 'ethers';
 
+import { IRelayPKP } from '@lit-protocol/types';
+
 import { alchemyGasSponsor, alchemyGasSponsorApiKey, alchemyGasSponsorPolicyId } from './alchemy';
 import { type VaultItem } from '../morphoLoader';
 import { type TokenBalance } from './get-erc20-info';
 import { waitForTransaction } from './wait-for-transaction';
+import { waitForUserOperation } from './wait-for-user-operation';
 import {
   getErc20ApprovalAbilityClient,
   getMorphoAbilityClient,
@@ -11,15 +14,15 @@ import {
 } from '../vincentAbilities';
 
 export async function depositMorphoVault({
+  pkpInfo,
   provider,
   tokenBalance,
   vault,
-  walletAddress,
 }: {
+  pkpInfo: IRelayPKP;
   provider: ethers.providers.JsonRpcProvider;
   tokenBalance: TokenBalance;
   vault: VaultItem;
-  walletAddress: string;
 }) {
   const erc20ApprovalAbilityClient = getErc20ApprovalAbilityClient();
   const morphoAbilityClient = getMorphoAbilityClient();
@@ -36,7 +39,7 @@ export async function depositMorphoVault({
     tokenDecimals: tokenBalance.decimals,
   };
   const erc20ApprovalPrecheckResponse = await erc20ApprovalAbilityClient.precheck(erc20Params, {
-    delegatorPkpEthAddress: walletAddress,
+    delegatorPkpEthAddress: pkpInfo.ethAddress,
   });
   if ('error' in erc20ApprovalPrecheckResponse) {
     throw new Error(
@@ -45,7 +48,7 @@ export async function depositMorphoVault({
   }
 
   const erc20ApprovalExecutionResponse = await erc20ApprovalAbilityClient.execute(erc20Params, {
-    delegatorPkpEthAddress: walletAddress,
+    delegatorPkpEthAddress: pkpInfo.ethAddress,
   });
   const erc20ApprovalExecutionResult = erc20ApprovalExecutionResponse.result;
   if (!('approvedAmount' in erc20ApprovalExecutionResult)) {
@@ -57,7 +60,12 @@ export async function depositMorphoVault({
     'approvalTxHash' in erc20ApprovalExecutionResult &&
     typeof erc20ApprovalExecutionResult.approvalTxHash === 'string'
   ) {
-    await waitForTransaction(provider, erc20ApprovalExecutionResult.approvalTxHash);
+    const bundledTxHash = await waitForUserOperation({
+      provider,
+      pkpPublicKey: pkpInfo.publicKey,
+      useropHash: erc20ApprovalExecutionResult.approvalTxHash,
+    });
+    await waitForTransaction({ provider, transactionHash: bundledTxHash });
   }
 
   const amountToDeposit = ethers.utils.formatUnits(
@@ -70,6 +78,7 @@ export async function depositMorphoVault({
     alchemyGasSponsorApiKey,
     alchemyGasSponsorPolicyId,
     amount: amountToDeposit,
+    chain: provider.network.name,
     operation: MorphoOperation.DEPOSIT,
     vaultAddress: vault.address as string,
   };
@@ -79,7 +88,7 @@ export async function depositMorphoVault({
       rpcUrl: provider.connection.url,
     },
     {
-      delegatorPkpEthAddress: walletAddress,
+      delegatorPkpEthAddress: pkpInfo.ethAddress,
     }
   );
   const morphoDepositPrecheckResult = morphoDepositPrecheckResponse.result;
@@ -90,9 +99,9 @@ export async function depositMorphoVault({
   }
 
   const morphoDepositExecutionResponse = await morphoAbilityClient.execute(
-    { ...morphoDepositParams, chain: provider.network.name },
+    { ...morphoDepositParams, rpcUrl: '' },
     {
-      delegatorPkpEthAddress: walletAddress,
+      delegatorPkpEthAddress: pkpInfo.ethAddress,
     }
   );
   const morphoDepositExecutionResult = morphoDepositExecutionResponse.result;
@@ -101,7 +110,12 @@ export async function depositMorphoVault({
       `Morpho deposit ability run failed. Response: ${JSON.stringify(morphoDepositExecutionResponse, null, 2)}`
     );
   }
-  await waitForTransaction(provider, morphoDepositExecutionResult.txHash);
+  const bundledTxHash = await waitForUserOperation({
+    provider,
+    pkpPublicKey: pkpInfo.publicKey,
+    useropHash: morphoDepositExecutionResult.txHash,
+  });
+  await waitForTransaction({ provider, transactionHash: bundledTxHash });
 
   return {
     approval: erc20ApprovalExecutionResult,

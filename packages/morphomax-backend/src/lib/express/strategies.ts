@@ -1,7 +1,7 @@
 import { OrderDirection, VaultOrderBy } from '@morpho-org/blue-api-sdk';
 import { Response } from 'express';
 
-import { BASE_CHAIN_ID, getMorphoVaults } from '../jobs/optimizeMorphoYield/utils';
+import { baseProvider, getMorphoVaults } from '../jobs/optimizeMorphoYield/utils';
 
 export const handleGetTopStrategyRoute = async (req: Request, res: Response) => {
   const vaults = await getMorphoVaults({
@@ -10,7 +10,7 @@ export const handleGetTopStrategyRoute = async (req: Request, res: Response) => 
     orderDirection: OrderDirection.Desc,
     where: {
       assetSymbol_in: ['USDC'],
-      chainId_in: [BASE_CHAIN_ID],
+      chainId_in: [baseProvider.network.chainId],
       whitelisted: true,
     },
   });

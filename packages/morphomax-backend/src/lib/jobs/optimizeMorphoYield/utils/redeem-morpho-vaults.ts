@@ -1,18 +1,21 @@
 import { ethers } from 'ethers';
 
+import { IRelayPKP } from '@lit-protocol/types';
+
 import { alchemyGasSponsor, alchemyGasSponsorApiKey, alchemyGasSponsorPolicyId } from './alchemy';
 import { type UserVaultPositionItem } from '../morphoLoader';
 import { waitForTransaction } from './wait-for-transaction';
+import { waitForUserOperation } from './wait-for-user-operation';
 import { getMorphoAbilityClient, MorphoOperation } from '../vincentAbilities';
 
 export async function redeemMorphoVaults({
+  pkpInfo,
   provider,
   userVaultPositions,
-  walletAddress,
 }: {
+  pkpInfo: IRelayPKP;
   provider: ethers.providers.StaticJsonRpcProvider;
   userVaultPositions: UserVaultPositionItem[];
-  walletAddress: string;
 }) {
   const morphoAbilityClient = getMorphoAbilityClient();
 
@@ -31,13 +34,15 @@ export async function redeemMorphoVaults({
         amount: shares,
         chain: provider.network.name,
         operation: MorphoOperation.REDEEM,
-        rpcUrl: provider.connection.url,
         vaultAddress: vaultPosition.vault.address,
       };
 
-      const morphoReedemPrecheckResponse = await morphoAbilityClient.precheck(redeemParams, {
-        delegatorPkpEthAddress: walletAddress,
-      });
+      const morphoReedemPrecheckResponse = await morphoAbilityClient.precheck(
+        { ...redeemParams, rpcUrl: provider.connection.url },
+        {
+          delegatorPkpEthAddress: pkpInfo.ethAddress,
+        }
+      );
       const morphoRedeemPrecheckResult = morphoReedemPrecheckResponse.result;
       if (!('amountValid' in morphoRedeemPrecheckResult)) {
         throw new Error(
@@ -45,9 +50,12 @@ export async function redeemMorphoVaults({
         );
       }
 
-      const morphoReedemExecutionResponse = await morphoAbilityClient.execute(redeemParams, {
-        delegatorPkpEthAddress: walletAddress,
-      });
+      const morphoReedemExecutionResponse = await morphoAbilityClient.execute(
+        { ...redeemParams, rpcUrl: '' },
+        {
+          delegatorPkpEthAddress: pkpInfo.ethAddress,
+        }
+      );
       const morphoRedeemExecutionResult = morphoReedemExecutionResponse.result;
       if (
         !(
@@ -60,7 +68,13 @@ export async function redeemMorphoVaults({
           `Morpho redeem execution failed. Response: ${JSON.stringify(morphoReedemExecutionResponse, null, 2)}`
         );
       }
-      await waitForTransaction(provider, morphoRedeemExecutionResult.txHash);
+
+      const bundledTxHash = await waitForUserOperation({
+        provider,
+        pkpPublicKey: pkpInfo.publicKey,
+        useropHash: morphoRedeemExecutionResult.txHash,
+      });
+      await waitForTransaction({ provider, transactionHash: bundledTxHash });
 
       redeemResults.push(morphoRedeemExecutionResult);
     }

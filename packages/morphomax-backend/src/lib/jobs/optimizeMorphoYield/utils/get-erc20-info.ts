@@ -1,5 +1,7 @@
 import { ethers } from 'ethers';
 
+import { IRelayPKP } from '@lit-protocol/types';
+
 export interface TokenBalance {
   address: string;
   balance: ethers.BigNumber;
@@ -23,18 +25,18 @@ export function getERC20Contract(address: string, provider: ethers.providers.Jso
 }
 
 export async function getERC20Balance({
+  pkpInfo,
   provider,
   tokenAddress,
-  walletAddress,
 }: {
+  pkpInfo: IRelayPKP;
   provider: ethers.providers.StaticJsonRpcProvider;
   tokenAddress: string;
-  walletAddress: string;
 }): Promise<TokenBalance> {
   const usdcContract = getERC20Contract(tokenAddress, provider);
 
   const [balance, decimals] = await Promise.all([
-    usdcContract.balanceOf(walletAddress),
+    usdcContract.balanceOf(pkpInfo.ethAddress),
     usdcContract.decimals(),
   ]);
 
