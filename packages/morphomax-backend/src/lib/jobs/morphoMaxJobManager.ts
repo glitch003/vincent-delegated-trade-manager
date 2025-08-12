@@ -33,7 +33,7 @@ export async function listJobsByWalletAddress({ walletAddress }: { walletAddress
   logger.log('listing jobs', { walletAddress });
 
   return (await agendaClient.jobs({
-    'data.walletAddress': walletAddress,
+    'data.pkpInfo.ethAddress': walletAddress,
   })) as optimizeMorphoYieldJobDef.JobType[];
 }
 
@@ -52,7 +52,7 @@ export async function findJob({
 
   const jobs = (await agendaClient.jobs({
     _id: new Types.ObjectId(scheduleId),
-    'data.walletAddress': walletAddress,
+    'data.pkpInfo.ethAddress': walletAddress,
   })) as optimizeMorphoYieldJobDef.JobType[];
 
   logger.log(`Found ${jobs.length} jobs with ID ${scheduleId}`);
@@ -96,7 +96,7 @@ export async function cancelJob({ receiverAddress, scheduleId, walletAddress }: 
   const scheduleObjectId = new Types.ObjectId(scheduleId);
   const calledJob = await agendaClient.cancel({
     _id: scheduleObjectId,
-    'data.walletAddress': walletAddress,
+    'data.pkpInfo.ethAddress': walletAddress,
   });
 
   if (calledJob) {
@@ -161,7 +161,7 @@ export async function createJob(
   );
 
   // Currently we only allow a single MorphoMax per walletAddress
-  job.unique({ 'data.walletAddress': data.walletAddress });
+  job.unique({ 'data.pkpInfo.ethAddress': data.walletAddress });
 
   // Schedule the job based on provided options
   if (options.interval) {
