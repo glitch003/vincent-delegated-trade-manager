@@ -112,6 +112,7 @@ export async function createJob(
   } = {}
 ) {
   const agenda = getAgenda();
+  const walletAddress = data.pkpInfo.ethAddress;
 
   // Create a new job instance
   let job = await findJob({ walletAddress, mustExist: false });
@@ -122,7 +123,7 @@ export async function createJob(
     });
 
     // Currently we only allow a single Vincent Yield per walletAddress
-    job.unique({ 'data.pkpInfo.ethAddress': data.walletAddress });
+    job.unique({ 'data.pkpInfo.ethAddress': data.pkpInfo.walletAddress });
   }
 
   // Schedule the job based on provided options
