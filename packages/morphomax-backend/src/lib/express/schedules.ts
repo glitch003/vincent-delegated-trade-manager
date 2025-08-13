@@ -45,10 +45,9 @@ export const handleListScheduleSwapsRoute = async (
   const {
     pkpInfo: { ethAddress },
   } = req.user.decodedJWT.payload;
-  const { scheduleId } = ScheduleIdentitySchema.parse(req.params);
   const { limit = 10, skip = 0 } = req.query;
 
-  const swaps = await MorphoSwap.find({ scheduleId, walletAddress: ethAddress })
+  const swaps = await MorphoSwap.find({ pkpInfo: { ethAddress } })
     .sort({
       createdAt: -1,
     })

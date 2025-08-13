@@ -1,5 +1,4 @@
 import consola from 'consola';
-import { Types } from 'mongoose';
 
 import * as optimizeMorphoYieldJobDef from './optimizeMorphoYield';
 import { getAgenda } from '../agenda/agendaClient';
@@ -14,7 +13,6 @@ import { MorphoSwap } from '../mongo/models/MorphoSwap';
 
 interface FindSpecificScheduledJobParams {
   mustExist?: boolean;
-  scheduleId: string;
   walletAddress: string;
 }
 
@@ -43,19 +41,17 @@ export async function findJob(
 ): Promise<optimizeMorphoYieldJobDef.JobType | undefined>;
 export async function findJob({
   mustExist,
-  scheduleId,
   walletAddress,
 }: FindSpecificScheduledJobParams): Promise<optimizeMorphoYieldJobDef.JobType | undefined> {
   const agendaClient = getAgenda();
 
   const jobs = (await agendaClient.jobs({
-    _id: new Types.ObjectId(scheduleId),
     'data.pkpInfo.ethAddress': walletAddress,
   })) as optimizeMorphoYieldJobDef.JobType[];
 
-  logger.log(`Found ${jobs.length} jobs with ID ${scheduleId}`);
+  logger.log(`Found ${jobs.length} jobs for address ${walletAddress}`);
   if (mustExist && !jobs.length) {
-    throw new Error(`No Vincent Yield schedule found with ID ${scheduleId}`);
+    throw new Error(`No Vincent Yield schedule found for ${walletAddress}`);
   }
 
   return jobs[0];
@@ -63,11 +59,11 @@ export async function findJob({
 
 export async function cancelJob({ scheduleId, walletAddress }: CancelJobParams) {
   // Idempotent; if a job we're trying to disable doesn't exist, it is disabled.
-  const job = await findJob({ scheduleId, walletAddress, mustExist: false });
+  const job = await findJob({ walletAddress, mustExist: false });
 
   if (!job) return null;
 
-  logger.log(`Disabling Vincent Yield job ${scheduleId}`);
+  logger.log(`Disabling Vincent Yield job for ${walletAddress}`);
   job.disable();
   job.attrs.data.updatedAt = new Date();
 
@@ -118,7 +114,7 @@ export async function createJob(
   const agenda = getAgenda();
 
   // Create a new job instance
-  let job = await findJob({ scheduleId, walletAddress, mustExist: false });
+  let job = await findJob({ walletAddress, mustExist: false });
   if (!job) {
     job = agenda.create<optimizeMorphoYieldJobDef.JobParams>(optimizeMorphoYieldJobDef.jobName, {
       ...data,
