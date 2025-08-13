@@ -1,4 +1,3 @@
-import { OrderDirection, VaultOrderBy } from '@morpho-org/blue-api-sdk';
 import { Job } from '@whisthub/agenda';
 import consola from 'consola';
 import { ethers } from 'ethers';
@@ -12,7 +11,7 @@ import {
   getAddressesByChainId,
   getERC20Balance,
   getMorphoPositions,
-  getMorphoVaults,
+  getTopMorphoVault,
   redeemMorphoVaults,
 } from './utils';
 import { env } from '../../env';
@@ -25,8 +24,7 @@ export type JobParams = {
   updatedAt: Date;
 };
 
-const { MINIMUM_USDC_BALANCE, MINIMUM_VAULT_TOTAL_ASSETS_USD, MINIMUM_YIELD_IMPROVEMENT_PERCENT } =
-  env;
+const { MINIMUM_USDC_BALANCE, MINIMUM_YIELD_IMPROVEMENT_PERCENT } = env;
 
 function getVaultsToOptimize(
   userPositions: UserPositionItem,
@@ -63,24 +61,10 @@ export async function optimizeMorphoYield(job: JobType): Promise<void> {
     });
 
     consola.debug('Fetching current top USDC vault and user vault positions...');
-    const [vaults, userPositions] = await Promise.all([
-      getMorphoVaults({
-        first: 1,
-        orderBy: VaultOrderBy.NetApy,
-        orderDirection: OrderDirection.Desc,
-        where: {
-          assetSymbol_in: ['USDC'],
-          chainId_in: [baseProvider.network.chainId],
-          totalAssetsUsd_gte: MINIMUM_VAULT_TOTAL_ASSETS_USD,
-          whitelisted: true,
-        },
-      }),
+    const [topVault, userPositions] = await Promise.all([
+      getTopMorphoVault(),
       getMorphoPositions({ pkpInfo, chainId: baseProvider.network.chainId }),
     ]);
-    const topVault = vaults[0];
-    if (!topVault) {
-      throw new Error('No vault found when looking for top yielding vault');
-    }
 
     consola.debug('Got top USDC vault:', topVault);
     consola.debug('Got user positions:', userPositions);

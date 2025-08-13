@@ -1,6 +1,10 @@
 import { OrderDirection, VaultOrderBy } from '@morpho-org/blue-api-sdk';
 
+import { baseProvider } from './chain';
+import { env } from '../../../env';
 import { getVaults } from '../morphoLoader';
+
+const { MINIMUM_VAULT_TOTAL_ASSETS_USD } = env;
 
 export interface GetVaultsQueryVariables {
   first?: number;
@@ -69,4 +73,25 @@ export async function getMorphoVaults(
         whitelisted: vault.whitelisted,
       }) as MorphoVaultInfo
   );
+}
+
+export async function getTopMorphoVault() {
+  const vaults = await getMorphoVaults({
+    first: 1,
+    orderBy: VaultOrderBy.NetApy,
+    orderDirection: OrderDirection.Desc,
+    where: {
+      assetSymbol_in: ['USDC'],
+      chainId_in: [baseProvider.network.chainId],
+      totalAssetsUsd_gte: MINIMUM_VAULT_TOTAL_ASSETS_USD,
+      whitelisted: true,
+    },
+  });
+
+  const topVault = vaults[0];
+  if (!topVault) {
+    throw new Error('No vault found when looking for top yielding vault');
+  }
+
+  return topVault;
 }

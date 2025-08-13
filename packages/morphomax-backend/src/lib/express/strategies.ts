@@ -1,24 +1,9 @@
-import { OrderDirection, VaultOrderBy } from '@morpho-org/blue-api-sdk';
 import { Response } from 'express';
 
-import { baseProvider, getMorphoVaults } from '../jobs/optimizeMorphoYield/utils';
+import { getTopMorphoVault } from '../jobs/optimizeMorphoYield/utils';
 
 export const handleGetTopStrategyRoute = async (req: Request, res: Response) => {
-  const vaults = await getMorphoVaults({
-    first: 1,
-    orderBy: VaultOrderBy.AvgNetApy,
-    orderDirection: OrderDirection.Desc,
-    where: {
-      assetSymbol_in: ['USDC'],
-      chainId_in: [baseProvider.network.chainId],
-      whitelisted: true,
-    },
-  });
-
-  const topVault = vaults[0];
-  if (!topVault) {
-    throw new Error('No vault found when looking for top yielding vault');
-  }
+  const topVault = await getTopMorphoVault();
 
   res.json({ data: topVault, success: true });
 };
