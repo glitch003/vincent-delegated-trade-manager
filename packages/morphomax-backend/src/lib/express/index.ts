@@ -16,7 +16,7 @@ import { handleListSwapsRoute } from './swaps';
 import { env } from '../env';
 import { serviceLogger } from '../logger';
 
-const { ALLOWED_AUDIENCE, CORS_ALLOWED_DOMAIN, IS_DEVELOPMENT, VINCENT_APP_ID } = env;
+const { ALLOWED_AUDIENCE, CORS_ALLOWED_DOMAINS, IS_DEVELOPMENT, VINCENT_APP_ID } = env;
 
 const { handler, middleware } = createVincentUserMiddleware({
   allowedAudience: ALLOWED_AUDIENCE,
@@ -26,7 +26,7 @@ const { handler, middleware } = createVincentUserMiddleware({
 
 const corsConfig = {
   optionsSuccessStatus: 204,
-  origin: IS_DEVELOPMENT ? true : [CORS_ALLOWED_DOMAIN],
+  origin: IS_DEVELOPMENT ? true : CORS_ALLOWED_DOMAINS,
 };
 
 export const registerRoutes = (app: Express) => {
@@ -35,7 +35,7 @@ export const registerRoutes = (app: Express) => {
   if (IS_DEVELOPMENT) {
     serviceLogger.info(`CORS is disabled for development`);
   } else {
-    serviceLogger.info(`Configuring CORS with allowed domain: ${CORS_ALLOWED_DOMAIN}`);
+    serviceLogger.info(`Configuring CORS with allowed domains: ${CORS_ALLOWED_DOMAINS}`);
   }
   app.use(cors(corsConfig));
 
