@@ -6,8 +6,6 @@ import { createVincentUserMiddleware } from '@lit-protocol/vincent-app-sdk/expre
 import {
   handleCreateScheduleRoute,
   handleDeleteScheduleRoute,
-  handleDisableScheduleRoute,
-  handleEnableScheduleRoute,
   handleListSchedulesRoute,
   handleListScheduleSwapsRoute,
 } from './schedules';
@@ -44,8 +42,6 @@ export const registerRoutes = (app: Express) => {
   app.get('/schedule', middleware, handler(handleListSchedulesRoute));
   app.post('/schedule', middleware, handler(handleCreateScheduleRoute));
   app.get('/schedule/:scheduleId/swaps', middleware, handler(handleListScheduleSwapsRoute));
-  app.put('/schedule/:scheduleId/enable', middleware, handler(handleEnableScheduleRoute));
-  app.put('/schedule/:scheduleId/disable', middleware, handler(handleDisableScheduleRoute));
   app.delete('/schedule/:scheduleId', middleware, handler(handleDeleteScheduleRoute));
 
   serviceLogger.info(`Routes registered`);

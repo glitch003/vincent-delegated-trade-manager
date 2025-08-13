@@ -1,11 +1,11 @@
 import { Response } from 'express';
 
-import { ScheduleDeleteSchema, ScheduleIdentitySchema, ScheduleParamsSchema } from './schema';
+import { ScheduleIdentitySchema, ScheduleParamsSchema } from './schema';
 import { VincentAuthenticatedRequest } from './types';
 import * as jobManager from '../jobs/morphoMaxJobManager';
 import { MorphoSwap } from '../mongo/models/MorphoSwap';
 
-const { cancelJob, createJob, disableJob, enableJob, listJobsByWalletAddress } = jobManager;
+const { cancelJob, createJob, listJobsByWalletAddress } = jobManager;
 
 export const handleListSchedulesRoute = async (req: VincentAuthenticatedRequest, res: Response) => {
   try {
@@ -64,46 +64,6 @@ export const handleListScheduleSwapsRoute = async (
   res.json({ data: swaps, success: true });
 };
 
-export const handleDisableScheduleRoute = async (
-  req: VincentAuthenticatedRequest,
-  res: Response
-) => {
-  try {
-    const {
-      pkpInfo: { ethAddress },
-    } = req.user.decodedJWT.payload;
-    const { scheduleId } = ScheduleIdentitySchema.parse(req.params);
-
-    const job = await disableJob({ scheduleId, walletAddress: ethAddress });
-    if (!job) {
-      res.status(404).json({ error: 'Job not found' });
-      return;
-    }
-
-    res.json({ data: job.toJson(), success: true });
-  } catch (err) {
-    res.status(500).json({ error: (err as Error).message });
-  }
-};
-
-export const handleEnableScheduleRoute = async (
-  req: VincentAuthenticatedRequest,
-  res: Response
-) => {
-  try {
-    const {
-      pkpInfo: { ethAddress },
-    } = req.user.decodedJWT.payload;
-    const { scheduleId } = ScheduleIdentitySchema.parse(req.params);
-
-    const job = await enableJob({ scheduleId, walletAddress: ethAddress });
-
-    res.json({ data: job.toJson(), success: true });
-  } catch (err) {
-    res.status(500).json({ error: (err as Error).message });
-  }
-};
-
 export const handleDeleteScheduleRoute = async (
   req: VincentAuthenticatedRequest,
   res: Response
@@ -113,9 +73,8 @@ export const handleDeleteScheduleRoute = async (
       pkpInfo: { ethAddress },
     } = req.user.decodedJWT.payload;
     const { scheduleId } = ScheduleIdentitySchema.parse(req.params);
-    const { receiverAddress } = ScheduleDeleteSchema.parse(req.body);
 
-    await cancelJob({ receiverAddress, scheduleId, walletAddress: ethAddress });
+    await cancelJob({ scheduleId, walletAddress: ethAddress });
 
     res.json({ success: true });
   } catch (err) {

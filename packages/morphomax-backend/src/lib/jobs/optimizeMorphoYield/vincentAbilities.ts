@@ -2,12 +2,10 @@ import { ethers } from 'ethers';
 
 import { LIT_RPC } from '@lit-protocol/constants';
 import { bundledVincentAbility as erc20ApprovalAbility } from '@lit-protocol/vincent-ability-erc20-approval';
-import { bundledVincentAbility as erc20TransferAbility } from '@lit-protocol/vincent-ability-erc20-transfer';
 import {
   bundledVincentAbility as morphoAbility,
   MorphoOperation,
 } from '@lit-protocol/vincent-ability-morpho';
-import { bundledVincentAbility as uniswapSwapAbility } from '@lit-protocol/vincent-ability-uniswap-swap';
 import {
   getVincentAbilityClient,
   disconnectVincentAbilityClients,
@@ -28,21 +26,6 @@ export function getErc20ApprovalAbilityClient() {
   return getVincentAbilityClient({
     ethersSigner,
     bundledVincentAbility: erc20ApprovalAbility,
-  });
-}
-
-export function getErc20TransferAbilityClient() {
-  return getVincentAbilityClient({
-    ethersSigner,
-    bundledVincentAbility: erc20TransferAbility,
-  });
-}
-
-// TODO leaving this here as we will use it later to allow funding with any coin
-export function getUniswapAbilityClient() {
-  return getVincentAbilityClient({
-    ethersSigner,
-    bundledVincentAbility: uniswapSwapAbility,
   });
 }
 

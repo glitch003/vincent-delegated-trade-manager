@@ -1,8 +1,5 @@
-import { Input } from '@/components/ui/input';
-import { Label } from '@/components/ui/label';
 import React, { useCallback, useState } from 'react';
 
-import { Box } from '@/components/ui/box';
 import { Button } from '@/components/ui/button';
 import {
   Dialog,
@@ -16,7 +13,6 @@ import {
 import { Separator } from '@/components/ui/separator';
 import { Spinner } from '@/components/ui/spinner';
 import { useBackend, Schedule } from '@/hooks/useBackend';
-import { Hex, isHex } from '@/lib/hex';
 import { cn } from '@/lib/utils';
 
 export interface ScheduleDetailsDialogProps {
@@ -27,23 +23,15 @@ export interface ScheduleDetailsDialogProps {
 export const DialogueWithdraw: React.FC<ScheduleDetailsDialogProps> = ({ schedule, onDelete }) => {
   const [loading, setLoading] = useState<boolean>(false);
   const [open, setOpen] = useState(false);
-  const [receiverAddress, setReceiverAddress] = useState<string>('');
   const { deleteSchedule } = useBackend();
 
   const deleteUserSchedule = useCallback(
     async (event: React.FormEvent<HTMLFormElement>) => {
       event.preventDefault();
 
-      if (receiverAddress && !isHex(receiverAddress)) {
-        alert('Please enter a valid address. Format: 0x.');
-        return;
-      }
-
       try {
         setLoading(true);
-        await deleteSchedule(schedule._id, {
-          receiverAddress: receiverAddress as Hex,
-        });
+        await deleteSchedule(schedule._id);
       } catch (error) {
         console.error('Error deleting Schedule:', error);
         alert('Error deleting Schedule. Please try again.');
@@ -54,7 +42,7 @@ export const DialogueWithdraw: React.FC<ScheduleDetailsDialogProps> = ({ schedul
 
       onDelete?.();
     },
-    [deleteSchedule, onDelete, receiverAddress, schedule._id]
+    [deleteSchedule, onDelete, schedule._id]
   );
 
   const failedAfterLastRun =
@@ -84,23 +72,6 @@ export const DialogueWithdraw: React.FC<ScheduleDetailsDialogProps> = ({ schedul
               To revert this operation you will need to create a new schedule.
             </DialogDescription>
           </DialogHeader>
-
-          <Separator className="my-4" />
-
-          <Box className="grid gap-4 py-4 overflow-y-auto max-h-[70vh]">
-            <div className="flex flex-col space-y-1.5">
-              <Label htmlFor="name">Withdrawal Address (optional)</Label>
-              <Input
-                id="address"
-                placeholder="0x..."
-                value={receiverAddress}
-                onChange={(e) => setReceiverAddress(e.target.value)}
-              />
-              <p className="text-gray-600">
-                By leaving this field empty, funds will stay in your Agent PKP Wallet.
-              </p>
-            </div>
-          </Box>
 
           <Separator className="my-4" />
 

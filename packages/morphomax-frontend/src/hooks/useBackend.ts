@@ -3,7 +3,6 @@ import { useCallback, useContext } from 'react';
 import { BACKEND_URL, REDIRECT_URI } from '@/config';
 import { JwtContext } from '@/contexts/jwt';
 import { useVincentWebAuthClient } from '@/hooks/useVincentWebAuthClient';
-import { Hex } from '@/lib/hex';
 
 type HTTPMethod = 'GET' | 'POST' | 'PUT' | 'DELETE';
 
@@ -137,10 +136,6 @@ export type Strategy = {
   whitelisted: boolean;
 };
 
-export interface DeleteScheduleRequest {
-  receiverAddress?: Hex;
-}
-
 export const useBackend = () => {
   const { authInfo } = useContext(JwtContext);
   const vincentWebAppClient = useVincentWebAuthClient();
@@ -233,23 +228,9 @@ export const useBackend = () => {
     [sendRequest]
   );
 
-  const disableSchedule = useCallback(
-    async (scheduleId: string) => {
-      return sendRequest<Schedule>(`/schedule/${scheduleId}/disable`, 'PUT');
-    },
-    [sendRequest]
-  );
-
-  const enableSchedule = useCallback(
-    async (scheduleId: string) => {
-      return sendRequest<Schedule>(`/schedule/${scheduleId}/enable`, 'PUT');
-    },
-    [sendRequest]
-  );
-
   const deleteSchedule = useCallback(
-    async (scheduleId: string, deleteScheduleRequest: DeleteScheduleRequest) => {
-      return sendRequest<Schedule>(`/schedule/${scheduleId}`, 'DELETE', deleteScheduleRequest);
+    async (scheduleId: string) => {
+      return sendRequest<Schedule>(`/schedule/${scheduleId}`, 'DELETE');
     },
     [sendRequest]
   );
@@ -261,8 +242,6 @@ export const useBackend = () => {
   return {
     createSchedule,
     deleteSchedule,
-    disableSchedule,
-    enableSchedule,
     getOptimalStrategyInfo,
     getSchedules,
     getScheduleSwaps,

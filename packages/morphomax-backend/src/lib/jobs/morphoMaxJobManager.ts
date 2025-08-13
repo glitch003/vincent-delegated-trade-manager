@@ -1,5 +1,4 @@
 import consola from 'consola';
-import { ethers } from 'ethers';
 import { Types } from 'mongoose';
 
 import * as optimizeMorphoYieldJobDef from './optimizeMorphoYield';
@@ -11,7 +10,6 @@ import {
   getMorphoPositions,
   redeemMorphoVaults,
 } from './optimizeMorphoYield/utils';
-import { transferERC20Tokens } from './optimizeMorphoYield/utils/transfer-erc20-tokens';
 import { MorphoSwap } from '../mongo/models/MorphoSwap';
 
 interface FindSpecificScheduledJobParams {
@@ -57,49 +55,25 @@ export async function findJob({
 
   logger.log(`Found ${jobs.length} jobs with ID ${scheduleId}`);
   if (mustExist && !jobs.length) {
-    throw new Error(`No MorphoMax schedule found with ID ${scheduleId}`);
+    throw new Error(`No Vincent Yield schedule found with ID ${scheduleId}`);
   }
 
   return jobs[0];
 }
 
-export async function disableJob({
-  scheduleId,
-  walletAddress,
-}: Omit<FindSpecificScheduledJobParams, 'mustExist'>) {
+export async function cancelJob({ scheduleId, walletAddress }: CancelJobParams) {
   // Idempotent; if a job we're trying to disable doesn't exist, it is disabled.
   const job = await findJob({ scheduleId, walletAddress, mustExist: false });
 
   if (!job) return null;
 
-  logger.log(`Disabling MorphoMax job ${scheduleId}`);
+  logger.log(`Disabling Vincent Yield job ${scheduleId}`);
   job.disable();
   job.attrs.data.updatedAt = new Date();
-  return job.save();
-}
 
-export async function enableJob({
-  scheduleId,
-  walletAddress,
-}: Omit<FindSpecificScheduledJobParams, 'mustExist'>) {
-  const job = await findJob({ scheduleId, walletAddress, mustExist: true });
+  await job.save();
 
-  logger.log(`Enabling MorphoMax job ${scheduleId}`);
-  job.attrs.data.updatedAt = new Date();
-  job.enable();
-  return job.save();
-}
-
-export async function cancelJob({ receiverAddress, scheduleId, walletAddress }: CancelJobParams) {
-  const agendaClient = getAgenda();
-  logger.log(`Cancelling (deleting) MorphoMax job ${scheduleId}`);
-  const scheduleObjectId = new Types.ObjectId(scheduleId);
-  const calledJob = await agendaClient.cancel({
-    _id: scheduleObjectId,
-    'data.pkpInfo.ethAddress': walletAddress,
-  });
-
-  if (calledJob) {
+  if (job) {
     const userPositions = await getMorphoPositions({
       walletAddress,
       chainId: baseProvider.network.chainId,
@@ -118,18 +92,10 @@ export async function cancelJob({ receiverAddress, scheduleId, walletAddress }: 
       provider: baseProvider,
       tokenAddress: USDC_ADDRESS,
     });
-    const transfers = await transferERC20Tokens({
-      receiverAddress,
-      walletAddress,
-      amount: ethers.utils.formatUnits(tokenBalance.balance, tokenBalance.decimals),
-      provider: baseProvider,
-      tokenAddress: tokenBalance.address,
-    });
 
     const morphoSwap = new MorphoSwap({
       redeems,
       scheduleId,
-      transfers,
       userPositions,
       walletAddress,
       deposits: [],
@@ -139,7 +105,7 @@ export async function cancelJob({ receiverAddress, scheduleId, walletAddress }: 
     await morphoSwap.save();
   }
 
-  return calledJob;
+  return job;
 }
 
 export async function createJob(
@@ -152,16 +118,16 @@ export async function createJob(
   const agenda = getAgenda();
 
   // Create a new job instance
-  const job = agenda.create<optimizeMorphoYieldJobDef.JobParams>(
-    optimizeMorphoYieldJobDef.jobName,
-    {
+  let job = await findJob({ scheduleId, walletAddress, mustExist: false });
+  if (!job) {
+    job = agenda.create<optimizeMorphoYieldJobDef.JobParams>(optimizeMorphoYieldJobDef.jobName, {
       ...data,
       updatedAt: new Date(),
-    }
-  );
+    });
 
-  // Currently we only allow a single MorphoMax per walletAddress
-  job.unique({ 'data.pkpInfo.ethAddress': data.walletAddress });
+    // Currently we only allow a single Vincent Yield per walletAddress
+    job.unique({ 'data.pkpInfo.ethAddress': data.walletAddress });
+  }
 
   // Schedule the job based on provided options
   if (options.interval) {
@@ -173,9 +139,11 @@ export async function createJob(
     job.schedule(options.schedule);
   }
 
-  // Save the job to persist it
+  // Activate the job and save it to persist it
+  job.attrs.data.updatedAt = new Date();
+  job.enable();
   await job.save();
-  logger.log(`Created MorphoMax job ${job.attrs._id}`);
+  logger.log(`Created Vincent Yield job ${job.attrs._id}`);
 
   return job;
 }

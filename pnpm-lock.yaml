@@ -111,15 +111,9 @@ importers:
       '@lit-protocol/vincent-ability-erc20-approval':
         specifier: 0.0.12-mma
         version: 0.0.12-mma(@lit-protocol/vincent-app-sdk@0.0.12-mma(bufferutil@4.0.9)(utf-8-validate@5.0.10))(@lit-protocol/vincent-tool-sdk@1.0.2(bufferutil@4.0.9)(utf-8-validate@5.0.10))(@types/react@19.0.12)(bufferutil@4.0.9)(react@19.0.0)(typescript@5.8.2)(utf-8-validate@5.0.10)
-      '@lit-protocol/vincent-ability-erc20-transfer':
-        specifier: 0.0.12-mma
-        version: 0.0.12-mma(@lit-protocol/vincent-app-sdk@0.0.12-mma(bufferutil@4.0.9)(utf-8-validate@5.0.10))(@lit-protocol/vincent-tool-sdk@1.0.2(bufferutil@4.0.9)(utf-8-validate@5.0.10))(@types/react@19.0.12)(bufferutil@4.0.9)(react@19.0.0)(typescript@5.8.2)(utf-8-validate@5.0.10)
       '@lit-protocol/vincent-ability-morpho':
         specifier: 0.0.12-mma
         version: 0.0.12-mma(@lit-protocol/vincent-app-sdk@0.0.12-mma(bufferutil@4.0.9)(utf-8-validate@5.0.10))(@lit-protocol/vincent-tool-sdk@1.0.2(bufferutil@4.0.9)(utf-8-validate@5.0.10))(@types/react@19.0.12)(bufferutil@4.0.9)(react@19.0.0)(typescript@5.8.2)(utf-8-validate@5.0.10)
-      '@lit-protocol/vincent-ability-uniswap-swap':
-        specifier: 0.0.12-mma
-        version: 0.0.12-mma(@lit-protocol/vincent-app-sdk@0.0.12-mma(bufferutil@4.0.9)(utf-8-validate@5.0.10))(bufferutil@4.0.9)(utf-8-validate@5.0.10)
       '@lit-protocol/vincent-app-sdk':
         specifier: 0.0.12-mma
         version: 0.0.12-mma(bufferutil@4.0.9)(utf-8-validate@5.0.10)
@@ -1924,11 +1918,6 @@ packages:
     peerDependencies:
       '@lit-protocol/vincent-app-sdk': ^0.0.12-mma
 
-  '@lit-protocol/vincent-ability-erc20-transfer@0.0.12-mma':
-    resolution: {integrity: sha512-d/f77FyDMcYAE2ZMG+k3KEuX/bhduFQC7qx4NaDV++hUYAf+jd1BfPafjDlIHCkU/vphB4OPFJxv8rXqY1Yk3Q==}
-    peerDependencies:
-      '@lit-protocol/vincent-app-sdk': ^0.0.12-mma
-
   '@lit-protocol/vincent-ability-morpho@0.0.12-mma':
     resolution: {integrity: sha512-eEHL5Kp6mxkRKzNL19kblg5+5OGIo5sO1xHdqu8tAY3idx97amtoOFyeRi7O71FWen2pUHLrEvWRxhTorxJv8g==}
     peerDependencies:
@@ -1937,27 +1926,12 @@ packages:
   '@lit-protocol/vincent-ability-sdk@0.0.12-mma':
     resolution: {integrity: sha512-CwKDxYMdWhIaQcq8C8/A1G4p473DI5jUQsxU2F1HWaAMd6YBaI1ixlVk7g/QJuiD+ErLqnN72I/NuUfmd90RJA==}
 
-  '@lit-protocol/vincent-ability-uniswap-swap@0.0.12-mma':
-    resolution: {integrity: sha512-Cocex5Cfaze7KE+ntRibsy6lFm6hRN2n3k8xgmV5cw6/QXTyqd0ab3LG28u67Xzl3DAKqfV4KbBm6lQLNnd7iQ==}
-    peerDependencies:
-      '@lit-protocol/vincent-app-sdk': ^0.0.12-mma
-
   '@lit-protocol/vincent-app-sdk@0.0.12-mma':
     resolution: {integrity: sha512-rfxT7iWt6NfJGIi6lqzkBiYKEePEkc4rX9/d6HYDABCr+xUu91Mf9xJt2XBPo6/pwZEOyT8gX0HXZKHJNmiG7w==}
     engines: {node: ^20.11.1, pnpm: 10.7.0}
 
   '@lit-protocol/vincent-contracts-sdk@0.0.12-mma':
     resolution: {integrity: sha512-Ok2pDEhvgVF11Q0y2BddVWv82qRupmFjzbgLQk7XP/1JKKBgqwWalKjL+zgBifhOX98iOMFTaIQveBnFSEH8wg==}
-
-  '@lit-protocol/vincent-policy-send-counter@0.0.12-mma':
-    resolution: {integrity: sha512-oYllacGhn0hRQ9FreLK/a1iUnCBaZNvXV3G8R9aY2c6OXDHr6ZnJuU0Pn/1EceM3EbYGflAMG2tjEShciZqjYg==}
-    peerDependencies:
-      '@lit-protocol/vincent-app-sdk': ^0.0.12-mma
-
-  '@lit-protocol/vincent-policy-spending-limit@0.0.12-mma':
-    resolution: {integrity: sha512-FymlAwX82Myog0PiT16OrZs6XijbWvAvy9sxZgdCyiYNL9SspsFUw21z26Z/r7Dd5LLJHjOb+ROmex7Xd12AvA==}
-    peerDependencies:
-      '@lit-protocol/vincent-app-sdk': ^0.0.12-mma
 
   '@lit-protocol/vincent-scaffold-sdk@1.1.8':
     resolution: {integrity: sha512-SCLsBEogqvdpT+ug2aBY+QQ0X9T882ZEIManRqUiM60IDtYl0UQtc9rXo+R2dq5UO9aSznPc6wPCvFGGWfxnxw==}
@@ -3501,10 +3475,6 @@ packages:
   '@ungap/structured-clone@1.3.0':
     resolution: {integrity: sha512-WmoN8qaIAo7WTYWbAZuG8PYEhn5fkz7dZrqTBZ7dtt//lL2Gwms1IcnQ5yHqjDfX8Ft5j4YzDM23f87zBfDe9g==}
 
-  '@uniswap/sdk-core@7.7.2':
-    resolution: {integrity: sha512-0KqXw+y0opBo6eoPAEoLHEkNpOu0NG9gEk7GAYIGok+SHX89WlykWsRYeJKTg9tOwhLpcG9oHg8xZgQ390iOrA==}
-    engines: {node: '>=10'}
-
   '@unrs/resolver-binding-darwin-arm64@1.3.2':
     resolution: {integrity: sha512-ddnlXgRi0Fog5+7U5Q1qY62wl95Q1lB4tXQX1UIA9YHmRCHN2twaQW0/4tDVGCvTVEU3xEayU7VemEr7GcBYUw==}
     cpu: [arm64]
@@ -4047,9 +4017,6 @@ packages:
   better-opn@3.0.2:
     resolution: {integrity: sha512-aVNobHnJqLiUelTaHat9DZ1qM2w0C0Eym4LPI/3JxOnSokGVdsl1T1kN7TFvsEAD8G47A6VKQ0TVHqbBnYMJlQ==}
     engines: {node: '>=12.0.0'}
-
-  big.js@5.2.2:
-    resolution: {integrity: sha512-vyL2OymJxmarO8gxMr0mhChsO9QGwhynfuu4+MHTAW6czfq9humCB7rKpUjDd9YUiDPU4mzpyupFSvOClAwbmQ==}
 
   binary-searching@2.0.5:
     resolution: {integrity: sha512-v4N2l3RxL+m4zDxyxz3Ne2aTmiPn8ZUpKFpdPtO+ItW1NcTCXA7JeHG5GMBSvoKSkQZ9ycS+EouDVxYB9ufKWA==}
@@ -4630,9 +4597,6 @@ packages:
   decamelize@1.2.0:
     resolution: {integrity: sha512-z2S+W9X73hAUUki+N+9Za2lBlun89zigOyGrsax+KUQ6wKW4ZoWpEYBkGhQjwAjjDCkWxhY0VKEhk8wzY7F5cA==}
     engines: {node: '>=0.10.0'}
-
-  decimal.js-light@2.5.1:
-    resolution: {integrity: sha512-qIMFpTMZmny+MMIitAB6D7iVPEorVw6YQRWkvarTkT4tBeSLLiHzcwj6q0MmYSFCiVpiqPJTJEYIrpcPzVEIvg==}
 
   decode-named-character-reference@1.1.0:
     resolution: {integrity: sha512-Wy+JTSbFThEOXQIR2L6mxJvEs+veIzpmqD7ynWxMXGpnk3smkHQOp6forLdHsKpAMW9iJpaBBIxz285t1n1C3w==}
@@ -6209,9 +6173,6 @@ packages:
   js-yaml@4.1.0:
     resolution: {integrity: sha512-wpxZs9NoxZaJESJGIZTyDEaYpl0FKSA+FB9aJiyemKhMwkxQg63h4T1KJgUGHpTqPDNRcmmYLugrRjJlBtWvRA==}
     hasBin: true
-
-  jsbi@3.2.5:
-    resolution: {integrity: sha512-aBE4n43IPvjaddScbvWRA2YlTzKEynHzu7MqOyTipdHucf/VxS63ViCjxYRg86M8Rxwbt/GfzHl1kKERkt45fQ==}
 
   jsdoc-type-pratt-parser@4.1.0:
     resolution: {integrity: sha512-Hicd6JK5Njt2QB6XYFS7ok9e37O8AYk3jTcppG4YVQnYjOemymvTcmc7OWsmq/Qqj5TdRFO5/x/tIPmBeRtGHg==}
@@ -8280,9 +8241,6 @@ packages:
   to-regex-range@5.0.1:
     resolution: {integrity: sha512-65P7iz6X5yEr1cwcgvQxbbIw7Uk3gOy5dIdtZ4rDveLqhrdJP+Li/Hx6tyK0NEb+2GCyneCMJiGqrADCSNk8sQ==}
     engines: {node: '>=8.0'}
-
-  toformat@2.0.0:
-    resolution: {integrity: sha512-03SWBVop6nU8bpyZCx7SodpYznbZF5R4ljwNLBcTQzKOD9xuihRo/psX58llS1BMFhhAI08H3luot5GoXJz2pQ==}
 
   toidentifier@1.0.1:
     resolution: {integrity: sha512-o5sSPKEkg/DIQNmH43V0/uerLrpzVedkUh8tGNvaeXpfpuwjKenlSox/2O/BTlZUtEe+JG7s5YhEz608PlAHRA==}
@@ -11801,29 +11759,6 @@ snapshots:
       - use-sync-external-store
       - utf-8-validate
 
-  '@lit-protocol/vincent-ability-erc20-transfer@0.0.12-mma(@lit-protocol/vincent-app-sdk@0.0.12-mma(bufferutil@4.0.9)(utf-8-validate@5.0.10))(@lit-protocol/vincent-tool-sdk@1.0.2(bufferutil@4.0.9)(utf-8-validate@5.0.10))(@types/react@19.0.12)(bufferutil@4.0.9)(react@19.0.0)(typescript@5.8.2)(utf-8-validate@5.0.10)':
-    dependencies:
-      '@lit-protocol/vincent-ability-sdk': 0.0.12-mma(bufferutil@4.0.9)(utf-8-validate@5.0.10)
-      '@lit-protocol/vincent-app-sdk': 0.0.12-mma(bufferutil@4.0.9)(utf-8-validate@5.0.10)
-      '@lit-protocol/vincent-policy-send-counter': 0.0.12-mma(@lit-protocol/vincent-app-sdk@0.0.12-mma(bufferutil@4.0.9)(utf-8-validate@5.0.10))(@lit-protocol/vincent-tool-sdk@1.0.2(bufferutil@4.0.9)(utf-8-validate@5.0.10))(@types/react@19.0.12)(bufferutil@4.0.9)(react@19.0.0)(typescript@5.8.2)(utf-8-validate@5.0.10)
-      '@lit-protocol/vincent-scaffold-sdk': 1.1.8(@lit-protocol/vincent-app-sdk@0.0.12-mma(bufferutil@4.0.9)(utf-8-validate@5.0.10))(@lit-protocol/vincent-tool-sdk@1.0.2(bufferutil@4.0.9)(utf-8-validate@5.0.10))(@types/react@19.0.12)(bufferutil@4.0.9)(react@19.0.0)(typescript@5.8.2)(utf-8-validate@5.0.10)(zod@3.25.76)
-      ethers: 5.8.0(bufferutil@4.0.9)(utf-8-validate@5.0.10)
-      tslib: 2.8.1
-      zod: 3.25.76
-    transitivePeerDependencies:
-      - '@lit-protocol/vincent-tool-sdk'
-      - '@tanstack/query-core'
-      - '@types/react'
-      - bufferutil
-      - debug
-      - encoding
-      - immer
-      - react
-      - supports-color
-      - typescript
-      - use-sync-external-store
-      - utf-8-validate
-
   '@lit-protocol/vincent-ability-morpho@0.0.12-mma(@lit-protocol/vincent-app-sdk@0.0.12-mma(bufferutil@4.0.9)(utf-8-validate@5.0.10))(@lit-protocol/vincent-tool-sdk@1.0.2(bufferutil@4.0.9)(utf-8-validate@5.0.10))(@types/react@19.0.12)(bufferutil@4.0.9)(react@19.0.0)(typescript@5.8.2)(utf-8-validate@5.0.10)':
     dependencies:
       '@lit-protocol/vincent-ability-sdk': 0.0.12-mma(bufferutil@4.0.9)(utf-8-validate@5.0.10)
@@ -11851,19 +11786,6 @@ snapshots:
       '@lit-protocol/vincent-contracts-sdk': 0.0.12-mma(bufferutil@4.0.9)(utf-8-validate@5.0.10)
       ethers: 5.8.0(bufferutil@4.0.9)(utf-8-validate@5.0.10)
       semver: 7.7.2
-      tslib: 2.8.1
-      zod: 3.25.76
-    transitivePeerDependencies:
-      - bufferutil
-      - utf-8-validate
-
-  '@lit-protocol/vincent-ability-uniswap-swap@0.0.12-mma(@lit-protocol/vincent-app-sdk@0.0.12-mma(bufferutil@4.0.9)(utf-8-validate@5.0.10))(bufferutil@4.0.9)(utf-8-validate@5.0.10)':
-    dependencies:
-      '@lit-protocol/vincent-ability-sdk': 0.0.12-mma(bufferutil@4.0.9)(utf-8-validate@5.0.10)
-      '@lit-protocol/vincent-app-sdk': 0.0.12-mma(bufferutil@4.0.9)(utf-8-validate@5.0.10)
-      '@lit-protocol/vincent-policy-spending-limit': 0.0.12-mma(@lit-protocol/vincent-app-sdk@0.0.12-mma(bufferutil@4.0.9)(utf-8-validate@5.0.10))(bufferutil@4.0.9)(utf-8-validate@5.0.10)
-      '@uniswap/sdk-core': 7.7.2
-      ethers: 5.8.0(bufferutil@4.0.9)(utf-8-validate@5.0.10)
       tslib: 2.8.1
       zod: 3.25.76
     transitivePeerDependencies:
@@ -11911,40 +11833,6 @@ snapshots:
       '@ethersproject/abi': 5.8.0
       cbor2: 2.0.1
       ethers: 5.8.0(bufferutil@4.0.9)(utf-8-validate@5.0.10)
-    transitivePeerDependencies:
-      - bufferutil
-      - utf-8-validate
-
-  '@lit-protocol/vincent-policy-send-counter@0.0.12-mma(@lit-protocol/vincent-app-sdk@0.0.12-mma(bufferutil@4.0.9)(utf-8-validate@5.0.10))(@lit-protocol/vincent-tool-sdk@1.0.2(bufferutil@4.0.9)(utf-8-validate@5.0.10))(@types/react@19.0.12)(bufferutil@4.0.9)(react@19.0.0)(typescript@5.8.2)(utf-8-validate@5.0.10)':
-    dependencies:
-      '@lit-protocol/vincent-ability-sdk': 0.0.12-mma(bufferutil@4.0.9)(utf-8-validate@5.0.10)
-      '@lit-protocol/vincent-app-sdk': 0.0.12-mma(bufferutil@4.0.9)(utf-8-validate@5.0.10)
-      '@lit-protocol/vincent-scaffold-sdk': 1.1.8(@lit-protocol/vincent-app-sdk@0.0.12-mma(bufferutil@4.0.9)(utf-8-validate@5.0.10))(@lit-protocol/vincent-tool-sdk@1.0.2(bufferutil@4.0.9)(utf-8-validate@5.0.10))(@types/react@19.0.12)(bufferutil@4.0.9)(react@19.0.0)(typescript@5.8.2)(utf-8-validate@5.0.10)(zod@3.25.76)
-      ethers: 5.8.0(bufferutil@4.0.9)(utf-8-validate@5.0.10)
-      tslib: 2.8.1
-      zod: 3.25.76
-    transitivePeerDependencies:
-      - '@lit-protocol/vincent-tool-sdk'
-      - '@tanstack/query-core'
-      - '@types/react'
-      - bufferutil
-      - debug
-      - encoding
-      - immer
-      - react
-      - supports-color
-      - typescript
-      - use-sync-external-store
-      - utf-8-validate
-
-  '@lit-protocol/vincent-policy-spending-limit@0.0.12-mma(@lit-protocol/vincent-app-sdk@0.0.12-mma(bufferutil@4.0.9)(utf-8-validate@5.0.10))(bufferutil@4.0.9)(utf-8-validate@5.0.10)':
-    dependencies:
-      '@lit-protocol/vincent-ability-sdk': 0.0.12-mma(bufferutil@4.0.9)(utf-8-validate@5.0.10)
-      '@lit-protocol/vincent-app-sdk': 0.0.12-mma(bufferutil@4.0.9)(utf-8-validate@5.0.10)
-      '@uniswap/sdk-core': 7.7.2
-      ethers: 5.8.0(bufferutil@4.0.9)(utf-8-validate@5.0.10)
-      tslib: 2.8.1
-      zod: 3.25.76
     transitivePeerDependencies:
       - bufferutil
       - utf-8-validate
@@ -13661,18 +13549,6 @@ snapshots:
 
   '@ungap/structured-clone@1.3.0': {}
 
-  '@uniswap/sdk-core@7.7.2':
-    dependencies:
-      '@ethersproject/address': 5.8.0
-      '@ethersproject/bytes': 5.8.0
-      '@ethersproject/keccak256': 5.7.0
-      '@ethersproject/strings': 5.7.0
-      big.js: 5.2.2
-      decimal.js-light: 2.5.1
-      jsbi: 3.2.5
-      tiny-invariant: 1.3.3
-      toformat: 2.0.0
-
   '@unrs/resolver-binding-darwin-arm64@1.3.2':
     optional: true
 
@@ -14541,8 +14417,6 @@ snapshots:
     dependencies:
       open: 8.4.2
 
-  big.js@5.2.2: {}
-
   binary-searching@2.0.5: {}
 
   bl@4.1.0:
@@ -15193,8 +15067,6 @@ snapshots:
       map-obj: 1.0.1
 
   decamelize@1.2.0: {}
-
-  decimal.js-light@2.5.1: {}
 
   decode-named-character-reference@1.1.0:
     dependencies:
@@ -17320,8 +17192,6 @@ snapshots:
   js-yaml@4.1.0:
     dependencies:
       argparse: 2.0.1
-
-  jsbi@3.2.5: {}
 
   jsdoc-type-pratt-parser@4.1.0: {}
 
@@ -19494,8 +19364,6 @@ snapshots:
   to-regex-range@5.0.1:
     dependencies:
       is-number: 7.0.0
-
-  toformat@2.0.0: {}
 
   toidentifier@1.0.1: {}
 
