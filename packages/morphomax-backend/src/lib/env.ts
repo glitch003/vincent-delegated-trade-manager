@@ -28,6 +28,7 @@ export const env = createEnv({
     CORS_ALLOWED_DOMAIN: z.string(),
     IS_DEVELOPMENT: BooleanOrBooleanStringSchema,
     MINIMUM_USDC_BALANCE: z.coerce.number(),
+    MINIMUM_VAULT_TOTAL_ASSETS_USD: z.coerce.number().default(1_000_000),
     MINIMUM_YIELD_IMPROVEMENT_PERCENT: z.coerce.number(),
     MONGODB_URI: z.string().url(),
     PORT: z.coerce.number(),

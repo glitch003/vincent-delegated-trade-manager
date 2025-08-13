@@ -32,11 +32,16 @@ query GetVaults(
       }
       id
       name
+      liquidity {
+        underlying
+        usd
+      }
       state {
         apy
         avgApy
         avgNetApy
         netApy
+        netApyWithoutRewards
       }
       symbol
       whitelisted

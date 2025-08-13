@@ -25,7 +25,8 @@ export type JobParams = {
   updatedAt: Date;
 };
 
-const { MINIMUM_USDC_BALANCE, MINIMUM_YIELD_IMPROVEMENT_PERCENT } = env;
+const { MINIMUM_USDC_BALANCE, MINIMUM_VAULT_TOTAL_ASSETS_USD, MINIMUM_YIELD_IMPROVEMENT_PERCENT } =
+  env;
 
 function getVaultsToOptimize(
   userPositions: UserPositionItem,
@@ -65,11 +66,12 @@ export async function optimizeMorphoYield(job: JobType): Promise<void> {
     const [vaults, userPositions] = await Promise.all([
       getMorphoVaults({
         first: 1,
-        orderBy: VaultOrderBy.AvgNetApy,
+        orderBy: VaultOrderBy.NetApy,
         orderDirection: OrderDirection.Desc,
         where: {
           assetSymbol_in: ['USDC'],
           chainId_in: [baseProvider.network.chainId],
+          totalAssetsUsd_gte: MINIMUM_VAULT_TOTAL_ASSETS_USD,
           whitelisted: true,
         },
       }),

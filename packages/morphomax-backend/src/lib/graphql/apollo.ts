@@ -1,4 +1,3 @@
-// @ts-expect-error: ESM-CJS compatibility issue
 import apolloClient from '@apollo/client';
 import { typePolicies } from '@morpho-org/blue-api-sdk';
 
