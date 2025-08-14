@@ -88,7 +88,7 @@ export const Dashboard: React.FC = () => {
   const [loading, setLoading] = useState<boolean>(false);
   const [schedules, setSchedules] = useState<Schedule[]>([]);
   const { createSchedule, getSchedules } = useBackend();
-  const { authInfo } = useContext(JwtContext);
+  const { authInfo, logOut } = useContext(JwtContext);
 
   const getUserSchedules = useCallback(async () => {
     try {
@@ -121,6 +121,15 @@ export const Dashboard: React.FC = () => {
 
   return (
     <Card className="w-full max-w-3xl bg-white p-8 shadow-sm rounded-lg">
+      <Button
+        variant="destructive"
+        size="sm"
+        className="w-fit absolute top-0 right-0 m-4"
+        onClick={logOut}
+      >
+        Log Out
+      </Button>
+
       <CardHeader className="space-y-3 text-center">
         <CardTitle className="text-3xl font-bold text-gray-900">Vincent Yield Maximizer</CardTitle>
         <CardDescription className="space-y-2">
