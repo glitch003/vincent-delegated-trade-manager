@@ -4,6 +4,8 @@ node_modules
 
 data
 
+.eslintcache
+
 # dotEnv files should not be committed
 .env*
 !.env.vault
