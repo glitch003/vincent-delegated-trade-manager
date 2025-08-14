@@ -2,7 +2,7 @@ import { LIT_EVM_CHAINS } from '@lit-protocol/constants';
 import React, { useCallback, useContext, useEffect, useState } from 'react';
 
 import { DialogueScheduleExecutionDetails } from '@/components/dialogue-schedule-execution-details';
-import { DialogueWithdraw } from '@/components/dialogue-withdraw';
+import { DialogueStop } from '@/components/dialogue-stop';
 import { EnforcementDisclaimer } from '@/components/enforcement-disclaimer';
 import { Footer } from '@/components/footer';
 import { Button } from '@/components/ui/button';
@@ -135,14 +135,14 @@ export const Dashboard: React.FC = () => {
 
       <Separator />
 
-      {schedules.length ? (
+      {schedules.some((schedule) => !schedule.disabled) ? (
         <CardContent className="space-y-6 text-center">
           <EnforcementDisclaimer />
 
           <div className="space-y-4">
             {renderSchedulesTable(schedules)}
 
-            <DialogueWithdraw schedule={schedules[0]} onDelete={getUserSchedules} />
+            <DialogueStop schedule={schedules[0]} onDelete={getUserSchedules} />
           </div>
         </CardContent>
       ) : (
@@ -154,21 +154,35 @@ export const Dashboard: React.FC = () => {
                 <p className="text-gray-700">
                   1. Deposit USDC on Base to{' '}
                   <a
-                    href={`${BASE.blockExplorerUrls[0]}/address/${authInfo?.pkp.ethAddress}`}
+                    href={`${BASE.blockExplorerUrls[0]}/address/${authInfo.pkp.ethAddress}`}
                     target="_blank"
                     rel="noopener noreferrer"
                     className="underline hover:opacity-80"
-                    title={authInfo?.pkp.ethAddress}
+                    title={authInfo.pkp.ethAddress}
                   >
-                    {authInfo?.pkp.ethAddress ? shortenHex(authInfo?.pkp.ethAddress) : 'Loading...'}
+                    {authInfo.pkp.ethAddress ? shortenHex(authInfo.pkp.ethAddress) : 'Loading...'}
                   </a>{' '}
                   (minimum 50 USDC)
+                  <br />
+                  You can use{' '}
+                  <a
+                    href={`https://app.debridge.finance/?r=32300&address=${authInfo.pkp.ethAddress}&inputChain=&outputChain=8453&inputCurrency=&outputCurrency=0x833589fcd6edb6e08f4c7c32d4f71b54bda02913&dlnMode=simple`}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="underline hover:opacity-80"
+                    title="deBridge"
+                  >
+                    deBridge
+                  </a>{' '}
+                  to deposit USDC to your PKP address from any asset on any chain.
                 </p>
               ) : (
                 <p className="text-gray-700">
-                  1. Deposit USDC on Base to your PKP address (minimum 50 USDC)
+                  1. Deposit USDC on Base to your PKP address (minimum 50 USDC). You can use
+                  deBridge to deposit USDC to your PKP address from any asset on any chain.
                 </p>
               )}
+              <br />
               <p className="text-gray-700">
                 2. Active your Agent Below To Start Optimizing Your Yield!
               </p>

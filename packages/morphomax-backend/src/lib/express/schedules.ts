@@ -68,12 +68,10 @@ export const handleDeleteScheduleRoute = async (
   res: Response
 ) => {
   try {
-    const {
-      pkpInfo: { ethAddress },
-    } = req.user.decodedJWT.payload;
+    const { pkpInfo } = req.user.decodedJWT.payload;
     const { scheduleId } = ScheduleIdentitySchema.parse(req.params);
 
-    await cancelJob({ scheduleId, walletAddress: ethAddress });
+    await cancelJob({ pkpInfo, scheduleId });
 
     res.json({ success: true });
   } catch (err) {

@@ -1,5 +1,7 @@
 import consola from 'consola';
 
+import { IRelayPKP } from '@lit-protocol/types';
+
 import * as optimizeMorphoYieldJobDef from './optimizeMorphoYield';
 import { getAgenda } from '../agenda/agendaClient';
 import {
@@ -13,13 +15,12 @@ import { MorphoSwap } from '../mongo/models/MorphoSwap';
 
 interface FindSpecificScheduledJobParams {
   mustExist?: boolean;
-  walletAddress: string;
+  pkpInfo: IRelayPKP;
 }
 
 interface CancelJobParams {
-  receiverAddress?: string | null;
+  pkpInfo: IRelayPKP;
   scheduleId: string;
-  walletAddress: string;
 }
 
 const logger = consola.withTag('optimizeMorphoYieldJobManager');
@@ -57,7 +58,9 @@ export async function findJob({
   return jobs[0];
 }
 
-export async function cancelJob({ scheduleId, walletAddress }: CancelJobParams) {
+export async function cancelJob({ pkpInfo, scheduleId }: CancelJobParams) {
+  const walletAddress = pkpInfo.ethAddress;
+
   // Idempotent; if a job we're trying to disable doesn't exist, it is disabled.
   const job = await findJob({ walletAddress, mustExist: false });
 
@@ -71,29 +74,29 @@ export async function cancelJob({ scheduleId, walletAddress }: CancelJobParams) 
 
   if (job) {
     const userPositions = await getMorphoPositions({
-      walletAddress,
+      pkpInfo,
       chainId: baseProvider.network.chainId,
     });
     const userVaultPositions = userPositions?.user.vaultPositions;
     const redeems = userVaultPositions?.length
       ? await redeemMorphoVaults({
+          pkpInfo,
           userVaultPositions,
-          walletAddress,
           provider: baseProvider,
         })
       : [];
     const { USDC_ADDRESS } = getAddressesByChainId(baseProvider.network.chainId);
     const tokenBalance = await getERC20Balance({
-      walletAddress,
+      pkpInfo,
       provider: baseProvider,
       tokenAddress: USDC_ADDRESS,
     });
 
     const morphoSwap = new MorphoSwap({
+      pkpInfo,
       redeems,
       scheduleId,
       userPositions,
-      walletAddress,
       deposits: [],
       success: true,
       userTokenBalance: tokenBalance,

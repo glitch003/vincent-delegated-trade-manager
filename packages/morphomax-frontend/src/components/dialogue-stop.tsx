@@ -20,7 +20,7 @@ export interface ScheduleDetailsDialogProps {
   onDelete?: () => void;
 }
 
-export const DialogueWithdraw: React.FC<ScheduleDetailsDialogProps> = ({ schedule, onDelete }) => {
+export const DialogueStop: React.FC<ScheduleDetailsDialogProps> = ({ schedule, onDelete }) => {
   const [loading, setLoading] = useState<boolean>(false);
   const [open, setOpen] = useState(false);
   const { deleteSchedule } = useBackend();
@@ -58,18 +58,19 @@ export const DialogueWithdraw: React.FC<ScheduleDetailsDialogProps> = ({ schedul
           disabled={loading}
           className="w-full bg-purple-600 text-white hover:bg-purple-700 py-2 px-4 rounded-md transition-colors"
         >
-          {loading ? <Spinner /> : 'Stop Agent and Withdraw Funds from Morpho'}
+          {loading ? <Spinner /> : 'Stop Vincent Yield Agent'}
         </Button>
       </DialogTrigger>
 
       <DialogContent className={cn(failedAfterLastRun ? 'min-w-2/3' : '', 'overflow-hidden')}>
         <form onSubmit={deleteUserSchedule}>
           <DialogHeader>
-            <DialogTitle>Delete Vincent Yield Schedule</DialogTitle>
+            <DialogTitle>Stop Vincent Yield Agent</DialogTitle>
             <DialogDescription>
-              Are you sure you want to delete this schedule?
+              Are you sure you want to stop this agent?
               <br />
-              To revert this operation you will need to create a new schedule.
+              To revert this operation you will need to start it again. it won't optimize positions
+              while stopped.
             </DialogDescription>
           </DialogHeader>
 
@@ -77,7 +78,7 @@ export const DialogueWithdraw: React.FC<ScheduleDetailsDialogProps> = ({ schedul
 
           <DialogFooter>
             <Button type="submit" disabled={loading} variant="destructive">
-              {loading ? <Spinner /> : 'Delete Schedule'}
+              {loading ? <Spinner /> : 'Stop Agent'}
             </Button>
           </DialogFooter>
         </form>
