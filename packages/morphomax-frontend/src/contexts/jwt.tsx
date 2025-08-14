@@ -4,7 +4,7 @@ import * as jwt from '@lit-protocol/vincent-app-sdk/jwt';
 
 const { verifyVincentAppUserJWT } = jwt;
 
-import { APP_ID } from '@/config';
+import { APP_ID, EXPECTED_AUDIENCE } from '@/config';
 import { useVincentWebAuthClient } from '@/hooks/useVincentWebAuthClient';
 
 const APP_JWT_KEY = `${APP_ID}-jwt`;
@@ -73,7 +73,7 @@ export const JwtProvider: React.FC<JwtProviderProps> = ({ children }) => {
     if (existingJwtStr) {
       try {
         const decodedJWT = await verifyVincentAppUserJWT({
-          expectedAudience: window.location.origin,
+          expectedAudience: EXPECTED_AUDIENCE,
           jwt: existingJwtStr,
           requiredAppId: APP_ID,
         });
