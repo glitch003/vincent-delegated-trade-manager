@@ -8,7 +8,7 @@ module.exports = {
   ignorePatterns: [
     '.eslintrc.cjs',
     'jest.config.js',
-    './src/lib/graphql/generated.ts',
+    'src/lib/graphql/generated.ts',
     'dist/',
     'build.config.ts',
   ],
