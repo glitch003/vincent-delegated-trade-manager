@@ -14,6 +14,7 @@ export interface GetVaultsQueryVariables {
   where: {
     assetSymbol_in: string[];
     chainId_in: number[];
+    totalAssetsUsd_gte: number;
     whitelisted: boolean;
   };
 }
