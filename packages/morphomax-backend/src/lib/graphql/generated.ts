@@ -307,14 +307,6 @@ export type IntDataPoint = {
   y: Maybe<Scalars['Int']['output']>;
 };
 
-export type ManualVicFactory = {
-  __typename?: 'ManualVicFactory';
-  address: Scalars['Address']['output'];
-  chain: Chain;
-  creationBlockNumber: Scalars['BigInt']['output'];
-  id: Scalars['ID']['output'];
-};
-
 /** Morpho Blue market */
 export type Market = {
   __typename?: 'Market';
@@ -1929,12 +1921,6 @@ export type PaginatedCurators = {
   pageInfo: Maybe<PageInfo>;
 };
 
-export type PaginatedManualVicFactories = {
-  __typename?: 'PaginatedManualVicFactories';
-  items: Maybe<Array<ManualVicFactory>>;
-  pageInfo: Maybe<PageInfo>;
-};
-
 export type PaginatedMarketPositions = {
   __typename?: 'PaginatedMarketPositions';
   items: Maybe<Array<MarketPosition>>;
@@ -2212,8 +2198,6 @@ export type Query = {
   vaultV2ByAddress: VaultV2;
   /** @deprecated WIP */
   vaultV2Factories: PaginatedVaultV2Factories;
-  /** @deprecated WIP */
-  vaultV2ManualVicFactories: PaginatedManualVicFactories;
   /** @deprecated WIP */
   vaultV2MetaMorphoAdapterFactories: PaginatedMetaMorphoAdapterFactories;
   /** @deprecated WIP */

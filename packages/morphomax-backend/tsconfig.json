@@ -5,6 +5,8 @@
   "allowJs": true,
   "types": ["jest", "node"],
   "compilerOptions": {
-    "outDir": "./dist"
+    "outDir": "./dist",
+    "sourceMap": true,
+    "inlineSources": true
   }
 }

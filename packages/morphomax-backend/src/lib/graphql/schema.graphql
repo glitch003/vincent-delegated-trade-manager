@@ -411,13 +411,6 @@ type IRMCurveDataPoint {
   borrowApy: Float!
 }
 
-type ManualVicFactory {
-  id: ID!
-  chain: Chain!
-  address: Address!
-  creationBlockNumber: BigInt!
-}
-
 """Morpho Blue market"""
 type Market {
   id: ID!
@@ -1816,11 +1809,6 @@ type PaginatedCurators {
   pageInfo: PageInfo
 }
 
-type PaginatedManualVicFactories {
-  items: [ManualVicFactory!]
-  pageInfo: PageInfo
-}
-
 type PaginatedMarketPositions {
   items: [MarketPosition!]
   pageInfo: PageInfo
@@ -2214,7 +2202,6 @@ type Query {
   ): PaginatedVaultReallocates!
   vaultV2Factories: PaginatedVaultV2Factories! @deprecated(reason: "WIP")
   vaultV2MetaMorphoAdapterFactories: PaginatedMetaMorphoAdapterFactories! @deprecated(reason: "WIP")
-  vaultV2ManualVicFactories: PaginatedManualVicFactories! @deprecated(reason: "WIP")
   vaultV2s(
     """Number of items requested"""
     first: Int = 100
