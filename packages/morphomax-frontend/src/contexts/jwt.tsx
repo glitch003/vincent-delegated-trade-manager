@@ -45,9 +45,7 @@ export const JwtProvider: React.FC<JwtProviderProps> = ({ children }) => {
 
     if (didJustLogin) {
       try {
-        const jwtResult = await vincentWebAuthClient.decodeVincentJWTFromUri(
-          window.location.origin
-        );
+        const jwtResult = await vincentWebAuthClient.decodeVincentJWTFromUri(EXPECTED_AUDIENCE);
 
         if (jwtResult) {
           const { decodedJWT, jwtStr } = jwtResult;
