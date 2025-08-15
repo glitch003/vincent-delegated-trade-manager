@@ -18,7 +18,7 @@ export const EnforcementDisclaimer: React.FC = () => {
             rel="noopener noreferrer"
             className="underline"
           >
-            Vincent Wallet.
+            Agent Wallet.
           </a>
         ) : (
           'Vincent Wallet.'
