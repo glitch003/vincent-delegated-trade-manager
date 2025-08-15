@@ -4,6 +4,7 @@ import React, { useCallback, useContext, useEffect, useState } from 'react';
 import { DialogueScheduleExecutionDetails } from '@/components/dialogue-schedule-execution-details';
 import { DialogueStop } from '@/components/dialogue-stop';
 import { EnforcementDisclaimer } from '@/components/enforcement-disclaimer';
+import { OptimalStrategyInfo } from '@/components/optimal-strategy-info';
 import { Footer } from '@/components/footer';
 import { Button } from '@/components/ui/button';
 import {
@@ -197,6 +198,8 @@ export const Dashboard: React.FC = () => {
               </p>
             </div>
           </div>
+
+          <OptimalStrategyInfo />
 
           <div className="space-y-4">
             <Button
