@@ -36,12 +36,11 @@ function getVaultsToOptimize(
   // - performance and management fees
   // - yield in other tokens
   // - gas cost
-  const topVaultAvgNetApy = topVault.state?.avgNetApy || 0;
+  const topVaultNetApy = topVault.state?.netApy || 0;
   const suboptimalVaults = userPositions.user.vaultPositions.filter((vp) => {
-    const vaultAvgNetApy = vp.vault.state?.avgNetApy || 0;
+    const vaultNetApy = vp.vault.state?.netApy || 0;
     return (
-      vp.state?.shares > 0 &&
-      topVaultAvgNetApy > vaultAvgNetApy + MINIMUM_YIELD_IMPROVEMENT_PERCENT / 100
+      vp.state?.shares > 0 && topVaultNetApy > vaultNetApy + MINIMUM_YIELD_IMPROVEMENT_PERCENT / 100
     );
   });
 
