@@ -33,7 +33,7 @@ export const OptimalStrategyInfo: React.FC = () => {
         </div>
         <div className="flex flex-row p-2">
           <p className="w-1/2 text-left">Name: {topStrategy.name}</p>
-          <p className="w-1/2 text-left">Yield: {(topStrategy.state.apy * 100).toFixed(2)}%</p>
+          <p className="w-1/2 text-left">Yield: {(topStrategy.state.netApy * 100).toFixed(2)}%</p>
         </div>
       </div>
     </Box>
