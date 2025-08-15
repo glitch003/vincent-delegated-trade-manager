@@ -1,7 +1,7 @@
 import { LIT_EVM_CHAINS } from '@lit-protocol/constants';
 import { ethers } from 'ethers';
 import React, { useEffect, useState } from 'react';
-import { CircleAlert } from 'lucide-react';
+import { PlusSquare } from 'lucide-react';
 
 import { Box } from '@/components/ui/box';
 import { Button } from '@/components/ui/button';
@@ -146,7 +146,7 @@ export const DialogueScheduleExecutionDetails: React.FC<ScheduleDetailsDialogPro
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>
         <Button variant="outline">
-          <CircleAlert color="#dc0909" />
+          <PlusSquare />
         </Button>
       </DialogTrigger>
       <DialogContent className={cn(failedAfterLastRun ? 'min-w-2/3' : '', 'overflow-hidden')}>

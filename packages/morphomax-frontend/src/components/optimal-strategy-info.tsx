@@ -24,7 +24,7 @@ export const OptimalStrategyInfo: React.FC = () => {
   }
 
   return (
-    <Box className="gap-1 m-4 p-0 text-sm bg-transparent">
+    <Box className="gap-1 p-0 text-sm bg-transparent">
       <div className="bg-blue-50 p-3 mt-4 rounded-md border border-blue-100">
         <p className="font-semibold text-gray-900">Current optimal strategy:</p>
         <div className="flex flex-row p-2">
