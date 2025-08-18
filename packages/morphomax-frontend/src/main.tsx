@@ -7,13 +7,15 @@ import App from './App';
 
 import { env } from '@/config/env';
 
-const { VITE_IS_DEVELOPMENT } = env;
+const { VITE_IS_DEVELOPMENT, VITE_SENTRY_DSN } = env;
 
-Sentry.init({
-  dsn: 'https://8cb585972c53742046198c754d93b743@o4509482456842240.ingest.us.sentry.io/4509842364956672',
-  enabled: !VITE_IS_DEVELOPMENT,
-  sendDefaultPii: true,
-});
+if (VITE_SENTRY_DSN) {
+  Sentry.init({
+    dsn: VITE_SENTRY_DSN,
+    enabled: !VITE_IS_DEVELOPMENT,
+    sendDefaultPii: true,
+  });
+}
 
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
