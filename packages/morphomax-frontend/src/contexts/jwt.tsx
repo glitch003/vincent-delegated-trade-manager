@@ -4,10 +4,11 @@ import * as jwt from '@lit-protocol/vincent-app-sdk/jwt';
 
 const { verifyVincentAppUserJWT } = jwt;
 
-import { APP_ID, EXPECTED_AUDIENCE } from '@/config';
+import { env } from '@/config/env';
 import { useVincentWebAuthClient } from '@/hooks/useVincentWebAuthClient';
 
-const APP_JWT_KEY = `${APP_ID}-jwt`;
+const { VITE_APP_ID, VITE_EXPECTED_AUDIENCE } = env;
+const APP_JWT_KEY = `${VITE_APP_ID}-jwt`;
 
 export interface AuthInfo {
   jwt: string;
@@ -45,7 +46,8 @@ export const JwtProvider: React.FC<JwtProviderProps> = ({ children }) => {
 
     if (didJustLogin) {
       try {
-        const jwtResult = await vincentWebAuthClient.decodeVincentJWTFromUri(EXPECTED_AUDIENCE);
+        const jwtResult =
+          await vincentWebAuthClient.decodeVincentJWTFromUri(VITE_EXPECTED_AUDIENCE);
 
         if (jwtResult) {
           const { decodedJWT, jwtStr } = jwtResult;
@@ -71,9 +73,9 @@ export const JwtProvider: React.FC<JwtProviderProps> = ({ children }) => {
     if (existingJwtStr) {
       try {
         const decodedJWT = await verifyVincentAppUserJWT({
-          expectedAudience: EXPECTED_AUDIENCE,
+          expectedAudience: VITE_EXPECTED_AUDIENCE,
           jwt: existingJwtStr,
-          requiredAppId: APP_ID,
+          requiredAppId: VITE_APP_ID,
         });
 
         setAuthInfo({

@@ -1,8 +1,10 @@
 import { useCallback, useContext } from 'react';
 
-import { BACKEND_URL, REDIRECT_URI } from '@/config';
+import { env } from '@/config/env';
 import { JwtContext } from '@/contexts/jwt';
 import { useVincentWebAuthClient } from '@/hooks/useVincentWebAuthClient';
+
+const { VITE_BACKEND_URL, VITE_REDIRECT_URI } = env;
 
 type HTTPMethod = 'GET' | 'POST' | 'PUT' | 'DELETE';
 
@@ -144,7 +146,7 @@ export const useBackend = () => {
     // Redirect to Vincent Auth consent page with appId and version
     vincentWebAppClient.redirectToConnectPage({
       // delegationAuthPageUrl: `http://localhost:3000/`,
-      redirectUri: REDIRECT_URI,
+      redirectUri: VITE_REDIRECT_URI,
     });
   }, [vincentWebAppClient]);
 
@@ -154,7 +156,7 @@ export const useBackend = () => {
         'Content-Type': 'application/json',
       };
 
-      const response = await fetch(`${BACKEND_URL}${endpoint}`, {
+      const response = await fetch(`${VITE_BACKEND_URL}${endpoint}`, {
         method,
         headers,
         ...(body ? { body: JSON.stringify(body) } : {}),
@@ -186,7 +188,7 @@ export const useBackend = () => {
         Authorization: `Bearer ${authInfo.jwt}`,
       };
 
-      const response = await fetch(`${BACKEND_URL}${endpoint}`, {
+      const response = await fetch(`${VITE_BACKEND_URL}${endpoint}`, {
         method,
         headers,
         ...(body ? { body: JSON.stringify(body) } : {}),
