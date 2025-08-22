@@ -1,9 +1,9 @@
 {
-  "name": "vincent-morphomax",
+  "name": "vincent-delegated-trade-manager",
   "private": true,
   "version": "1.0.0",
-  "description": "Monorepo for Vincent MorphoMax Agent backend + frontend",
-  "homepage": "https://github.com/LIT-protocol/morphomax",
+  "description": "Monorepo for Vincent Delegated Trade Manager backend + frontend",
+  "homepage": "https://github.com/LIT-protocol/vincent-delegated-trade-manager",
   "engines": {
     "node": "^20.11.1",
     "pnpm": "10.7.0"

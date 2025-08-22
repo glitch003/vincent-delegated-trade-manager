@@ -1,6 +1,6 @@
-# Morphomax Agent
+# Vincent Delegated Trade Manager
 
-#### This monorepo contains packages that are used to drive the _Vincent Morphomax_ agent.
+#### This monorepo contains packages that are used to drive the _Vincent Delegated Trade Manager_ system.
 
 ## ❌ Installation
 
